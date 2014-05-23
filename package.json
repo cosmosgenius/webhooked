@@ -1,0 +1,18 @@
+{
+  "name": "webhooked",
+  "version": "0.0.1",
+  "description": "A WebHook Client for github",
+  "main": "index.js",
+  "scripts": {
+    "test": "grunt"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cosmosgenius/webhooked.git"
+  },
+  "author": "Sharat M R",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cosmosgenius/webhooked/issues"
+  }
+}
