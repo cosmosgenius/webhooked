@@ -4,7 +4,7 @@
   "description": "A WebHook Client for github",
   "main": "index.js",
   "scripts": {
-    "test": "grunt"
+    "test": "grunt test"
   },
   "repository": {
     "type": "git",
@@ -14,5 +14,19 @@
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/cosmosgenius/webhooked/issues"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.x",
+    "grunt-express-server": "~0.4.x",
+    "should": "~3.3.x",
+    "mocha": "~1.19.x",
+    "grunt-mocha-test": "~0.10.x",
+    "grunt-contrib-watch": "~0.6.x",
+    "supertest": "~0.13.x"
+  },
+  "dependencies": {
+    "response-time": "1.x",
+    "morgan": "1.x",
+    "express": "4.x"
   }
 }
