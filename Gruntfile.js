@@ -27,10 +27,23 @@ module.exports = function(grunt) {
                 }
             }
         },
+        vows: {
+            all: {
+                options: {
+                    reporter: 'spec',
+                    verbose: false,
+                    silent: false,
+                    colors: true,
+                    isolate: false,
+                    coverage: 'json'
+                },
+                src: ['test/*.js']
+            }
+        },
         watch: {
             express: {
-                files:  [ '**/*.js' ],
-                tasks:  [ 'express:dev' ],
+                files: ['**/*.js'],
+                tasks: ['express:dev'],
                 options: {
                     nospawn: true //Without this option specified express won't be reloaded
                 }
@@ -41,8 +54,10 @@ module.exports = function(grunt) {
     // These plugins provide necessary tasks.
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-express-server');
+    grunt.loadNpmTasks('grunt-vows');
+
 
     // Default task.
     grunt.registerTask('default', ['express:dev', 'watch']);
-    grunt.registerTask('test', ['express:test', 'express:test:stop']);
+    grunt.registerTask('test', ['express:test', 'vows', 'express:test:stop']);
 };
