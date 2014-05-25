@@ -27,18 +27,6 @@ module.exports = function(grunt) {
                 }
             }
         },
-        mochaTest: {
-            test: {
-                options: {
-                    globals: ['should'],
-                    timeout: 10000,
-                    ignoreLeaks: false,
-                    ui: 'bdd',
-                    reporter: 'spec'
-                },
-                src: ['test/**/*.js']
-            }
-        },
         watch: {
             express: {
                 files:  [ '**/*.js' ],
@@ -53,9 +41,8 @@ module.exports = function(grunt) {
     // These plugins provide necessary tasks.
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-express-server');
-    grunt.loadNpmTasks('grunt-mocha-test');
 
     // Default task.
     grunt.registerTask('default', ['express:dev', 'watch']);
-    grunt.registerTask('test', ['express:test', 'mochaTest', 'express:test:stop']);
+    grunt.registerTask('test', ['express:test', 'express:test:stop']);
 };

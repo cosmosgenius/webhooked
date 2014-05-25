@@ -16,13 +16,13 @@
     "url": "https://github.com/cosmosgenius/webhooked/issues"
   },
   "devDependencies": {
-    "grunt": "~0.4.x",
-    "grunt-express-server": "~0.4.x",
-    "should": "~3.3.x",
-    "mocha": "~1.19.x",
-    "grunt-mocha-test": "~0.10.x",
-    "grunt-contrib-watch": "~0.6.x",
-    "supertest": "~0.13.x"
+    "grunt": "x",
+    "grunt-express-server": "x",
+    "should": "x",
+    "grunt-contrib-watch": "x",
+    "supertest": "x",
+    "grunt-vows": "x",
+    "vows": "x"
   },
   "dependencies": {
     "response-time": "1.x",
