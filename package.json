@@ -18,11 +18,11 @@
   "devDependencies": {
     "grunt": "x",
     "grunt-express-server": "x",
-    "should": "x",
+    "chai": "x",
     "grunt-contrib-watch": "x",
     "supertest": "x",
-    "grunt-vows": "x",
-    "vows": "x"
+    "mocha": "x",
+    "grunt-mocha-test": "x"
   },
   "dependencies": {
     "response-time": "1.x",

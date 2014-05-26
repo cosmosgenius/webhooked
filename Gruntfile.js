@@ -27,17 +27,16 @@ module.exports = function(grunt) {
                 }
             }
         },
-        vows: {
-            all: {
+        mochaTest: {
+            test: {
                 options: {
-                    reporter: 'spec',
-                    verbose: false,
-                    silent: false,
-                    colors: true,
-                    isolate: false,
-                    coverage: 'json'
+                    globals: ['should'],
+                    timeout: 10000,
+                    ignoreLeaks: false,
+                    ui: 'bdd',
+                    reporter: 'spec'
                 },
-                src: ['test/*.js']
+                src: ['test/**/*.js']
             }
         },
         watch: {
@@ -54,10 +53,10 @@ module.exports = function(grunt) {
     // These plugins provide necessary tasks.
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-express-server');
-    grunt.loadNpmTasks('grunt-vows');
+    grunt.loadNpmTasks('grunt-mocha-test');
 
 
     // Default task.
     grunt.registerTask('default', ['express:dev', 'watch']);
-    grunt.registerTask('test', ['express:test', 'vows', 'express:test:stop']);
+    grunt.registerTask('test', ['express:test', 'mochaTest', 'express:test:stop']);
 };
