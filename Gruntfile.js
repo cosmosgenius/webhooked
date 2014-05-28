@@ -30,7 +30,7 @@ module.exports = function(grunt) {
         mochaTest: {
             test: {
                 options: {
-                    globals: ['should'],
+                    globals: [],
                     timeout: 10000,
                     ignoreLeaks: false,
                     ui: 'bdd',
