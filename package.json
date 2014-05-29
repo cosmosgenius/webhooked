@@ -27,6 +27,7 @@
   "dependencies": {
     "response-time": "1.x",
     "morgan": "1.x",
-    "express": "4.x"
+    "express": "4.x",
+    "q": "1.x"
   }
 }
