@@ -16,11 +16,11 @@ module.exports = function( command ){
             path = '.';
         }
 
-        if( typeof command !== 'string' ){
+        if( typeof path !== 'string' ){
             throw new TypeError('command should be of type string');
         }
 
-        Q.Promise(function(resolve, reject, notify){
+        return Q.Promise(function(resolve, reject, notify){
 
             exec(command,function(error){
                 if(error){
