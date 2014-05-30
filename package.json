@@ -18,7 +18,7 @@
   "devDependencies": {
     "grunt": "*",
     "grunt-express-server": "*",
-    "chai": "*",
+    "should": "*",
     "grunt-contrib-watch": "*",
     "supertest": "*",
     "mocha": "*",

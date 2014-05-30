@@ -30,11 +30,12 @@ module.exports = function(grunt) {
         mochaTest: {
             test: {
                 options: {
-                    globals: [],
+                    globals: ['should'],
                     timeout: 10000,
                     ignoreLeaks: false,
                     ui: 'bdd',
-                    reporter: 'spec'
+                    reporter: 'spec',
+                    require: 'should'
                 },
                 src: ['test/**/*.js']
             }

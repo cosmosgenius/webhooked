@@ -1,10 +1,11 @@
 /*jslint node: true */
-/*global describe, it, before, beforeEach, after, afterEach */
+/*jshint expr: true*/
+/*global describe, it */
 'use strict';
 
 var request = require('supertest'),
-    should  = require('chai').should(),
-    app     = require('../app');
+    app     = require('../app'),
+    should  = require('should');
 
 describe('App', function() {
     it('app should exist', function(){
