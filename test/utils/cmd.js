@@ -3,9 +3,8 @@
 /*global describe, it, before*/
 'use strict';
 
-var cmd     = require('../../app/tasks/cmd'),
-    should  = require('should'),
-    Q       = require('q');
+var cmd     = require('../../app/utils/cmd'),
+    should  = require('should');
 
 describe('cmd', function() {
     it('should exist', function(){
