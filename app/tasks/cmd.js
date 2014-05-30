@@ -4,25 +4,32 @@
 var exec    = require('child_process').exec,
     Q       = require('q');
 
-module.exports = function( command, path ){
+module.exports = function( command ){
     
     if(typeof command !== 'string'){
         throw new TypeError('command should be of type string');
     }
 
-    if(typeof path !== 'string'){
-        throw new TypeError('command should be of type string');
-    }
+    return function( path ){
 
-    return Q.Promise(function(resolve, reject, notify){
+        if( !path ){
+            path = '.';
+        }
 
-        exec(command,function(error){
-            if(error){
-                reject(error);
-            }
-            resolve();
+        if( typeof command !== 'string' ){
+            throw new TypeError('command should be of type string');
+        }
+
+        Q.Promise(function(resolve, reject, notify){
+
+            exec(command,function(error){
+                if(error){
+                    reject(error);
+                }
+                resolve();
+            });
+
+            notify();
         });
-
-        notify();
-    });
+    };
 };
