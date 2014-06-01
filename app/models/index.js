@@ -9,8 +9,8 @@ var sequelize = new Sequelize(config.db, config.dbuser, config.db, {
     port    : config.dbport
 });
 
-module.exports = {
-    models : {
-        project : require('./project')(sequelize)
-    }
+module.exports = sequelize;
+
+module.exports.models = {
+    project : require('./project')(sequelize)
 };
