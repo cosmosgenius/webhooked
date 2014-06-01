@@ -1,4 +1,6 @@
 /*jslint node: true */
+'use strict';
+
 var Sequelize   = require('sequelize'),
     config      = require('../../instance/config');
 
