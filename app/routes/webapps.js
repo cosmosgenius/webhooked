@@ -9,3 +9,7 @@ module.exports = webapps;
 webapps.get('/',function(req, res){
     res.send('hello');
 });
+
+webapps.get('/:app',function(req, res){
+    res.send(req.params);
+});
