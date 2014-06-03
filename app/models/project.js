@@ -1,13 +1,11 @@
 /*jslint node: true */
 'use strict';
 
-var Sequelize   = require('sequelize');
+var Sequelize   = require('sequelize'),
+    sequelize   = require('.');
 
-module.exports = function(sequelize){
+var Project     = sequelize.define('Project',{
+    name: Sequelize.STRING
+});
 
-    var Project = sequelize.define('Project',{
-        name: Sequelize.STRING
-    });
-
-    return Project;
-};
+module.exports  = Project;
