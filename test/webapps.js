@@ -8,13 +8,13 @@ var request = require('supertest'),
     should  = require('should');
 
 describe('App', function() {
-    it('app should exist', function(){
+    it('should exist', function(){
         should.exist(app);
     });
 });
 
 describe('Webapps', function() {
-    it('Webapps should return 200', function(done){
+    it('should return 200', function(done){
         request(app)
             .get('/webapps')
             .expect(200,done);
