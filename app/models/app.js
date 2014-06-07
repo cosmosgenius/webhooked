@@ -4,8 +4,9 @@
 var Sequelize   = require('sequelize'),
     sequelize   = require('./');
 
-var Project     = sequelize.define('Project',{
-    name: Sequelize.STRING
+var App     = sequelize.define('App',{
+    name: Sequelize.STRING,
+    path: Sequelize.STRING,
 });
 
-module.exports  = Project;
+module.exports = App;
