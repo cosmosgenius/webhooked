@@ -6,7 +6,8 @@ var Sequelize   = require('sequelize'),
 
 var sequelize = new Sequelize(config.db, config.dbuser, config.db, {
     dialect : config.dbtype,
-    port    : config.dbport
+    port    : config.dbport,
+    logging : function(){}, 
 });
 
 module.exports = sequelize;
