@@ -11,3 +11,4 @@ var sequelize = new Sequelize(config.db, config.dbuser, config.db, {
 });
 
 module.exports = sequelize;
+module.exports.App = sequelize.import('./app');

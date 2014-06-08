@@ -1,12 +1,9 @@
 /*jslint node: true */
 'use strict';
 
-var Sequelize   = require('sequelize'),
-    sequelize   = require('./');
-
-var App     = sequelize.define('App',{
-    name: Sequelize.STRING,
-    path: Sequelize.STRING,
-});
-
-module.exports = App;
+module.exports = function(sequelize, DataTypes) {
+    return sequelize.define('App', {
+        name: DataTypes.STRING,
+        path: DataTypes.STRING(32000)
+    });
+};
