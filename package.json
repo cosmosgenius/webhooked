@@ -25,11 +25,12 @@
     "grunt-mocha-test": "*"
   },
   "dependencies": {
-    "response-time": "1.x",
-    "morgan": "1.x",
+    "config": "*",
     "express": "4.x",
-    "q": "1.x",
+    "morgan": "1.x",
     "pg": "3.x",
-    "sequelize": "1.x"
+    "q": "1.x",
+    "response-time": "1.x",
+    "sequelize": "2.x"
   }
 }

@@ -2,12 +2,12 @@
 'use strict';
 
 var Sequelize   = require('sequelize'),
-    config      = require('../../instance/config');
+    config      = require('config');
 
 var sequelize = new Sequelize(config.db, config.dbuser, config.db, {
     dialect : config.dbtype,
     port    : config.dbport,
-    logging : function(){}, 
+    //logging : function(){}, 
 });
 
 module.exports = sequelize;

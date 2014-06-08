@@ -2,7 +2,7 @@
 'use strict';
 
 var http        =   require('http'),
-    config      =   require('./instance/config'),
+    config      =   require('config'),
     app         =   require('./app'),
     server      =   http.createServer(app);
 
