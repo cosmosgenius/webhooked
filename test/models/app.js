@@ -3,16 +3,19 @@
 /*global describe, it, before*/
 'use strict';
 
-var App     = require('../../app/models/app'),
+var App     = require('../../app/models').App,
     should  = require('should');
 
 describe('App', function() {
-    before(function(){
+    describe('Object', function() {
+        before(function(done) {
+            App.sync({
+                force: true
+            }).done(done);
+        });
 
-    });
-    
-    it('should exist', function(done) {
-        should.exist(App);
-        App.sync({ force: true }).done(done);
+        it('should exist', function() {
+            should.exist(App);
+        });
     });
 });
