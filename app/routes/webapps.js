@@ -2,7 +2,8 @@
 'use strict';
 
 var express = require('express'),
-    webapps = express.Router();
+    webapps = express.Router(),
+    AppModel = require('../models/app');
 
 module.exports = webapps;
 

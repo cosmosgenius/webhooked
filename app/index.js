@@ -8,7 +8,8 @@ var express         = require('express'),
 var app             = express(),
     env             = process.env.NODE_ENV || 'development';
 
-var webapps         = require('./routes/webapps');
+var webapps         = require('./routes/webapps'),
+    db              = require('./models');
 
 if('production' === env) {
     app.use(logger());
@@ -18,6 +19,8 @@ if('development' === env) {
     app.use(logger('dev'));
     app.use(responseTime());
 }
+
+app.set('db',db);
 
 app.use('/webapps',webapps);
 

@@ -11,4 +11,13 @@ var sequelize = new Sequelize(config.db, config.dbuser, config.db, {
 });
 
 module.exports = sequelize;
-module.exports.App = sequelize.import('./app');
+
+var models = {
+    App : sequelize.import('./app'),
+    Task: sequelize.import('./task')
+};
+
+module.exports.models = models;
+
+models.App.hasMany(models.Task);
+models.Task.belongsTo(models.App);
