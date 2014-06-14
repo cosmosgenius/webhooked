@@ -1,9 +1,32 @@
 /*jslint node: true */
 'use strict';
+var mongoose = require('mongoose');
 
-module.exports = function(sequelize, DataTypes) {
-    return sequelize.define('App', {
-        name: DataTypes.STRING,
-        path: DataTypes.STRING(32000)
-    });
-};
+function minlength(len) {
+    return function(value) {
+        if (value) {
+            return value.length >= len;
+        }
+        return false;
+    };
+}
+
+var appSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true,
+        trim: true,
+        validate: [minlength(2), 'Name cannot be less than 2 characters']
+    },
+    path: {
+        type: String,
+        required: true,
+        trim: true,
+        validate: [minlength(1), 'Name cannot be less than 1 characters']
+    },
+    tasks: [String]
+});
+
+var App = mongoose.model('App', appSchema);
+
+module.exports = App;

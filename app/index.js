@@ -9,19 +9,20 @@ var app             = express(),
     env             = process.env.NODE_ENV || 'development';
 
 var webapps         = require('./routes/webapps'),
-    db              = require('./models');
+    deploy          = require('./routes/deploy'),
+    mongoose        = require('./models');
 
 if('production' === env) {
     app.use(logger());
 }
 
 if('development' === env) {
+    mongoose.set('debug', true);
     app.use(logger('dev'));
     app.use(responseTime());
 }
 
-app.set('db',db);
-
 app.use('/webapps',webapps);
+app.use('/deploy',deploy);
 
 module.exports = app;
