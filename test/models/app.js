@@ -3,7 +3,7 @@
 /*global describe, it, before*/
 'use strict';
 
-var App = require('../../app/models').models.App,
+var App = require('../../app/models').App,
     should = require('should');
 
 describe('App', function() {
