@@ -2,6 +2,6 @@
 var config      = {};
 
 config.port     = 8500;
-config.db       = 'whkd_test';
+config.mongouri = 'mongodb://localhost:27017/webhooked-test';
 
 module.exports  = config;
