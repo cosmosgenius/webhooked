@@ -27,10 +27,9 @@
   "dependencies": {
     "config": "*",
     "express": "4.x",
+    "mongoose": "3.x",
     "morgan": "1.x",
-    "pg": "3.x",
     "q": "1.x",
-    "response-time": "1.x",
-    "sequelize": "2.x"
+    "response-time": "1.x"
   }
 }
