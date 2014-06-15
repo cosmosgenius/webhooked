@@ -79,6 +79,31 @@ describe('App', function() {
         });
     });
 
+    it('should throw error for duplicated name', function(done){
+        var app = new App({
+            name : 'sd',
+            path : 's',
+            tasks : ['a','b']
+        });
+
+        var app1 = new App({
+            name : 'sd',
+            path : 's',
+            tasks : ['a','b']
+        });
+
+        app.save(function(err,app){
+            should.not.exist(err);
+            should.exist(app);
+            app1.save(function(err1,app1){
+                should.not.exist(app1);
+                should.exist(err1);
+                err1.code.should.be.equal(11000);
+                done();
+            });
+        });
+    });
+
     after(function(done) {
         App.remove(done);
     });

@@ -16,6 +16,8 @@ var appSchema = new mongoose.Schema({
         type: String,
         required: true,
         trim: true,
+        index: true,
+        unique : true,
         validate: [minlength(2), 'Name cannot be less than 2 characters']
     },
     path: {
