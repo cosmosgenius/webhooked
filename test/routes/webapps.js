@@ -4,7 +4,7 @@
 'use strict';
 
 var request = require('supertest'),
-    app     = require('../app'),
+    app     = require('../../app'),
     should  = require('should');
 
 describe('App', function() {
