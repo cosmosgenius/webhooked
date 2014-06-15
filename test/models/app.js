@@ -79,7 +79,7 @@ describe('App', function() {
         });
     });
 
-    it('should throw error for duplicated name', function(done){
+    it('should throw error for duplicate name', function(done){
         var app = new App({
             name : 'sd',
             path : 's',
