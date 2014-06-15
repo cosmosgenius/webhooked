@@ -2,24 +2,30 @@
 'use strict';
 
 var express = require('express'),
-    deploy  = express.Router();
+    deploy  = express.Router(),
+    db      = require('../models'),
+    App     = db.App;
 
 module.exports = deploy;
 
 deploy.param('app', function(req, res, next, name){
-    req.appname = name;
-    next();
+    App.findOne({name : name}, function(err, app){
+        req.app = app;
+        next();
+    });
 });
 
 deploy.route('/')
     .get(function(req, res) {
-        res.send('hello');
+        App.find(function(err, app){
+            res.json(app);
+        });
     });
 
 deploy.route('/:app')
     .get(function(req, res) {
-        res.send(req.appname);
-    })
-    .post(function(req, res) {
-        res.send(req.appname);
+        if(!req.app){
+            return res.json(404, {error: 'App doesn\'t exist'});
+        }
+        res.json(req.app);
     });
