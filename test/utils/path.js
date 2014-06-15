@@ -3,35 +3,35 @@
 /*global describe, it, before*/
 'use strict';
 
-var task = require('../../app/utils/task'),
+var path = require('../../app/utils/path'),
     should = require('should');
 
-describe('task', function() {
+describe('path', function() {
     it('should exist', function() {
-        should.exist(task);
+        should.exist(path);
     });
 
     it('should return a function', function() {
-        task('.').should.be.a.Function;
+        path('.').should.be.a.Function;
     });
 
     it('should return a function if parameter is null', function() {
-        task().should.be.a.Function;
+        path().should.be.a.Function;
     });
 
     it('should throw type error if parameter is object or function', function() {
-        task.bind(null, {}).should.throw(TypeError);
+        path.bind(null, {}).should.throw(TypeError);
     });
 
     it('should throw type error if parameter function', function() {
-        task.bind(null, function() {}).should.throw(TypeError);
+        path.bind(null, function() {}).should.throw(TypeError);
     });
 });
 
-describe('task current', function() {
+describe('path current', function() {
     var current;
     before(function() {
-        current = task('.');
+        current = path('.');
     });
 
     it('should return a promise', function() {
