@@ -3,6 +3,7 @@
 
 var express = require('express'),
     Q = require('q'),
+    ent = require('ent'),
     deploy = express.Router(),
     path = require('../utils/path'),
     db = require('../models'),
@@ -49,7 +50,7 @@ deploy.route('/:app')
                 response += result;
             });
 
-            res.json({result:response});
+            res.json({result:ent.encode(response)});
 
         }).fail(function(err) {
 

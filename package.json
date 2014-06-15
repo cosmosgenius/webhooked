@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "config": "*",
+    "ent": "2.x",
     "express": "4.x",
     "mongoose": "3.x",
     "morgan": "1.x",
