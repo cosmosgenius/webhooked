@@ -1,14 +1,7 @@
 language: node_js
 node_js:
-    - '0.10'
+    - "0.10"
 before_install: npm install -g grunt-cli
 install: npm install
 services:
     - mongodb
-deploy:
-  provider: releases
-  file: Gruntfile.js
-  on:
-    tags: true
-  api-key:
-    secure: gAI+73mjW1qAJHVmylo354iGw2QxnhgeD0cbCQUVAdU3Wuw49vF4Ou565RzFk1I706W6ooet6TPzlH8HN4DiVce2toLaPnCwklBMqBYFoPowcO2LEorpXuZxkrmlUZii4XfwCqMFef9XKxnVVh19s7y3cpIOi9MKH5T1dP0trlM=
