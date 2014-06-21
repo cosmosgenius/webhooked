@@ -7,7 +7,7 @@ services:
     - mongodb
 deploy:
   provider: releases
-  file: t.rar
+  file: Gruntfile.js
   on:
     tags: true
   api-key:
