@@ -7,7 +7,7 @@ var should = require('should'),
     db = require('../../app/models'),
     App = db.App;
 
-describe('App', function() {
+describe('Model App', function() {
     before(function(done) {
         App.remove(done);
     });
