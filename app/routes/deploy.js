@@ -28,7 +28,7 @@ deploy.route('/')
     });
 
 deploy.route('/:app')
-    .get(function(req, res) {
+    .post(function(req, res) {
         if (!req.app) {
             return res.json(404, {
                 error: 'App doesn\'t exist'
