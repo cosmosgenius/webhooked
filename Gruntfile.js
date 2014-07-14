@@ -42,7 +42,7 @@ module.exports = function(grunt) {
         },
         watch: {
             express: {
-                files: ['**/*.js'],
+                files: ['**/*.js','!**/node_modules/**'],
                 tasks: ['express:dev'],
                 options: {
                     nospawn: true //Without this option specified express won't be reloaded
