@@ -1,20 +1,76 @@
 /*jslint node: true */
 /*jshint expr: true*/
-/*global describe, it */
+/*global describe, it, before */
 'use strict';
 
 var request = require('supertest'),
-    app     = require('../../app'),
-    should  = require('should');
+    app = require('../../app'),
+    should = require('should'),
+    db = require('../../app/models'),
+    ModelApp = db.App;
 
 describe('Webapps', function() {
-    it('should exist', function(){
-        should.exist(app);
+    describe('app', function() {
+        it('should exist', function() {
+            should.exist(app);
+        });
     });
 
-    it('get should return 200', function(done){
-        request(app)
-            .get('/webapps')
-            .expect(200,done);
+    describe('get', function() {
+        before(function(done) {
+            ModelApp.remove(done);
+        });
+
+        it('should return 200 and should be empty', function(done) {
+            request(app)
+                .get('/webapps')
+                .expect(200)
+                .end(function(err, res) {
+                    res.body.should.be.an.instanceOf(Array);
+                    res.body.should.have.length(0);
+                    done(err);
+                });
+        });
+
+        it('should return 200 with 1 object', function(done) {
+            var app1 = new ModelApp({
+                name: 'test',
+                path: 'test',
+                tasks: ['a', 'b']
+            });
+
+            app1.save(function(err, app_1) {
+                if (err) {
+                    done(err);
+                }
+                request(app)
+                    .get('/deploy')
+                    .expect(200)
+                    .end(function(err, res) {
+                        res.body.should.be.an.instanceOf(Array);
+                        res.body.should.have.length(1);
+                        var app_res = res.body[0];
+                        app_res._id.should.be.equal(app_1._id + '');
+                        ModelApp.remove(done);
+                    });
+            });
+        });
+    });
+
+    describe('post', function() {
+        before(function(done) {
+            ModelApp.remove(done);
+        });
+
+        it('should return 201 and should add the add to db', function(done) {
+            request(app)
+                .get('/webapps')
+                .expect(200)
+                .end(function(err, res) {
+                    res.body.should.be.an.instanceOf(Array);
+                    res.body.should.have.length(0);
+                    done(err);
+                });
+        });
     });
 });
