@@ -67,9 +67,36 @@ describe('Webapps', function() {
                 .get('/webapps')
                 .expect(200)
                 .end(function(err, res) {
+                    if (err) {
+                        done(err);
+                        return;
+                    }
                     res.body.should.be.an.instanceOf(Array);
                     res.body.should.have.length(0);
-                    done(err);
+                    request(app)
+                        .post('/webapps')
+                        .send({
+                            name: 'test',
+                            path: 'test',
+                            tasks: ['a', 'b']
+                        })
+                        .expect(201)
+                        .end(function(err, res) {
+                            if (err) {
+                                done(err);
+                                return;
+                            }
+                            var postres = res.body;
+                            request(app)
+                                .get('/webapps')
+                                .expect(200)
+                                .end(function(err, res) {
+                                    res.body.should.be.an.instanceOf(Array);
+                                    res.body.should.have.length(1);
+                                    postres._id.should.be.equal(res.body[0]._id);
+                                    done(err);
+                                });
+                        });
                 });
         });
     });
