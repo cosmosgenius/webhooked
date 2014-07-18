@@ -99,5 +99,49 @@ describe('Webapps', function() {
                         });
                 });
         });
+
+        it('should return 400 for type text/html', function(done) {
+            request(app)
+                .post('/webapps')
+                .set('Content-Type', 'text/html')
+                .send({
+                    name: 'test',
+                    path: 'test',
+                    tasks: ['a', 'b']
+                }.toString())
+                .expect(400)
+                .end(function(err, res) {
+                    res.body.should.eql({error: 'Type should be json'});
+                    done(err);
+                });
+        });
+
+        it('should return 400 for type application/x-www-form-urlencoded', function(done) {
+            request(app)
+                .post('/webapps')
+                .set('Content-Type', 'text/html')
+                .send({
+                    name: 'test',
+                    path: 'test',
+                    tasks: ['a', 'b']
+                }.toString())
+                .expect(400)
+                .end(function(err, res) {
+                    res.body.should.eql({error: 'Type should be json'});
+                    done(err);
+                });
+        });
+
+        it('should return 400 for type empty', function(done) {
+            request(app)
+                .post('/webapps')
+                .set('Content-Type', 'application/json')
+                .send()
+                .expect(400)
+                .end(function(err, res) {
+                    res.body.should.eql({error: 'Request cannot be empty'});
+                    done(err);
+                });
+        });
     });
 });
