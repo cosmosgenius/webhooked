@@ -62,7 +62,7 @@ describe('Webapps', function() {
             ModelApp.remove(done);
         });
 
-        it('should return 201 and should add the add to db', function(done) {
+        it('should return 201 and should add the to db', function(done) {
             request(app)
                 .get('/webapps')
                 .expect(200)
