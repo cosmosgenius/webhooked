@@ -152,4 +152,14 @@ describe('/webapps', function() {
                 });
         });
     });
+
+    describe('put', function() {
+        it('should return 405', function(done) {
+            request(app)
+                .put('/webapps')
+                .set('Content-Type', 'application/json')
+                .send()
+                .expect(405,done);
+        });
+    });
 });
