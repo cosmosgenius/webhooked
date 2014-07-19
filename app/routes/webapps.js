@@ -61,6 +61,9 @@ webapps.route('/')
     })
     .put(function(req, res){
         return res.send(405);
+    })
+    .delete(function(req, res){
+        return res.send(405);
     });
 
 webapps.param('app', function(req, res, next, name) {
