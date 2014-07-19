@@ -55,6 +55,7 @@ webapps.route('/')
                     error: 'Invalid POST request.'
                 });
             }
+            res.location(app.name);
             return res.json(201, app);
         });
     });
