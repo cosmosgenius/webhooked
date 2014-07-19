@@ -9,13 +9,15 @@ var request = require('supertest'),
     db = require('../../app/models'),
     ModelApp = db.App;
 
-describe('Webapps', function() {
+describe('/webapps', function() {
     describe('app', function() {
         it('should exist', function() {
             should.exist(app);
         });
     });
+});
 
+describe('/webapps', function() {
     describe('get', function() {
         before(function(done) {
             ModelApp.remove(done);
@@ -44,7 +46,7 @@ describe('Webapps', function() {
                     done(err);
                 }
                 request(app)
-                    .get('/deploy')
+                    .get('/webapps')
                     .expect(200)
                     .end(function(err, res) {
                         res.body.should.be.an.instanceOf(Array);
@@ -111,7 +113,9 @@ describe('Webapps', function() {
                 }.toString())
                 .expect(400)
                 .end(function(err, res) {
-                    res.body.should.eql({error: 'Type should be json'});
+                    res.body.should.eql({
+                        error: 'Type should be json'
+                    });
                     done(err);
                 });
         });
@@ -127,7 +131,9 @@ describe('Webapps', function() {
                 }.toString())
                 .expect(400)
                 .end(function(err, res) {
-                    res.body.should.eql({error: 'Type should be json'});
+                    res.body.should.eql({
+                        error: 'Type should be json'
+                    });
                     done(err);
                 });
         });
@@ -139,7 +145,9 @@ describe('Webapps', function() {
                 .send()
                 .expect(400)
                 .end(function(err, res) {
-                    res.body.should.eql({error: 'Request cannot be empty'});
+                    res.body.should.eql({
+                        error: 'Request cannot be empty'
+                    });
                     done(err);
                 });
         });
