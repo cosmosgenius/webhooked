@@ -58,6 +58,9 @@ webapps.route('/')
             res.location(app.name);
             return res.json(201, app);
         });
+    })
+    .put(function(req, res){
+        return res.send(405);
     });
 
 webapps.param('app', function(req, res, next, name) {
@@ -92,4 +95,7 @@ webapps.route('/:app')
             return res.send(204);
         });
 
+    })
+    .post(function(req, res){
+        return res.send(405);
     });
