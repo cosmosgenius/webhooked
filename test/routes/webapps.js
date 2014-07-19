@@ -174,3 +174,39 @@ describe('/webapps', function() {
     });
 });
 
+describe('/webapps/:app', function() {
+
+    describe('get', function() {
+        before(function(done) {
+            ModelApp.remove(done);
+        });
+        it('should return 404 when app doesn\'t exist');
+        it('should return the app');   
+    });
+
+    describe('put', function() {
+        before(function(done) {
+            ModelApp.remove(done);
+        });
+        it('should return 404 when app doesn\'t exist');
+        it('should return the updated app by updating the app in DB');
+        it('should return 400 with error msg for invalid request');
+        it('should return 400 with error msg for invalid type');
+    });
+
+    describe('delete', function() {
+        before(function(done) {
+            ModelApp.remove(done);
+        });
+        it('should return 404 when app doesn\'t exist');
+        it('should return 204 and remove it from db');
+    });
+
+    describe('post', function() {
+        before(function(done) {
+            ModelApp.remove(done);
+        });
+        it('should return 404 when app doesn\'t exist');
+        it('should return 405 when app exist');
+    });
+});
