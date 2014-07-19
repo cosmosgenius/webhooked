@@ -162,4 +162,15 @@ describe('/webapps', function() {
                 .expect(405,done);
         });
     });
+
+    describe('delete', function() {
+        it('should return 405', function(done) {
+            request(app)
+                .delete('/webapps')
+                .set('Content-Type', 'application/json')
+                .send()
+                .expect(405,done);
+        });
+    });
 });
+
