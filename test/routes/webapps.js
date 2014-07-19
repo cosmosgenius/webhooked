@@ -123,12 +123,12 @@ describe('/webapps', function() {
         it('should return 400 for type application/x-www-form-urlencoded', function(done) {
             request(app)
                 .post('/webapps')
-                .set('Content-Type', 'text/html')
+                .set('Content-Type', 'application/x-www-form-urlencoded')
                 .send({
                     name: 'test',
                     path: 'test',
                     tasks: ['a', 'b']
-                }.toString())
+                })
                 .expect(400)
                 .end(function(err, res) {
                     res.body.should.eql({
