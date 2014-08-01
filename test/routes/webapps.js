@@ -9,6 +9,7 @@ var request = require('supertest'),
     db = require('../../app/models'),
     ModelApp = db.App;
 
+request = request(app);
 describe('/webapps', function() {
     describe('app', function() {
         it('should exist', function() {
@@ -24,7 +25,7 @@ describe('/webapps', function() {
         });
 
         it('should return 200 and should be empty', function(done) {
-            request(app)
+            request
                 .get('/webapps')
                 .expect(200)
                 .end(function(err, res) {
@@ -45,7 +46,7 @@ describe('/webapps', function() {
                 if (err) {
                     done(err);
                 }
-                request(app)
+                request
                     .get('/webapps')
                     .expect(200)
                     .end(function(err, res) {
@@ -65,7 +66,7 @@ describe('/webapps', function() {
         });
 
         it('should return 201 and should add the to db', function(done) {
-            request(app)
+            request
                 .get('/webapps')
                 .expect(200)
                 .end(function(err, res) {
@@ -75,7 +76,7 @@ describe('/webapps', function() {
                     }
                     res.body.should.be.an.instanceOf(Array);
                     res.body.should.have.length(0);
-                    request(app)
+                    request
                         .post('/webapps')
                         .send({
                             name: 'test',
@@ -89,7 +90,7 @@ describe('/webapps', function() {
                                 return;
                             }
                             var postres = res.body;
-                            request(app)
+                            request
                                 .get('/webapps')
                                 .expect(200)
                                 .end(function(err, res) {
@@ -103,7 +104,7 @@ describe('/webapps', function() {
         });
 
         it('should return 400 for type text/html', function(done) {
-            request(app)
+            request
                 .post('/webapps')
                 .set('Content-Type', 'text/html')
                 .send({
@@ -121,7 +122,7 @@ describe('/webapps', function() {
         });
 
         it('should return 400 for type application/x-www-form-urlencoded', function(done) {
-            request(app)
+            request
                 .post('/webapps')
                 .set('Content-Type', 'application/x-www-form-urlencoded')
                 .send({
@@ -139,7 +140,7 @@ describe('/webapps', function() {
         });
 
         it('should return 400 for type empty', function(done) {
-            request(app)
+            request
                 .post('/webapps')
                 .set('Content-Type', 'application/json')
                 .send()
@@ -155,7 +156,7 @@ describe('/webapps', function() {
 
     describe('put', function() {
         it('should return 405', function(done) {
-            request(app)
+            request
                 .put('/webapps')
                 .set('Content-Type', 'application/json')
                 .send()
@@ -165,7 +166,7 @@ describe('/webapps', function() {
 
     describe('delete', function() {
         it('should return 405', function(done) {
-            request(app)
+            request
                 .delete('/webapps')
                 .set('Content-Type', 'application/json')
                 .send()

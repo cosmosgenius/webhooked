@@ -9,6 +9,8 @@ var request = require('supertest'),
     db = require('../../app/models'),
     ModelApp = db.App;
 
+request = request(app);
+
 describe('deploy', function() {
     describe('app', function() {
         it('should exist', function() {
@@ -22,7 +24,7 @@ describe('deploy', function() {
         });
 
         it('should return 200 with empty array', function(done) {
-            request(app)
+            request
                 .get('/deploy')
                 .expect(200)
                 .end(function(err, res) {
@@ -43,7 +45,7 @@ describe('deploy', function() {
                 if (err) {
                     done(err);
                 }
-                request(app)
+                request
                     .get('/deploy')
                     .expect(200)
                     .end(function(err, res) {
