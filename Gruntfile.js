@@ -35,7 +35,21 @@ module.exports = function(grunt) {
                     ignoreLeaks: false,
                     ui: 'bdd',
                     reporter: 'spec',
-                    require: 'should'
+                    require: ['should', 'coverage/blanket']
+                },
+                src: ['test/**/*.js']
+            },
+            'html-cov': {
+                options: {
+                    reporter: 'html-cov',
+                    quiet: true,
+                    captureFile: 'coverage.html'
+                },
+                src: ['test/**/*.js']
+            },
+            'travis-cov': {
+                options: {
+                    reporter: 'travis-cov'
                 },
                 src: ['test/**/*.js']
             }
