@@ -53,3 +53,28 @@ describe('path current', function() {
         current.bind(null, function() {}).should.throw(TypeError);
     });
 });
+
+describe('path resolve/reject', function() {
+    var current;
+    before(function() {
+        current = path('.');
+    });
+
+    it('should resolve when command is successfull', function(done){
+        current('dir').then(function(){
+            done();  
+        }).fail(done);
+    });
+
+    it('should reject when command is not successfull', function(done){
+        current('1234')
+            .then(done)
+            .fail(function(err){
+                if(err) {
+                    done();
+                } else {
+                    done(false);
+                }
+            });
+    });
+});
