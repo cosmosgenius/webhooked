@@ -20,13 +20,13 @@ webapps.route('/')
     .post(function(req, res) {
         var JSONobj, newApp;
         if (!req.is('json')) {
-            return res.json(400, {
+            return res.status(400).json({
                 error: 'Type should be json'
             });
         }
 
         if (!req.body) {
-            return res.json(400, {
+            return res.status(400).json({
                 error: 'Request cannot be empty'
             });
         }
@@ -34,7 +34,7 @@ webapps.route('/')
         try {
             JSONobj = JSON.parse(req.body);
         } catch (e) {
-            return res.json(400, {
+            return res.status(400).json({
                 error: 'Invalid POST request.'
             });
         }
@@ -42,19 +42,19 @@ webapps.route('/')
         newApp.save(function(err, app) {
             if (err) {
                 //console.log(err);
-                return res.json(400, {
+                return res.status(400).json({
                     error: 'Invalid POST request.'
                 });
             }
             res.location(app.name);
-            return res.json(201, app);
+            return res.status(201).json(app);
         });
     })
     .put(function(req, res){
-        return res.send(405);
+        return res.status(405).end();
     })
     .delete(function(req, res){
-        return res.send(405);
+        return res.status(405).end();
     });
 
 webapps.param('app', function(req, res, next, name) {
@@ -69,7 +69,7 @@ webapps.param('app', function(req, res, next, name) {
 webapps.route('/:app')
     .all(function(req, res, next) {
         if (!req.app) {
-            return res.json(404, {
+            return res.status(404).json({
                 error: 'App doesn\'t exist'
             });
         }
@@ -86,10 +86,10 @@ webapps.route('/:app')
             if (err) {
                 res.json(err);
             }
-            return res.send(204);
+            return res.status(204).end();
         });
 
     })
     .post(function(req, res){
-        return res.send(405);
+        return res.status(405).end();
     });
