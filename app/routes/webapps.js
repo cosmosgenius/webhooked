@@ -2,6 +2,7 @@
 'use strict';
 
 var express = require('express'),
+    rawBody = require('simple-rawbody'),
     webapps = express.Router();
 
 var db = require('../models'),
@@ -15,17 +16,7 @@ webapps.route('/')
             res.json(app);
         });
     })
-    .post(function(req, res, next) {
-        var data = '';
-        req.setEncoding('utf8');
-        req.on('data', function(chunk) {
-            data += chunk;
-        });
-        req.on('end', function() {
-            req.rawBody = data;
-            next();
-        });
-    })
+    .post(rawBody())
     .post(function(req, res) {
         var JSONobj, newApp;
         if (!req.is('json')) {
