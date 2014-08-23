@@ -38,6 +38,7 @@
     "mongoose": "3.8.x",
     "morgan": "1.x",
     "q": "1.x",
-    "response-time": "1.x"
+    "response-time": "1.x",
+    "simple-rawbody": "0.0.x"
   }
 }
