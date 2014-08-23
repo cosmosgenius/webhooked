@@ -2,7 +2,7 @@
 'use strict';
 
 var express = require('express'),
-    rawBody = require('simple-rawbody'),
+    bodyparser = require('simple-bodyparser'),
     webapps = express.Router();
 
 var db = require('../models'),
@@ -16,7 +16,7 @@ webapps.route('/')
             res.json(app);
         });
     })
-    .post(rawBody())
+    .post(bodyparser())
     .post(function(req, res) {
         var JSONobj, newApp;
         if (!req.is('json')) {
@@ -25,14 +25,14 @@ webapps.route('/')
             });
         }
 
-        if (!req.rawBody) {
+        if (!req.body) {
             return res.json(400, {
                 error: 'Request cannot be empty'
             });
         }
 
         try {
-            JSONobj = JSON.parse(req.rawBody);
+            JSONobj = JSON.parse(req.body);
         } catch (e) {
             return res.json(400, {
                 error: 'Invalid POST request.'

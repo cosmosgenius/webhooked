@@ -39,6 +39,6 @@
     "morgan": "1.x",
     "q": "1.x",
     "response-time": "1.x",
-    "simple-rawbody": "0.0.x"
+    "simple-bodyparser": "0.0.x"
   }
 }
