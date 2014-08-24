@@ -19,7 +19,7 @@ if('production' === env) {
 if('development' === env) {
     mongoose.set('debug', true);
     app.use(logger('dev'));
-    app.use(responseTime());
+    app.use(responseTime(5));
 }
 
 app.use('/webapps',webapps);

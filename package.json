@@ -39,7 +39,7 @@
     "mongoose": "3.8.x",
     "morgan": "1.x",
     "q": "1.x",
-    "response-time": "1.x",
+    "response-time": "2.x",
     "simple-bodyparser": "0.0.x"
   }
 }
