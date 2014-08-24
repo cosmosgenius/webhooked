@@ -8,7 +8,7 @@
   },
   "config": {
     "travis-cov": {
-      "threshold": 60
+      "threshold": 66
     }
   },
   "repository": {
@@ -36,6 +36,7 @@
     "config": "*",
     "ent": "2.x",
     "express": "4.x",
+    "jsonparser": "0.1.x",
     "mongoose": "3.8.x",
     "morgan": "1.x",
     "q": "1.x",

@@ -103,25 +103,21 @@ describe('/webapps', function() {
                 });
         });
 
-        it('should return 400 for type text/html', function(done) {
+        it('should return 400 for invalid post', function(done) {
             request
                 .post('/webapps')
-                .set('Content-Type', 'text/html')
+                .set('Content-Type', 'application/json')
                 .send({
-                    name: 'test',
-                    path: 'test',
                     tasks: ['a', 'b']
-                }.toString())
+                })
                 .expect(400)
                 .end(function(err, res) {
-                    res.body.should.eql({
-                        error: 'Type should be json'
-                    });
+                    should.exist(res.body.message);
                     done(err);
                 });
         });
 
-        it('should return 400 for type application/x-www-form-urlencoded', function(done) {
+        it('should return 415 for type which is not json', function(done) {
             request
                 .post('/webapps')
                 .set('Content-Type', 'application/x-www-form-urlencoded')
@@ -130,25 +126,9 @@ describe('/webapps', function() {
                     path: 'test',
                     tasks: ['a', 'b']
                 })
-                .expect(400)
+                .expect(415)
                 .end(function(err, res) {
-                    res.body.should.eql({
-                        error: 'Type should be json'
-                    });
-                    done(err);
-                });
-        });
-
-        it('should return 400 for type empty', function(done) {
-            request
-                .post('/webapps')
-                .set('Content-Type', 'application/json')
-                .send()
-                .expect(400)
-                .end(function(err, res) {
-                    res.body.should.eql({
-                        error: 'Request cannot be empty'
-                    });
+                    should.exist(res.body.message);
                     done(err);
                 });
         });

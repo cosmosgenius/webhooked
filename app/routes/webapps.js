@@ -3,6 +3,7 @@
 
 var express = require('express'),
     bodyparser = require('simple-bodyparser'),
+    jsonparser = require('jsonparser'),
     webapps = express.Router();
 
 var db = require('../models'),
@@ -17,33 +18,14 @@ webapps.route('/')
         });
     })
     .post(bodyparser())
+    .post(jsonparser({strict: true}))
     .post(function(req, res) {
-        var JSONobj, newApp;
-        if (!req.is('json')) {
-            return res.status(400).json({
-                error: 'Type should be json'
-            });
-        }
-
-        if (!req.body) {
-            return res.status(400).json({
-                error: 'Request cannot be empty'
-            });
-        }
-
-        try {
-            JSONobj = JSON.parse(req.body);
-        } catch (e) {
-            return res.status(400).json({
-                error: 'Invalid POST request.'
-            });
-        }
-        newApp = new App(JSONobj);
+        var newApp = new App(req.json);
         newApp.save(function(err, app) {
             if (err) {
                 //console.log(err);
                 return res.status(400).json({
-                    error: 'Invalid POST request.'
+                    message: 'Invalid POST request.'
                 });
             }
             res.location(app.name);
@@ -55,6 +37,14 @@ webapps.route('/')
     })
     .delete(function(req, res){
         return res.status(405).end();
+    })
+    .all(function(err, req, res, next){
+        if(err){
+            res.status(err.status).json({
+                message:err.message
+            });
+        }
+        next();
     });
 
 webapps.param('app', function(req, res, next, name) {
@@ -70,7 +60,7 @@ webapps.route('/:app')
     .all(function(req, res, next) {
         if (!req.app) {
             return res.status(404).json({
-                error: 'App doesn\'t exist'
+                message: 'App doesn\'t exist'
             });
         }
         next();
