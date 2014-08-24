@@ -28,6 +28,7 @@
     "grunt-contrib-watch": "*",
     "supertest": "*",
     "mocha": "*",
+    "mocha-lcov-reporter": "*",
     "grunt-mocha-test": "*",
     "travis-cov": "*"
   },
