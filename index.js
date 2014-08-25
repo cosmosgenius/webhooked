@@ -1,10 +1,24 @@
 /*jslint node: true */
 'use strict';
 
-var http    = require('http'),
-    config  = require('config'),
-    app     = require('./app'),
-    server  = http.createServer(app);
+var http            = require('http'),
+    config          = require('config'),
+    app             = require('./app'),
+    logger          = require('morgan'),
+    responseTime    = require('response-time'),
+    server          = http.createServer(app),
+    mongoose        = require('mongoose'),
+    env             = process.env.NODE_ENV || 'development';
+
+if('production' === env) {
+    app.use(logger());
+}
+
+if('development' === env) {
+    mongoose.set('debug', true);
+    app.use(logger('dev'));
+    app.use(responseTime(5));
+}
 
 server.listen(config.port, function(err) {
     if (err) {
