@@ -1,7 +1,6 @@
-/*jslint node: true */
 'use strict';
-var mongoose = require('mongoose'),
-    q = require('q');
+
+var mongoose = require('mongoose');
 
 function minlength(len) {
     return function(value) {
@@ -31,5 +30,4 @@ var appSchema = new mongoose.Schema({
 });
 
 var AppModel = mongoose.model('App', appSchema);
-
 module.exports = AppModel;
