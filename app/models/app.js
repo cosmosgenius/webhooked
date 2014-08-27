@@ -1,5 +1,5 @@
-/*jslint node: true */
 'use strict';
+
 var mongoose = require('mongoose');
 
 function minlength(len) {
@@ -29,6 +29,5 @@ var appSchema = new mongoose.Schema({
     tasks: [String]
 });
 
-var App = mongoose.model('App', appSchema);
-
-module.exports = App;
+var AppModel = mongoose.model('App', appSchema);
+module.exports = AppModel;

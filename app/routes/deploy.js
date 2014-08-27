@@ -1,8 +1,7 @@
-/*jslint node: true */
 'use strict';
 
 var express = require('express'),
-    Q = require('q'),
+    q = require('q'),
     ent = require('ent'),
     deploy = express.Router(),
     path = require('../utils/path'),
@@ -43,7 +42,7 @@ deploy.route('/:app')
             taskPromise.push(execute(task));
         });
 
-        Q.all(taskPromise).then(function(results) {
+        q.all(taskPromise).then(function(results) {
             var response = '';
             
             results.forEach(function(result) {

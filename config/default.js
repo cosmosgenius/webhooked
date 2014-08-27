@@ -1,4 +1,4 @@
-/*jslint node: true */
+'use strict';
 var config      = {};
 
 
