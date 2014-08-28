@@ -1,16 +1,16 @@
-'use strict';
+"use strict";
 
-var express = require('express'),
-    bodyparser = require('simple-bodyparser'),
-    jsonparser = require('jsonparser'),
+var express = require("express"),
+    bodyparser = require("simple-bodyparser"),
+    jsonparser = require("jsonparser"),
     webapps = express.Router();
 
-var db = require('../models'),
+var db = require("../models"),
     App = db.App;
 
 module.exports = webapps;
 
-webapps.route('/')
+webapps.route("/")
     .get(function(req, res) {
         App.find(function(err, app) {
             res.json(app);
@@ -27,7 +27,7 @@ webapps.route('/')
             if (err) {
                 //console.log(err);
                 return res.status(400).json({
-                    message: 'Invalid POST request.'
+                    message: "Invalid POST request."
                 });
             }
             res.location(app.name);
@@ -49,7 +49,7 @@ webapps.route('/')
         next();
     });
 
-webapps.param('app', function(req, res, next, name) {
+webapps.param("app", function(req, res, next, name) {
     App.findOne({
         name: name
     }, function(err, app) {
@@ -58,11 +58,11 @@ webapps.param('app', function(req, res, next, name) {
     });
 });
 
-webapps.route('/:app')
+webapps.route("/:app")
     .all(function(req, res, next) {
         if (!req.app) {
             return res.status(404).json({
-                message: 'App doesn\'t exist'
+                message: "App doesn't exist"
             });
         }
         next();

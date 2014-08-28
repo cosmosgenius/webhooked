@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
-var mongoose    = require('mongoose');
-var config      = require('config');
+var mongoose    = require("mongoose");
+var config      = require("config");
 
 mongoose.connect(config.mongouri);
 module.exports = mongoose;
-module.exports.App = require('./app');
+module.exports.App = require("./app");

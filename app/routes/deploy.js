@@ -1,16 +1,16 @@
-'use strict';
+"use strict";
 
-var express = require('express'),
-    q = require('q'),
-    ent = require('ent'),
+var express = require("express"),
+    q = require("q"),
+    ent = require("ent"),
     deploy = express.Router(),
-    path = require('../utils/path'),
-    db = require('../models'),
+    path = require("../utils/path"),
+    db = require("../models"),
     App = db.App;
 
 module.exports = deploy;
 
-deploy.param('app', function(req, res, next, name) {
+deploy.param("app", function(req, res, next, name) {
     App.findOne({
         name: name
     }, function(err, app) {
@@ -19,18 +19,18 @@ deploy.param('app', function(req, res, next, name) {
     });
 });
 
-deploy.route('/')
+deploy.route("/")
     .get(function(req, res) {
         App.find(function(err, app) {
             res.json(app);
         });
     });
 
-deploy.route('/:app')
+deploy.route("/:app")
     .post(function(req, res) {
         if (!req.app) {
             return res.json(404, {
-                error: 'App doesn\'t exist'
+                error: "App doesn't exist"
             });
         }
 
@@ -43,7 +43,7 @@ deploy.route('/:app')
         });
 
         q.all(taskPromise).then(function(results) {
-            var response = '';
+            var response = "";
             
             results.forEach(function(result) {
                 response += result;

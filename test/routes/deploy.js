@@ -1,31 +1,31 @@
 /*jslint node: true */
 /*jshint expr: true*/
 /*global describe, it, before */
-'use strict';
+"use strict";
 
-var request = require('supertest'),
-    app = require('../../app'),
-    should = require('should'),
-    db = require('../../app/models'),
+var request = require("supertest"),
+    app = require("../../app"),
+    should = require("should"),
+    db = require("../../app/models"),
     ModelApp = db.App;
 
 request = request(app);
 
-describe('deploy', function() {
-    describe('app', function() {
-        it('should exist', function() {
+describe("deploy", function() {
+    describe("app", function() {
+        it("should exist", function() {
             should.exist(app);
         });
     });
 
-    describe('get', function() {
+    describe("get", function() {
         before(function(done) {
             ModelApp.remove(done);
         });
 
-        it('should return 200 with empty array', function(done) {
+        it("should return 200 with empty array", function(done) {
             request
-                .get('/deploy')
+                .get("/deploy")
                 .expect(200)
                 .end(function(err, res) {
                     res.body.should.be.an.instanceOf(Array);
@@ -34,11 +34,11 @@ describe('deploy', function() {
                 });
         });
 
-        it('should return 200 with 1 object', function(done) {
+        it("should return 200 with 1 object", function(done) {
             var app1 = new ModelApp({
-                name: 'test',
-                path: 'test',
-                tasks: ['a', 'b']
+                name: "test",
+                path: "test",
+                tasks: ["a", "b"]
             });
 
             app1.save(function(err, app_1) {
@@ -46,13 +46,13 @@ describe('deploy', function() {
                     done(err);
                 }
                 request
-                    .get('/deploy')
+                    .get("/deploy")
                     .expect(200)
                     .end(function(err, res) {
                         res.body.should.be.an.instanceOf(Array);
                         res.body.should.have.length(1);
                         var app_res = res.body[0];
-                        app_res._id.should.be.equal(app_1._id+'');
+                        app_res._id.should.be.equal(app_1._id+"");
                         ModelApp.remove(done);
                     });
             });
