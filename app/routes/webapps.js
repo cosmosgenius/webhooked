@@ -17,7 +17,10 @@ webapps.route('/')
         });
     })
     .post(bodyparser())
-    .post(jsonparser({strict: true}))
+    .post(jsonparser({
+        strict: true,
+        bodyCheck : true
+    }))
     .post(function(req, res) {
         var newApp = new App(req.json);
         newApp.save(function(err, app) {

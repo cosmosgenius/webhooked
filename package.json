@@ -36,7 +36,7 @@
     "config": "*",
     "ent": "2.x",
     "express": "4.x",
-    "jsonparser": "0.1.x",
+    "jsonparser": "0.2.x",
     "mongoose": "3.8.x",
     "morgan": "1.x",
     "q": "1.x",
