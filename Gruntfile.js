@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 module.exports = function(grunt) {
     // Project configuration.
@@ -9,76 +9,76 @@ module.exports = function(grunt) {
             },
             dev: {
                 options: {
-                    script: 'index.js',
+                    script: "index.js",
                     debug: true
                 }
             },
             prod: {
                 options: {
-                    script: 'index.js',
-                    node_env: 'production'
+                    script: "index.js",
+                    node_env: "production"
                 }
             },
             test: {
                 options: {
-                    script: 'index.js',
-                    node_env: 'test'
+                    script: "index.js",
+                    node_env: "test"
                 }
             }
         },
         mochaTest: {
             test: {
                 options: {
-                    globals: ['should'],
+                    globals: ["should"],
                     timeout: 10000,
                     ignoreLeaks: false,
-                    ui: 'bdd',
-                    reporter: 'spec',
-                    require: ['should', 'coverage/blanket']
+                    ui: "bdd",
+                    reporter: "spec",
+                    require: ["should", "coverage/blanket"]
                 },
-                src: ['test/**/*.js']
+                src: ["test/**/*.js"]
             },
-            'html-cov': {
+            "html-cov": {
                 options: {
-                    reporter: 'html-cov',
+                    reporter: "html-cov",
                     quiet: true,
-                    captureFile: 'coverage.html'
+                    captureFile: "coverage.html"
                 },
-                src: ['test/**/*.js']
+                src: ["test/**/*.js"]
             },
-            'travis-cov': {
+            "travis-cov": {
                 options: {
-                    reporter: 'travis-cov'
+                    reporter: "travis-cov"
                 },
-                src: ['test/**/*.js']
+                src: ["test/**/*.js"]
             },
-            'lcov': {
+            "lcov": {
                 options:  {
-                    reporter: 'mocha-lcov-reporter',
+                    reporter: "mocha-lcov-reporter",
                     quiet: true,
-                    captureFile: 'lcov.info'
+                    captureFile: "lcov.info"
                 },
-                src: ['test/**/*.js']
+                src: ["test/**/*.js"]
             }
         },
         watch: {
             express: {
-                files: ['**/*.js','!**/node_modules/**'],
-                tasks: ['express:dev'],
+                files: ["**/*.js","!**/node_modules/**"],
+                tasks: ["express:dev"],
                 options: {
-                    nospawn: true //Without this option specified express won't be reloaded
+                    nospawn: true //Without this option specified express won"t be reloaded
                 }
             }
         }
     });
 
     // These plugins provide necessary tasks.
-    grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-express-server');
-    grunt.loadNpmTasks('grunt-mocha-test');
+    grunt.loadNpmTasks("grunt-contrib-watch");
+    grunt.loadNpmTasks("grunt-express-server");
+    grunt.loadNpmTasks("grunt-mocha-test");
 
 
     // Default task.
-    grunt.registerTask('default', ['express:dev', 'watch']);
-    grunt.registerTask('test', ['express:test', 'mochaTest', 'express:test:stop']);
+    grunt.registerTask("default", ["express:dev", "watch"]);
+    grunt.registerTask("test", ["express:test", "mochaTest", "express:test:stop"]);
 };

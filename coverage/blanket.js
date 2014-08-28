@@ -1,8 +1,8 @@
-'use strict';
-var path = require('path');
-var srcDir = path.join(__dirname, '..', 'app');
+"use strict";
+var path = require("path");
+var srcDir = path.join(__dirname, "..", "app");
 
-require('blanket')({
+require("blanket")({
   // Only files that match the pattern will be instrumented
   pattern: srcDir
 });

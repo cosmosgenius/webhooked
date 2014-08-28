@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
-var exec = require('child_process').exec,
-    Q = require('q');
+var exec = require("child_process").exec,
+    Q = require("q");
 
 /**
  * Map to handle messages
@@ -9,8 +9,8 @@ var exec = require('child_process').exec,
  * @type {Object}
  */
 var messages = {
-    pathError : 'path should be of type string',
-    commandError : 'command should be of type string'
+    pathError : "path should be of type string",
+    commandError : "command should be of type string"
 };
 
 /**
@@ -43,15 +43,15 @@ function executeCommand(command, path){
  */
 function generatePath(path) {
     if (!path) {
-        path = '.';
+        path = ".";
     }
 
-    if (typeof path !== 'string') {
+    if (typeof path !== "string") {
         throw new TypeError(messages.pathError);
     }
 
     return function(command) {
-        if (typeof command !== 'string') {
+        if (typeof command !== "string") {
             throw new TypeError(messages.commandError);
         }
         return executeCommand(command, path);

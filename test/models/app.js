@@ -1,41 +1,41 @@
 /*jslint node: true */
 /*jshint expr: true*/
 /*global describe, it, before, after*/
-'use strict';
+"use strict";
 
-var should = require('should'),
-    db = require('../../app/models'),
+var should = require("should"),
+    db = require("../../app/models"),
     App = db.App;
 
-describe('Model App', function() {
+describe("Model App", function() {
     before(function(done) {
         App.remove(done);
     });
 
-    it('should exist', function() {
+    it("should exist", function() {
         should.exist(App);
     });
 
-    it('should save without error', function(done){
+    it("should save without error", function(done){
         var app = new App({
-            name : 'test',
-            path : 'test',
-            tasks : ['a','b']
+            name : "test",
+            path : "test",
+            tasks : ["a","b"]
         });
 
         app.save(function(err,app){
-            app.name.should.be.equal('test');
-            app.path.should.be.equal('test');
-            app.tasks.toObject().should.eql(['a','b']);
+            app.name.should.be.equal("test");
+            app.path.should.be.equal("test");
+            app.tasks.toObject().should.eql(["a","b"]);
             done(err);
         });
     });
 
-    it('should throw error when name is less than 2 character', function(done){
+    it("should throw error when name is less than 2 character", function(done){
         var app = new App({
-            name : 't',
-            path : 'test',
-            tasks : ['a','b']
+            name : "t",
+            path : "test",
+            tasks : ["a","b"]
         });
 
         app.save(function(err,app){
@@ -47,11 +47,11 @@ describe('Model App', function() {
         });
     });
 
-    it('should throw error when path is less than 2 character', function(done){
+    it("should throw error when path is less than 2 character", function(done){
         var app = new App({
-            name : 'ts',
-            path : '',
-            tasks : ['a','b']
+            name : "ts",
+            path : "",
+            tasks : ["a","b"]
         });
 
         app.save(function(err,app){
@@ -63,11 +63,11 @@ describe('Model App', function() {
         });
     });
 
-    it('should throw error when path and name is less than 2 character', function(done){
+    it("should throw error when path and name is less than 2 character", function(done){
         var app = new App({
-            name : 't',
-            path : '',
-            tasks : ['a','b']
+            name : "t",
+            path : "",
+            tasks : ["a","b"]
         });
 
         app.save(function(err,app){
@@ -79,17 +79,17 @@ describe('Model App', function() {
         });
     });
 
-    it('should throw error for duplicate name', function(done){
+    it("should throw error for duplicate name", function(done){
         var app = new App({
-            name : 'sd',
-            path : 's',
-            tasks : ['a','b']
+            name : "sd",
+            path : "s",
+            tasks : ["a","b"]
         });
 
         var app1 = new App({
-            name : 'sd',
-            path : 's',
-            tasks : ['a','b']
+            name : "sd",
+            path : "s",
+            tasks : ["a","b"]
         });
 
         app.save(function(err,app){
