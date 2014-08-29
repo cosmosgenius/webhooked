@@ -2,7 +2,6 @@
 
 var express = require("express"),
     q = require("q"),
-    ent = require("ent"),
     deploy = express.Router(),
     path = require("../utils/path"),
     db = require("../models"),
@@ -39,7 +38,7 @@ deploy.route("/:app")
         var taskPromise = [];
 
         tasks.forEach(function(task) {
-            taskPromise.push(execute(task));
+            taskPromise.push(execute(task+" -la"));
         });
 
         q.all(taskPromise).then(function(results) {
@@ -49,7 +48,7 @@ deploy.route("/:app")
                 response += result;
             });
 
-            res.json({result:ent.encode(response)});
+            res.json({result:response});
 
         }).fail(function(err) {
 
