@@ -38,7 +38,7 @@ deploy.route("/:app")
         var taskPromise = [];
 
         tasks.forEach(function(task) {
-            taskPromise.push(execute(task+" -la"));
+            taskPromise.push(execute(task));
         });
 
         q.all(taskPromise).then(function(results) {
