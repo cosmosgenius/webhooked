@@ -6,7 +6,7 @@ var http            = require("http"),
     logger          = require("morgan"),
     responseTime    = require("response-time"),
     server          = http.createServer(app),
-    mongoose        = require("mongoose"),
+    modelManager    = require("./app/models"),
     env             = process.env.NODE_ENV || "development";
 
 if("production" === env) {
@@ -14,7 +14,7 @@ if("production" === env) {
 }
 
 if("development" === env) {
-    mongoose.set("debug", true);
+    modelManager.debug(true);
     app.use(logger("dev"));
     app.use(responseTime(5));
 }
