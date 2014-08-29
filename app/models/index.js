@@ -1,8 +1,8 @@
 "use strict";
 
-var mongoose    = require("mongoose");
 var config      = require("config");
+var manager     = require("./mongoose.manager");
 
-mongoose.connect(config.mongouri);
-module.exports = mongoose;
-module.exports.App = require("./app");
+manager.connect(config.mongouri);
+module.exports = manager;
+module.exports.App = manager.createModel("App",require("./app.model"));
