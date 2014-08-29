@@ -25,7 +25,6 @@ webapps.route("/")
         var newApp = new App(req.json);
         newApp.save(function(err, app) {
             if (err) {
-                //console.log(err);
                 return res.status(400).json({
                     message: "Invalid POST request."
                 });
