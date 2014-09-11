@@ -5,8 +5,8 @@ var http            = require("http"),
     app             = require("./app"),
     logger          = require("morgan"),
     responseTime    = require("response-time"),
+    mongoose        = require("mongoose"),
     server          = http.createServer(app),
-    modelManager    = require("./app/models"),
     env             = process.env.NODE_ENV || "development";
 
 if("production" === env) {
@@ -14,7 +14,7 @@ if("production" === env) {
 }
 
 if("development" === env) {
-    modelManager.debug(true);
+    mongoose.set("debug", true);
     app.use(logger("dev"));
     app.use(responseTime(5));
 }
@@ -24,4 +24,11 @@ server.listen(config.port, function(err) {
         console.log(err);
     }
     console.log("Express server listening on port %d in %s mode", server.address().port, app.settings.env);
+});
+
+process.on("SIGINT", function() {
+    mongoose.connection.close(function () {
+        console.log("Mongoose disconnected on app termination");
+        process.exit(0);
+    });
 });

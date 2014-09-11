@@ -10,9 +10,3 @@ module.exports.createModel = function (name, spec) {
 module.exports.connect = function (config) {
     mongoose.connect(config);
 };
-
-module.exports.debug = function (value) {
-    if(!!value) {
-        mongoose.set("debug", true);
-    }
-};
