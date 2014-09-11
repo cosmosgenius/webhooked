@@ -1,6 +1,6 @@
 {
   "name": "webhooked",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "A WebHook Client for github",
   "main": "index.js",
   "scripts": {
@@ -34,6 +34,7 @@
   },
   "dependencies": {
     "config": "*",
+    "cors": "2.4.x",
     "express": "4.x",
     "jsonparser": "0.2.x",
     "mongoose": "3.8.x",
