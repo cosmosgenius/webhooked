@@ -2,10 +2,10 @@
 
 var http            = require("http"),
     config          = require("config"),
-    app             = require("./app"),
     logger          = require("morgan"),
     responseTime    = require("response-time"),
     mongoose        = require("mongoose"),
+    app             = require("./app"),
     server          = http.createServer(app),
     env             = process.env.NODE_ENV || "development";
 
