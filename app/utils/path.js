@@ -1,7 +1,6 @@
 "use strict";
 
-var exec = require("child_process").exec,
-    Q = require("q");
+var exec = require("child_process").exec;
 
 /**
  * Map to handle messages
@@ -16,30 +15,26 @@ var messages = {
 /**
  * Executes the given command at the given path
  * @param  {String} command 
- * @param  {String} path    
- * @return {Promise}
+ * @param  {String} path
  * @see executeCommand
  */
-function executeCommand(command, path){
-    return Q.Promise(function(resolve, reject) {
-            exec(command, {
-                cwd: path
-            }, function(error, stdout) {
-                if (error) {
-                    reject(error);
-                } else {
-                    resolve(stdout);
-                }
-            });
-
-        });
+function executeCommand(command, path, cb){
+    exec(command, {
+        cwd: path
+    }, function(error, stdout) {
+        if (error) {
+            cb(error);
+        } else {
+            cb(null,stdout);
+        }
+    });
 }
 
 /**
  * A generator which returns a function which accepts command to be executed at the given path
  * @method generatePath
  * @param  {String} path
- * @return {Function}     a function which accepts a command as parameter
+ * @return {Function}     a function which accepts a command as parameter and a callback function
  */
 function generatePath(path) {
     if (!path) {
@@ -50,11 +45,11 @@ function generatePath(path) {
         throw new TypeError(messages.pathError);
     }
 
-    return function(command) {
+    return function(command, cb) {
         if (typeof command !== "string") {
-            throw new TypeError(messages.commandError);
+            cb(new TypeError(messages.commandError));
         }
-        return executeCommand(command, path);
+        executeCommand(command, path, cb);
     };
 }
 

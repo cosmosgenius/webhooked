@@ -34,11 +34,11 @@ describe("path current", function() {
         current = path(".");
     });
 
-    it("should return a promise", function() {
-        var promise = current("ls");
-        should.exist(promise);
-        should.exist(promise.then);
-        promise.then.should.be.a.Function;
+    it("should return a promise", function(done) {
+        current("ls",function(err, output){
+            should.exist(output);
+            done();
+        });
     });
 
     it("should throw type error if parameter is null", function() {
@@ -61,20 +61,13 @@ describe("path resolve/reject", function() {
     });
 
     it("should resolve when command is successfull", function(done){
-        current("dir").then(function(){
-            done();  
-        }).fail(done);
+        current("dir", done);
     });
 
     it("should reject when command is not successfull", function(done){
-        current("1234")
-            .then(done)
-            .fail(function(err){
-                if(err) {
-                    done();
-                } else {
-                    done(false);
-                }
-            });
+        current("1234", function(err,result){
+            should.exist(err);
+            done(result);
+        });
     });
 });

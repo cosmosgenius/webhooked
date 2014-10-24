@@ -1,7 +1,7 @@
 "use strict";
 
 var express = require("express"),
-    q = require("q"),
+    async = require("async"),
     deploy = express.Router(),
     path = require("../utils/path"),
     db = require("../models"),
@@ -35,26 +35,16 @@ deploy.route("/:app")
 
         var execute = path(req.app.path);
         var tasks = req.app.tasks;
-        var taskPromise = [];
 
-        tasks.forEach(function(task) {
-            taskPromise.push(execute(task));
-        });
+        async.mapSeries(tasks, execute, function(err, results){
+            if(err) {
+                return res.json(400, {
+                    error: err.message
+                });
+            }
 
-        q.all(taskPromise).then(function(results) {
-            var response = "";
-            
-            results.forEach(function(result) {
-                response += result;
+            res.json({
+                result: results.join("\n\n")
             });
-
-            res.json({result:response});
-
-        }).fail(function(err) {
-
-            res.json(400, {
-                error: err.message
-            });
-
         });
     });

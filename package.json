@@ -33,13 +33,13 @@
     "travis-cov": "*"
   },
   "dependencies": {
+    "async": "0.9.x",
     "config": "*",
     "cors": "2.4.x",
     "express": "4.x",
     "jsonparser": "0.2.x",
     "mongoose": "3.8.x",
     "morgan": "1.x",
-    "q": "1.x",
     "response-time": "2.x",
     "simple-bodyparser": "0.0.x"
   }
