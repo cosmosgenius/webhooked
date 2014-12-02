@@ -1,7 +1,7 @@
-webhooked
+Webhooked
 =========
 
-A WebHook Client for github
+An automation tool with Restful Api interface.
 
 [![Build status][travis-image]][travis-url]
 [![Dependency Status][david-image]][david-url]
@@ -9,7 +9,7 @@ A WebHook Client for github
 
 ## License
 
-[MIT](LICENSE)
+[MIT](LICENSE.md)
 
 [travis-image]: https://img.shields.io/travis/cosmosgenius/webhooked.svg?style=flat-square
 [travis-url]: https://travis-ci.org/cosmosgenius/webhooked
