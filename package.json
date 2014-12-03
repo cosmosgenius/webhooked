@@ -35,7 +35,7 @@
   "dependencies": {
     "async": "0.9.x",
     "config": "*",
-    "cors": "2.4.x",
+    "cors": "2.5.x",
     "express": "4.x",
     "jsonparser": "0.2.x",
     "mongoose": "3.8.x",
