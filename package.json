@@ -1,8 +1,9 @@
 {
   "name": "webhooked",
-  "version": "0.1.0",
-  "description": "A WebHook Client for github",
+  "version": "0.1.1",
+  "description": "A Deployment Manager",
   "main": "index.js",
+  "private" : true,
   "scripts": {
     "test": "grunt test"
   },
