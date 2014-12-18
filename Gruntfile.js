@@ -77,8 +77,10 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks("grunt-express-server");
     grunt.loadNpmTasks("grunt-mocha-test");
 
-
     // Default task.
     grunt.registerTask("default", ["express:dev", "watch"]);
-    grunt.registerTask("test", ["express:test", "mochaTest", "express:test:stop"]);
+    grunt.registerTask("integration",[])
+    grunt.registerTask("unit",["express:test", "mochaTest", "express:test:stop"])
+    grunt.registerTask("test", ["unit","integration"]);
+
 };
