@@ -3,7 +3,7 @@
   "version": "0.1.1",
   "description": "A Deployment Manager",
   "main": "index.js",
-  "private" : true,
+  "private": true,
   "scripts": {
     "test": "grunt test"
   },
@@ -28,21 +28,18 @@
     "should": "*",
     "grunt-contrib-watch": "*",
     "supertest": "*",
-    "mocha": "*",
     "mocha-lcov-reporter": "*",
     "grunt-mocha-test": "*",
     "travis-cov": "*"
   },
   "dependencies": {
     "async": "0.9.x",
+    "body-parser": "1.x",
     "config": "*",
     "cors": "2.5.x",
     "express": "4.x",
-    "jsonparser": "0.2.x",
-    "mongoose": "3.8.x",
     "monk": "0.9.x",
     "morgan": "1.x",
-    "response-time": "2.x",
-    "simple-bodyparser": "0.0.x"
+    "response-time": "2.x"
   }
 }
