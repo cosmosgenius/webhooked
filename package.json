@@ -23,14 +23,14 @@
   },
   "devDependencies": {
     "blanket": "*",
-    "grunt": "*",
-    "grunt-express-server": "*",
     "should": "*",
-    "grunt-contrib-watch": "*",
     "supertest": "*",
     "mocha-lcov-reporter": "*",
+    "travis-cov": "*",
+    "grunt": "*",
+    "grunt-contrib-watch": "*",
     "grunt-mocha-test": "*",
-    "travis-cov": "*"
+    "grunt-express-server": "*"
   },
   "dependencies": {
     "async": "0.9.x",
