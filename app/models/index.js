@@ -1,6 +1,8 @@
 "use strict";
 
-var config = require("config"),
-    db = require("monk")(config.mongouri);
+var config      = require("config");
+var manager     = require("./mongoose.manager");
 
-module.exports.db = db;
+manager.connect(config.mongouri);
+module.exports = manager;
+module.exports.App = manager.createModel("App",require("./app.model"));
