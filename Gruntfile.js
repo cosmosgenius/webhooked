@@ -3,26 +3,24 @@
 module.exports = function(grunt) {
     // Project configuration.
     grunt.initConfig({
+        env : {
+            dev : {
+                NODE_ENV : 'development',
+            },
+            test : {
+                NODE_ENV : 'test'
+            },
+            prod : {
+                NODE_ENV : 'production'
+            }
+        },
         express: {
             options: {
-                // Override defaults here
+                script: "index.js"
             },
             dev: {
                 options: {
-                    script: "index.js",
                     debug: true
-                }
-            },
-            prod: {
-                options: {
-                    script: "index.js",
-                    node_env: "production"
-                }
-            },
-            test: {
-                options: {
-                    script: "index.js",
-                    node_env: "test"
                 }
             }
         },
@@ -76,11 +74,12 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks("grunt-contrib-watch");
     grunt.loadNpmTasks("grunt-express-server");
     grunt.loadNpmTasks("grunt-mocha-test");
+    grunt.loadNpmTasks('grunt-env');
 
     // Default task.
-    grunt.registerTask("default", ["express:dev", "watch"]);
-    grunt.registerTask("integration",[])
-    grunt.registerTask("unit",["express:test", "mochaTest", "express:test:stop"])
+    grunt.registerTask("default", ["env:dev","express:dev", "watch"]);
+    grunt.registerTask("integration",["env:test"])
+    grunt.registerTask("unit",["env:test","express", "mochaTest", "express:stop"])
     grunt.registerTask("test", ["unit","integration"]);
 
 };
