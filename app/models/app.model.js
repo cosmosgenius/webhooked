@@ -1,4 +1,5 @@
 "use strict";
+var mongoose = require("mongoose");
 
 function minlength(len) {
     return function(value) {
@@ -9,7 +10,7 @@ function minlength(len) {
     };
 }
 
-module.exports = {
+var schema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -25,4 +26,6 @@ module.exports = {
         validate: [minlength(1), "Name cannot be less than 1 characters"]
     },
     tasks: [String]
-};
+});
+
+module.exports = mongoose.model("App", schema);
