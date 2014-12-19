@@ -5,13 +5,13 @@ module.exports = function(grunt) {
     grunt.initConfig({
         env : {
             dev : {
-                NODE_ENV : 'development',
+                NODE_ENV : "development"
             },
             test : {
-                NODE_ENV : 'test'
+                NODE_ENV : "test"
             },
             prod : {
-                NODE_ENV : 'production'
+                NODE_ENV : "production"
             }
         },
         express: {
@@ -34,7 +34,7 @@ module.exports = function(grunt) {
                     reporter: "spec",
                     require: ["should", "coverage/blanket"]
                 },
-                src: ["test/**/*.js"]
+                src: ["tests/**/*.js"]
             },
             "html-cov": {
                 options: {
@@ -42,13 +42,13 @@ module.exports = function(grunt) {
                     quiet: true,
                     captureFile: "coverage.html"
                 },
-                src: ["test/**/*.js"]
+                src: ["tests/**/*.js"]
             },
             "travis-cov": {
                 options: {
                     reporter: "travis-cov"
                 },
-                src: ["test/**/*.js"]
+                src: ["tests/**/*.js"]
             },
             "lcov": {
                 options:  {
@@ -56,7 +56,7 @@ module.exports = function(grunt) {
                     quiet: true,
                     captureFile: "lcov.info"
                 },
-                src: ["test/**/*.js"]
+                src: ["tests/**/*.js"]
             }
         },
         watch: {
@@ -74,12 +74,12 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks("grunt-contrib-watch");
     grunt.loadNpmTasks("grunt-express-server");
     grunt.loadNpmTasks("grunt-mocha-test");
-    grunt.loadNpmTasks('grunt-env');
+    grunt.loadNpmTasks("grunt-env");
 
     // Default task.
     grunt.registerTask("default", ["env:dev","express:dev", "watch"]);
-    grunt.registerTask("integration",["env:test"])
-    grunt.registerTask("unit",["env:test","express", "mochaTest", "express:stop"])
+    grunt.registerTask("integration",["env:test"]);
+    grunt.registerTask("unit",["env:test", "mochaTest"]);
     grunt.registerTask("test", ["unit","integration"]);
 
 };
