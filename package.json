@@ -3,7 +3,7 @@
   "version": "0.1.1",
   "description": "A Deployment Manager",
   "main": "index.js",
-  "private" : true,
+  "private": true,
   "scripts": {
     "test": "grunt test"
   },
@@ -24,13 +24,14 @@
   "devDependencies": {
     "blanket": "*",
     "grunt": "*",
-    "grunt-express-server": "*",
-    "should": "*",
     "grunt-contrib-watch": "*",
-    "supertest": "*",
+    "grunt-env": "*",
+    "grunt-express-server": "*",
+    "grunt-mocha-test": "*",
     "mocha": "*",
     "mocha-lcov-reporter": "*",
-    "grunt-mocha-test": "*",
+    "should": "*",
+    "supertest": "*",
     "travis-cov": "*"
   },
   "dependencies": {
