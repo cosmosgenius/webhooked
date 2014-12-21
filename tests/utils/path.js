@@ -45,7 +45,7 @@ describe("path", function() {
     });
 });
 
-describe("path callback", function() {
+describe("path command callback", function() {
     var pathStr = ".",
         runCommand;
 
@@ -58,7 +58,7 @@ describe("path callback", function() {
         exec.restore();
     });
 
-    it("should callback with proper result when command is successfull", function(done){
+    it("should call callback with result when command is successfull", function(done){
         runCommand(cmds.working, function(err, result){
             should.not.exist(err);
             should.exist(result);
@@ -68,7 +68,7 @@ describe("path callback", function() {
         });
     });
 
-    it("should reject when command is not successfull", function(done){
+    it("should call callback with error when command is not successfull", function(done){
         runCommand(cmds.notworking, function(err){
             should.exist(err);
             exec.cmd.should.be.eql(cmds.notworking);
@@ -76,36 +76,25 @@ describe("path callback", function() {
             done();
         });
     });
-});
 
-describe("path current", function() {
-    var current;
-    before(function() {
-        exec = execStub();
-        current = path(".");
-    });
-
-    after(function() {
-        exec.restore();
-    });
-
-    it("should return a promise", function(done) {
-        current(cmds.working, function(err, output){
-            should.exist(output);
+    it("should call callback with type error if parameter is null", function(done) {
+        runCommand(null, function(err) {
+            err.should.be.an.instanceOf(TypeError);
             done();
         });
     });
 
-    it("should throw type error if parameter is null", function() {
-        current.bind(null).should.throw(TypeError);
+    it("should call callback with type error if parameter is object", function(done) {
+        runCommand({}, function(err) {
+            err.should.be.an.instanceOf(TypeError);
+            done();
+        });
     });
 
-    it("should throw type error if parameter is object", function() {
-        current.bind(null, {}).should.throw(TypeError);
-    });
-
-    it("should throw type error if parameter is function", function() {
-        current.bind(null, function() {}).should.throw(TypeError);
+    it("should call callback with type error if parameter is function", function(done) {
+        runCommand(function() {}, function(err) {
+            err.should.be.an.instanceOf(TypeError);
+            done();
+        });
     });
 });
-
