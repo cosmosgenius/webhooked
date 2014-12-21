@@ -14,20 +14,20 @@ var messages = {
 
 /**
  * Executes the given command at the given path
- * @param  {String} command 
- * @param  {String} path
+ * @param {String} command 
+ * @param {String} path
+ * @param {Function} cb callback function
  * @see executeCommand
  */
 function executeCommand(command, path, cb){
+
+    if (typeof command !== "string") {
+        return cb(new TypeError(messages.commandError));
+    }
+
     exec(command, {
         cwd: path
-    }, function(error, stdout) {
-        if (error) {
-            cb(error);
-        } else {
-            cb(null,stdout);
-        }
-    });
+    }, cb);
 }
 
 /**
@@ -46,9 +46,6 @@ function generatePath(path) {
     }
 
     return function(command, cb) {
-        if (typeof command !== "string") {
-            cb(new TypeError(messages.commandError));
-        }
         executeCommand(command, path, cb);
     };
 }

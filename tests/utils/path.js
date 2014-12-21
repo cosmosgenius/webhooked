@@ -63,9 +63,9 @@ describe("path resolve/reject", function() {
     });
 
     it("should reject when command is not successfull", function(done){
-        current("1234", function(err,result){
+        current("12345", function(err){
             should.exist(err);
-            done(result);
+            done();
         });
     });
 });
