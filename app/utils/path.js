@@ -1,6 +1,6 @@
 "use strict";
 
-var exec = require("child_process").exec;
+var proc = require("child_process");
 
 /**
  * Map to handle messages
@@ -25,7 +25,7 @@ function executeCommand(command, path, cb){
         return cb(new TypeError(messages.commandError));
     }
 
-    exec(command, {
+    proc.exec(command, {
         cwd: path
     }, cb);
 }
