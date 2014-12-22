@@ -1,6 +1,8 @@
 "use strict";
 var mongoose = require("mongoose");
 
+var schema, app;
+
 function minlength(len) {
     return function(value) {
         if (value) {
@@ -10,7 +12,7 @@ function minlength(len) {
     };
 }
 
-var schema = new mongoose.Schema({
+schema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -28,4 +30,26 @@ var schema = new mongoose.Schema({
     tasks: [String]
 });
 
-module.exports = mongoose.model("App", schema);
+app = mongoose.model("App", schema);
+
+module.exports = app;
+/*
+module.exports.createApp = function(specs) {
+
+};
+
+module.exports.deleteApp = function(name) {
+
+};
+
+module.exports.find = function(criteria, cb) {
+    
+};
+
+module.exports.findById = function(name) {
+
+};
+
+module.exports.updateApp = function() {
+
+};*/
