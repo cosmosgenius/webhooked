@@ -1,7 +1,8 @@
 "use strict";
 var mongoose = require("mongoose");
 
-var schema, app;
+var logModel = require("./log.model"),
+    appSchema;
 
 function minlength(len) {
     return function(value) {
@@ -12,7 +13,7 @@ function minlength(len) {
     };
 }
 
-schema = new mongoose.Schema({
+appSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -25,31 +26,54 @@ schema = new mongoose.Schema({
         type: String,
         required: true,
         trim: true,
-        validate: [minlength(1), "Name cannot be less than 1 characters"]
+        validate: [minlength(1), "Path cannot be null"]
     },
-    tasks: [String]
+    tasks: [String],
+    created_at: {
+        type: Date,
+        default: Date.now
+    },
+    modified_at: {
+        type: Date,
+        default: Date.now
+    }
+},{
+    _id: false,
+    id: false,
 });
 
-app = mongoose.model("App", schema);
+appSchema.pre("save", function(next){
+  var now = new Date();
+  this.updated_at = now;
+  next();
+});
 
-module.exports = app;
-/*
-module.exports.createApp = function(specs) {
-
+appSchema.methods.getTasks = function() {
+    return this.tasks;
 };
 
-module.exports.deleteApp = function(name) {
-
+appSchema.methods.addTasks = function (tasks, cb) {
+    var _this = this;
+    if (Array.isArray(tasks)) {
+        tasks.forEach(function(task) {
+            _this.tasks.push(task);
+        });
+    } else {
+        this.tasks.push(tasks);
+    }
+    this.save(cb);
 };
 
-module.exports.find = function(criteria, cb) {
-    
+appSchema.methods.getLogs = function(from, to, cb) {
+    if(typeof to === "function") {
+        cb = to;
+    }
+
+    if(typeof from === "function") {
+        cb = from;
+    }
+
+    return logModel.find(cb);
 };
 
-module.exports.findById = function(name) {
-
-};
-
-module.exports.updateApp = function() {
-
-};*/
+module.exports = mongoose.model("App", appSchema);
