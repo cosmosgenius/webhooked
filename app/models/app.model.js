@@ -40,14 +40,17 @@ appSchema = new mongoose.Schema({
 appSchema.pre("save", function(next){
     var now = new Date();
     this.updated_at = now;
+    debug("updated_at ", this.updated_at);
     next();
 });
 
 appSchema.methods.getTasks = function() {
+    debug("getTasks: ", this.tasks);
     return this.tasks;
 };
 
 appSchema.methods.addTasks = function (tasks, cb) {
+    debug("addTasks ", tasks);
     var _this = this;
     if (Array.isArray(tasks)) {
         tasks.forEach(function(task) {
@@ -56,6 +59,7 @@ appSchema.methods.addTasks = function (tasks, cb) {
     } else {
         this.tasks.push(tasks);
     }
+    debug("addTasks - task list", this.tasks);
     this.save(cb);
 };
 
