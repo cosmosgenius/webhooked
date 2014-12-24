@@ -1,5 +1,6 @@
 "use strict";
-var mongoose = require("mongoose");
+var debug = require("debug")("model:app"),
+    mongoose = require("mongoose");
 
 var logModel = require("./log.model"),
     appSchema;
@@ -29,23 +30,17 @@ appSchema = new mongoose.Schema({
         validate: [minlength(1), "Path cannot be null"]
     },
     tasks: [String],
-    created_at: {
-        type: Date,
-        default: Date.now
-    },
-    modified_at: {
-        type: Date,
-        default: Date.now
-    }
+    created_at: { type: Date, default: Date.now },
+    modified_at: { type: Date, default: Date.now }
 },{
     _id: false,
     id: false,
 });
 
 appSchema.pre("save", function(next){
-  var now = new Date();
-  this.updated_at = now;
-  next();
+    var now = new Date();
+    this.updated_at = now;
+    next();
 });
 
 appSchema.methods.getTasks = function() {
