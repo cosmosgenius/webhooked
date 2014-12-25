@@ -32,9 +32,6 @@ appSchema = new mongoose.Schema({
     tasks: [String],
     created_at: { type: Date, default: Date.now },
     modified_at: { type: Date, default: Date.now }
-},{
-    _id: false,
-    id: false,
 });
 
 appSchema.pre("save", function(next){

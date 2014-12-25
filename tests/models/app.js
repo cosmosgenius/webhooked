@@ -18,6 +18,7 @@ describe("Model App", function() {
         });
 
         app.save(function(err,app){
+            should.not.exist(err);
             app.name.should.be.equal("test");
             app.path.should.be.equal("test");
             app.tasks.toObject().should.eql(["a","b"]);
