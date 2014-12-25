@@ -10,10 +10,6 @@ describe("Model App", function() {
         App.remove(done);
     });
 
-    it("should exist", function() {
-        should.exist(App);
-    });
-
     it("should save without error", function(done){
         var app = new App({
             name : "test",
