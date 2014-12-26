@@ -6,100 +6,98 @@ var should = require("should"),
     App = db.App;
 
 describe("Model App", function() {
-    before(function(done) {
-        App.remove(done);
-    });
-
-    it("should save without error", function(done){
-        var app = new App({
-            name : "test",
-            path : "test",
-            tasks : ["a","b"]
+    describe("validations", function() {
+        before(function(done) {
+            App.remove(done);
         });
 
-        app.save(function(err,app){
-            should.not.exist(err);
-            app.name.should.be.equal("test");
-            app.path.should.be.equal("test");
-            app.tasks.toObject().should.eql(["a","b"]);
-            done(err);
-        });
-    });
+        it("should save without error", function(done){
+            var app = new App({
+                name : "test",
+                path : "test",
+                tasks : ["a","b"]
+            });
 
-    it("should throw error when name is less than 2 character", function(done){
-        var app = new App({
-            name : "t",
-            path : "test",
-            tasks : ["a","b"]
-        });
-
-        app.save(function(err,app){
-            should.exist(err);
-            should.exist(err.errors.name);
-            should.not.exist(err.errors.path);
-            should.not.exist(app);
-            done();
-        });
-    });
-
-    it("should throw error when path is less than 2 character", function(done){
-        var app = new App({
-            name : "ts",
-            path : "",
-            tasks : ["a","b"]
+            app.save(function(err,app){
+                should.not.exist(err);
+                app.name.should.be.equal("test");
+                app.path.should.be.equal("test");
+                app.tasks.toObject().should.eql(["a","b"]);
+                done(err);
+            });
         });
 
-        app.save(function(err,app){
-            should.exist(err);
-            should.exist(err.errors.path);
-            should.not.exist(err.errors.name);
-            should.not.exist(app);
-            done();
-        });
-    });
+        it("should throw error when name is less than 2 character", function(done){
+            var app = new App({
+                name : "t",
+                path : "test",
+                tasks : ["a","b"]
+            });
 
-    it("should throw error when path and name is less than 2 character", function(done){
-        var app = new App({
-            name : "t",
-            path : "",
-            tasks : ["a","b"]
-        });
-
-        app.save(function(err,app){
-            should.exist(err);
-            should.exist(err.errors.path);
-            should.exist(err.errors.name);
-            should.not.exist(app);
-            done();
-        });
-    });
-
-    it("should throw error for duplicate name", function(done){
-        var app = new App({
-            name : "sd",
-            path : "s",
-            tasks : ["a","b"]
-        });
-
-        var app1 = new App({
-            name : "sd",
-            path : "s",
-            tasks : ["a","b"]
-        });
-
-        app.save(function(err,app){
-            should.not.exist(err);
-            should.exist(app);
-            app1.save(function(err1,app1){
-                should.not.exist(app1);
-                should.exist(err1);
-                err1.code.should.be.equal(11000);
+            app.save(function(err,app){
+                should.exist(err);
+                should.exist(err.errors.name);
+                should.not.exist(err.errors.path);
+                should.not.exist(app);
                 done();
             });
         });
+
+        it("should throw error when path is less than 1 character", function(done){
+            var app = new App({
+                name : "ts",
+                path : "",
+                tasks : ["a","b"]
+            });
+
+            app.save(function(err,app){
+                should.exist(err);
+                should.exist(err.errors.path);
+                should.not.exist(err.errors.name);
+                should.not.exist(app);
+                done();
+            });
+        });
+
+        it("should throw error for duplicate name", function(done){
+            var app = new App({
+                name : "sd",
+                path : "s",
+                tasks : ["a","b"]
+            });
+
+            var app1 = new App({
+                name : "sd",
+                path : "s",
+                tasks : ["a","b"]
+            });
+
+            app.save(function(err,app){
+                should.not.exist(err);
+                should.exist(app);
+                app1.save(function(err1,app1){
+                    should.not.exist(app1);
+                    should.exist(err1);
+                    err1.code.should.be.equal(11000);
+                    done();
+                });
+            });
+        });
+
+        after(function(done) {
+            App.remove(done);
+        });
+    });
+    
+    describe("getTasks", function() {
+
     });
 
-    after(function(done) {
-        App.remove(done);
+    describe("addTasks", function() {
+
+    });
+
+    describe("getLogs", function() {
+
     });
 });
