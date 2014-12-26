@@ -2,7 +2,7 @@
 "use strict";
 
 var should = require("should"),
-    db = require("../../app/models"),
+    db = require("../app/models"),
     App = db.App;
 
 describe("Model App", function() {

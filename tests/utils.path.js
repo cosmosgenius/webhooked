@@ -5,7 +5,7 @@ var should = require("should"),
     sinon = require("sinon"),
     process = require("child_process");
 
-var path = require("../../app/utils/path");
+var path = require("../app/utils/path");
 
 var exec;
 

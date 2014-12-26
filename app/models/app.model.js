@@ -2,8 +2,7 @@
 var debug = require("debug")("webhooked:model:app"),
     mongoose = require("mongoose");
 
-var logModel = require("./log.model"),
-    appSchema;
+var logModel = require("./log.model");
 
 /**
  * generator which create a minlength check function
@@ -20,7 +19,7 @@ function minlength(len) {
     };
 }
 
-appSchema = new mongoose.Schema({
+var appSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -74,10 +73,6 @@ appSchema.methods.getLogs = function(from, to, cb) {
         function(err, logs) {
             return cb(err,logs);
         });
-};
-
-appSchema.methods.addLog = function() {
-      
 };
 
 module.exports = mongoose.model("App", appSchema);
