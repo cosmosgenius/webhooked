@@ -13,9 +13,9 @@ describe("Model App", function() {
 
         it("should save without error", function(done){
             var app = new App({
-                name : "test",
-                path : "test",
-                tasks : ["a","b"]
+                name: "test",
+                path: "test",
+                tasks: ["a","b"]
             });
 
             app.save(function(err,app){
@@ -29,9 +29,9 @@ describe("Model App", function() {
 
         it("should throw error when name is less than 2 character", function(done){
             var app = new App({
-                name : "t",
-                path : "test",
-                tasks : ["a","b"]
+                name: "t",
+                path: "test",
+                tasks: ["a","b"]
             });
 
             app.save(function(err,app){
@@ -45,9 +45,9 @@ describe("Model App", function() {
 
         it("should throw error when path is less than 1 character", function(done){
             var app = new App({
-                name : "ts",
-                path : "",
-                tasks : ["a","b"]
+                name: "ts",
+                path: "",
+                tasks: ["a","b"]
             });
 
             app.save(function(err,app){
@@ -61,15 +61,15 @@ describe("Model App", function() {
 
         it("should throw error for duplicate name", function(done){
             var app = new App({
-                name : "sd",
-                path : "s",
-                tasks : ["a","b"]
+                name: "sd",
+                path: "s",
+                tasks: ["a","b"]
             });
 
             var app1 = new App({
-                name : "sd",
-                path : "s",
-                tasks : ["a","b"]
+                name: "sd",
+                path: "s",
+                tasks: ["a","b"]
             });
 
             app.save(function(err,app){
@@ -89,12 +89,27 @@ describe("Model App", function() {
         });
     });
     
-    describe("getTasks", function() {
+    describe("Tasks", function() {
+        it("getTasks should return the task array",function() {
+            var app = new App({
+                name: "app1",
+                path: ".",
+                tasks: ["a","b"]
+            });
 
-    });
+            app.getTasks().toObject().should.eql(["a","b"]);
+        });
 
-    describe("addTasks", function() {
+        it("addTask should add the tasks to the task list",function() {
+            var app = new App({
+                name: "app1",
+                path: ".",
+                tasks: ["a","b"]
+            });
 
+            app.addTask("c");
+            app.getTasks().toObject().should.eql(["a","b","c"]);
+        });
     });
 
     describe("getLogs", function() {

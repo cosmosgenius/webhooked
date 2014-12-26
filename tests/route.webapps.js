@@ -8,7 +8,7 @@ var request = require("supertest"),
     ModelApp = db.App;
 
 request = request(app);
-describe.skip("/webapps", function() {
+describe("/webapps", function() {
     describe("app", function() {
         it("should exist", function() {
             should.exist(app);
@@ -16,7 +16,7 @@ describe.skip("/webapps", function() {
     });
 });
 
-describe.skip("/webapps", function() {
+describe("/webapps", function() {
     describe("get", function() {
         before(function(done) {
             ModelApp.remove(done);
@@ -153,7 +153,7 @@ describe.skip("/webapps", function() {
     });
 });
 
-describe.skip("/webapps/:app", function() {
+describe("/webapps/:app", function() {
 
     describe("get", function() {
         before(function(done) {

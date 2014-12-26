@@ -43,7 +43,7 @@ appSchema.pre("save", function(next){
     var now = new Date();
     this.updated_at = now;
     debug("updated_at ", this.updated_at);
-    next();
+    return next();
 });
 
 appSchema.methods.getTasks = function() {
@@ -51,17 +51,9 @@ appSchema.methods.getTasks = function() {
     return this.tasks;
 };
 
-appSchema.methods.addTasks = function (tasks) {
-    debug("adding %s Tasks ", tasks);
-    var _this = this;
-    if (Array.isArray(tasks)) {
-        tasks.forEach(function(task) {
-            _this.tasks.push(task);
-        });
-    } else {
-        this.tasks.push(tasks);
-    }
-    debug("task list is %s", this.tasks);
+appSchema.methods.addTask = function (task) {
+    debug("adding %s Tasks ", task);
+    return this.tasks.push(task);
 };
 
 appSchema.methods.getLogs = function(from, to, cb) {
