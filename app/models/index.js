@@ -7,3 +7,4 @@ mongoose.connect(config.mongouri);
 
 module.exports = mongoose;
 module.exports.App = require("./app.model");
+module.exports.Log = require("./log.model");
