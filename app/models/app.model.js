@@ -2,8 +2,6 @@
 var debug = require("debug")("webhooked:model:app"),
     mongoose = require("mongoose");
 
-var logModel = require("./log.model");
-
 /**
  * generator which create a minlength check function
  * @param  {Number} len   Minimum length to check
@@ -54,17 +52,6 @@ appSchema.methods.getTasks = function() {
 appSchema.methods.addTask = function (task) {
     debug("adding %s Tasks ", task);
     return this.tasks.push(task);
-};
-
-appSchema.methods.getLogs = function(from, to, cb) {
-    if(typeof from === "function" || typeof to === "function") {
-        cb = to || from;
-    }
-
-    return logModel.find({ app: this.name },{ app: 0 }, 
-        function(err, logs) {
-            return cb(err,logs);
-        });
 };
 
 module.exports = mongoose.model("App", appSchema);

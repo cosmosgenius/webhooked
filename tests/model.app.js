@@ -111,8 +111,4 @@ describe("Model App", function() {
             app.getTasks().toObject().should.eql(["a","b","c"]);
         });
     });
-
-    describe("getLogs", function() {
-
-    });
 });
