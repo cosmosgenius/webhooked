@@ -37,15 +37,13 @@
   },
   "dependencies": {
     "async": "0.9.x",
+    "body-parser": "^1.10.0",
     "config": "*",
     "cors": "2.5.x",
     "debug": "2.x",
     "express": "4.x",
-    "jsonparser": "0.2.x",
     "mongoose": "3.8.x",
-    "monk": "0.9.x",
     "morgan": "1.x",
-    "response-time": "2.x",
-    "simple-bodyparser": "0.0.x"
+    "response-time": "2.x"
   }
 }

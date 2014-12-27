@@ -1,8 +1,7 @@
 "use strict";
 
 var express = require("express"),
-    bodyparser = require("simple-bodyparser"),
-    jsonparser = require("jsonparser"),
+    bodyParser = require("body-parser"),
     webapps = express.Router();
 
 var db = require("../models"),
@@ -10,23 +9,30 @@ var db = require("../models"),
 
 module.exports = webapps;
 
+webapps.param("app", function(req, res, next, name) {
+    App.findOne({
+        name: name
+    }, function(err, app) {
+        req.app = app;
+        next();
+    });
+});
+
 webapps.route("/")
     .get(function(req, res) {
-        App.find(function(err, app) {
+        App.find({},{_id:0, __v:0},function(err, app) {
             res.json(app);
         });
     })
-    .post(bodyparser())
-    .post(jsonparser({
-        strict: true,
-        bodyCheck : true
-    }))
+    .post(bodyParser.json())
     .post(function(req, res) {
-        var newApp = new App(req.json);
+        var newApp = new App(req.body);
         newApp.save(function(err, app) {
             if (err) {
                 return res.status(400).json({
-                    message: "Invalid POST request."
+                    message: "Invalid POST request.",
+                    err: err,
+                    body: req.body
                 });
             }
             res.location(app.name);
@@ -48,15 +54,6 @@ webapps.route("/")
         next();
     });
 
-webapps.param("app", function(req, res, next, name) {
-    App.findOne({
-        name: name
-    }, function(err, app) {
-        req.app = app;
-        next();
-    });
-});
-
 webapps.route("/:app")
     .all(function(req, res, next) {
         if (!req.app) {
@@ -69,6 +66,7 @@ webapps.route("/:app")
     .get(function(req, res) {
         return res.json(req.app);
     })
+    .put(bodyParser.json())
     .put(function(req, res) {
         res.send(req.app);
     })
