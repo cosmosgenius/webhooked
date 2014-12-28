@@ -20,8 +20,8 @@ webapps.param("app", function(req, res, next, name) {
 
 webapps.route("/")
     .get(function(req, res) {
-        App.find({},{_id:0, __v:0},function(err, app) {
-            res.json(app);
+        App.find({},{_id:0, __v:0},function(err, apps) {
+            res.json(apps);
         });
     })
     .post(bodyParser.json())
