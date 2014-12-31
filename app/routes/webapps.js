@@ -18,6 +18,20 @@ webapps.param("app", function(req, res, next, name) {
     });
 });
 
+function createApp(req, res, next) {
+    var app = new App(req.body);
+    app.save(function(err, app) {
+        if (!err) {
+            res.location(app.name);
+            return res.status(201).json(app);
+        }
+        return next({
+                status: 400,
+                message: err.errors
+            });
+    });
+}
+
 webapps.route("/")
     .get(function(req, res) {
         App.find({},{_id:0, __v:0},function(err, apps) {
@@ -25,32 +39,25 @@ webapps.route("/")
         });
     })
     .post(bodyParser.json())
-    .post(function(req, res) {
-        var newApp = new App(req.body);
-        newApp.save(function(err, app) {
-            if (err) {
-                return res.status(400).json({
-                    message: "Invalid POST request.",
-                    err: err,
-                    body: req.body
-                });
-            }
-            res.location(app.name);
-            return res.status(201).json(app);
+    .post(createApp)
+    .put(function(req, res, next){
+        next({
+            status: 405,
+            message: "operation not possible"
         });
     })
-    .put(function(req, res){
-        return res.status(405).end();
-    })
-    .delete(function(req, res){
-        return res.status(405).end();
+    .delete(function(req, res, next){
+        next({
+            status: 405,
+            message: "operation not possible"
+        });
     })
     .all(function(err, req, res, next){
-        if(err){
-            res.status(err.status).json({
-                message:err.message
+        res.status(err.status)
+            .json({
+                status: err.status,
+                message: err.message
             });
-        }
         next();
     });
 
