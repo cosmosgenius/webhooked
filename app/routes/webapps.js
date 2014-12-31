@@ -43,7 +43,7 @@ function operationNotPossible(req, res, next) {
 
 webapps.route("/")
     .get(function(req, res) {
-        App.find({},{_id:0, __v:0},function(err, apps) {
+        App.find({}, {_id: 0, __v: 0}, function(err, apps) {
             res.json(apps);
         });
     })
@@ -63,9 +63,6 @@ webapps.route("/")
 webapps.param("app", function(req, res, next, name) {
     App.findOne({
         name: name
-    }, {
-        _id:0, 
-        __v:0
     }, function(err, app) {
         req.appInstance = app;
         next(err);
@@ -84,18 +81,21 @@ webapps.route("/:app")
         next(err);
     })
     .get(function(req, res) {
-        return res.json(req.appInstance);
+        res.json(req.appInstance);
     })
     .put(bodyParser.json())
     .put(function(req, res) {
         res.send(req.appInstance);
     })
-    .delete(function(req, res) {
+    .delete(function(req, res, next) {
         req.appInstance.remove(function(err) {
             if (err) {
-                res.json(err);
+                return next({
+                    status: 500,
+                    message: err
+                });
             }
-            return res.status(204).end();
+            res.status(204).end();
         });
 
     })
