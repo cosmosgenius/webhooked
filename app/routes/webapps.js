@@ -14,21 +14,39 @@ webapps.param("app", function(req, res, next, name) {
         name: name
     }, function(err, app) {
         req.app = app;
-        next();
+        next(err);
     });
 });
 
 function createApp(req, res, next) {
     var app = new App(req.body);
-    app.save(function(err, app) {
+    app.save(function(err, napp) {
         if (!err) {
-            res.location(app.name);
-            return res.status(201).json(app);
+            res.location(napp.name);
+            return res.status(201).json(napp);
         }
-        return next({
+
+        if(err.code === 11000) {
+            next({
+                status: 400,
+                message: {
+                    name: app.name,
+                    text: "The app already exist"   
+                }
+            });
+        } else {
+            next({
                 status: 400,
                 message: err.errors
             });
+        }
+    });
+}
+
+function operationNotPossible(req, res, next) {
+    next({
+        status: 405,
+        message: "operation not possible"
     });
 }
 
@@ -40,18 +58,8 @@ webapps.route("/")
     })
     .post(bodyParser.json())
     .post(createApp)
-    .put(function(req, res, next){
-        next({
-            status: 405,
-            message: "operation not possible"
-        });
-    })
-    .delete(function(req, res, next){
-        next({
-            status: 405,
-            message: "operation not possible"
-        });
-    })
+    .put(operationNotPossible)
+    .delete(operationNotPossible)
     .all(function(err, req, res, next){
         res.status(err.status)
             .json({
@@ -86,6 +94,4 @@ webapps.route("/:app")
         });
 
     })
-    .post(function(req, res){
-        return res.status(405).end();
-    });
+    .post(operationNotPossible);
