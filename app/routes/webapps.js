@@ -67,7 +67,7 @@ webapps.param("app", function(req, res, next, name) {
         _id:0, 
         __v:0
     }, function(err, app) {
-        req.app = app;
+        req.appInstance = app;
         next(err);
     });
 });
@@ -75,7 +75,7 @@ webapps.param("app", function(req, res, next, name) {
 webapps.route("/:app")
     .all(function(req, res, next) {
         var err;
-        if (!req.app) {
+        if (!req.appInstance) {
             err = {
                 status: 404,
                 message: "App doesn't exist"
@@ -84,14 +84,14 @@ webapps.route("/:app")
         next(err);
     })
     .get(function(req, res) {
-        return res.json(req.app);
+        return res.json(req.appInstance);
     })
     .put(bodyParser.json())
     .put(function(req, res) {
-        res.send(req.app);
+        res.send(req.appInstance);
     })
     .delete(function(req, res) {
-        req.app.remove(function(err) {
+        req.appInstance.remove(function(err) {
             if (err) {
                 res.json(err);
             }
