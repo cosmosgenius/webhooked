@@ -9,15 +9,6 @@ var db = require("../models"),
 
 module.exports = webapps;
 
-webapps.param("app", function(req, res, next, name) {
-    App.findOne({
-        name: name
-    }, function(err, app) {
-        req.app = app;
-        next(err);
-    });
-});
-
 function createApp(req, res, next) {
     var app = new App(req.body);
     app.save(function(err, napp) {
@@ -69,14 +60,28 @@ webapps.route("/")
         next();
     });
 
+webapps.param("app", function(req, res, next, name) {
+    App.findOne({
+        name: name
+    }, {
+        _id:0, 
+        __v:0
+    }, function(err, app) {
+        req.app = app;
+        next(err);
+    });
+});
+
 webapps.route("/:app")
     .all(function(req, res, next) {
+        var err;
         if (!req.app) {
-            return res.status(404).json({
+            err = {
+                status: 404,
                 message: "App doesn't exist"
-            });
+            };
         }
-        next();
+        next(err);
     })
     .get(function(req, res) {
         return res.json(req.app);
@@ -94,4 +99,12 @@ webapps.route("/:app")
         });
 
     })
-    .post(operationNotPossible);
+    .post(operationNotPossible)
+    .all(function(err, req, res, next){
+        res.status(err.status)
+            .json({
+                status: err.status,
+                message: err.message
+            });
+        next();
+    });
