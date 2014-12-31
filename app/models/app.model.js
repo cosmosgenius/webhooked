@@ -37,6 +37,13 @@ var appSchema = new mongoose.Schema({
     modified_at: { type: Date, default: Date.now }
 });
 
+appSchema.options.toJSON = {
+    transform: function (doc, ret) {
+        delete ret._id;
+        delete ret.__v;
+    }
+};
+
 appSchema.pre("save", function(next){
     var now = new Date();
     this.updated_at = now;
