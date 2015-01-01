@@ -44,7 +44,7 @@ appSchema.options.toJSON = {
     }
 };
 
-appSchema.pre("save", function(next){
+appSchema.pre("save", function(next) {
     var now = new Date();
     this.updated_at = now;
     debug("updated_at ", this.updated_at);
@@ -56,7 +56,7 @@ appSchema.methods.getTasks = function() {
     return this.tasks;
 };
 
-appSchema.methods.addTask = function (task) {
+appSchema.methods.addTask = function(task) {
     debug("adding %s Tasks ", task);
     return this.tasks.push(task);
 };
