@@ -90,16 +90,6 @@ webapps.route("/")
     .all(handleError);
 
 webapps.route("/:app")
-    .all(function(req, res, next) {
-        var err;
-        if (!req.appInstance) {
-            err = {
-                status: 404,
-                message: "App doesn't exist"
-            };
-        }
-        next(err);
-    })
     .get(function(req, res) {
         res.json(req.appInstance);
     })
