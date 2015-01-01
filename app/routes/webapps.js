@@ -34,6 +34,42 @@ function createApp(req, res, next) {
     });
 }
 
+function deleteApp(req, res, next) {
+    req.appInstance.remove(function(err) {
+        if (err) {
+            return next({
+                status: 500,
+                message: err
+            });
+        }
+        res.status(204).end();
+    });
+}
+
+function handleError(err, req, res, next) {
+    res.status(err.status)
+        .json({
+            status: err.status,
+            message: err.message
+        });
+    next();
+}
+
+webapps.param("app", function(req, res, next, name) {
+    App.findOne({
+        name: name
+    }, function(err, app) {
+        req.appInstance = app;
+        if(!app) {
+            err = {
+                status: 404,
+                message: "App doesn't exist"
+            };
+        }
+        next(err);
+    });
+});
+
 function operationNotPossible(req, res, next) {
     next({
         status: 405,
@@ -51,23 +87,7 @@ webapps.route("/")
     .post(createApp)
     .put(operationNotPossible)
     .delete(operationNotPossible)
-    .all(function(err, req, res, next){
-        res.status(err.status)
-            .json({
-                status: err.status,
-                message: err.message
-            });
-        next();
-    });
-
-webapps.param("app", function(req, res, next, name) {
-    App.findOne({
-        name: name
-    }, function(err, app) {
-        req.appInstance = app;
-        next(err);
-    });
-});
+    .all(handleError);
 
 webapps.route("/:app")
     .all(function(req, res, next) {
@@ -85,26 +105,32 @@ webapps.route("/:app")
     })
     .put(bodyParser.json())
     .put(function(req, res) {
+        if(req.body) {
+            for (var prop in req.body) {
+                req.appInstance[prop] = req.body[prop];
+            }    
+        }
         res.send(req.appInstance);
     })
-    .delete(function(req, res, next) {
-        req.appInstance.remove(function(err) {
-            if (err) {
-                return next({
-                    status: 500,
-                    message: err
-                });
-            }
-            res.status(204).end();
-        });
-
-    })
+    .delete(deleteApp)
     .post(operationNotPossible)
-    .all(function(err, req, res, next){
-        res.status(err.status)
-            .json({
-                status: err.status,
-                message: err.message
-            });
-        next();
-    });
+    .all(handleError);
+
+webapps.route("/:app/tasks")
+    .get(function(req, res, next) {
+        res.json(req.appInstance.tasks);
+    })
+    .post()
+    .delete()
+    .put(operationNotPossible);
+
+
+webapps.route("/:app/tasks/:taskid")
+    .get(function(req, res) {
+        res.send(req.appInstance.tasks[req.params.taskid]);
+    })
+    .put()
+    .delete()
+    .post(operationNotPossible);
+
+webapps.use(handleError);
