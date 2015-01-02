@@ -34,6 +34,24 @@ function createApp(req, res, next) {
     });
 }
 
+function modifyApp(req, res, next) {
+    if(req.body) {
+        if (req.body.name && req.appInstance.name !== req.body.name) {
+            return next({
+                status: 400,
+                message: "Cannot modify name"
+            });
+        }
+        delete req.body.created_at;
+        delete req.body.modified_at;
+        
+        for (var prop in req.body) {
+            req.appInstance[prop] = req.body[prop];
+        }    
+    }
+    res.json(req.appInstance);
+}
+
 function deleteApp(req, res, next) {
     req.appInstance.remove(function(err) {
         if (err) {
@@ -55,6 +73,13 @@ function handleError(err, req, res, next) {
     next();
 }
 
+function operationNotPossible(req, res, next) {
+    next({
+        status: 405,
+        message: "operation not possible"
+    });
+}
+
 webapps.param("app", function(req, res, next, name) {
     App.findOne({
         name: name
@@ -70,13 +95,6 @@ webapps.param("app", function(req, res, next, name) {
     });
 });
 
-function operationNotPossible(req, res, next) {
-    next({
-        status: 405,
-        message: "operation not possible"
-    });
-}
-
 webapps.route("/")
     .get(function(req, res) {
         App.find({}, {_id: 0, __v: 0}, function(err, apps) {
@@ -86,41 +104,15 @@ webapps.route("/")
     .post(bodyParser.json())
     .post(createApp)
     .put(operationNotPossible)
-    .delete(operationNotPossible)
-    .all(handleError);
+    .delete(operationNotPossible);
 
 webapps.route("/:app")
     .get(function(req, res) {
         res.json(req.appInstance);
     })
     .put(bodyParser.json())
-    .put(function(req, res) {
-        if(req.body) {
-            for (var prop in req.body) {
-                req.appInstance[prop] = req.body[prop];
-            }    
-        }
-        res.send(req.appInstance);
-    })
+    .put(modifyApp)
     .delete(deleteApp)
-    .post(operationNotPossible)
-    .all(handleError);
-
-webapps.route("/:app/tasks")
-    .get(function(req, res, next) {
-        res.json(req.appInstance.tasks);
-    })
-    .post()
-    .delete()
-    .put(operationNotPossible);
-
-
-webapps.route("/:app/tasks/:taskid")
-    .get(function(req, res) {
-        res.send(req.appInstance.tasks[req.params.taskid]);
-    })
-    .put()
-    .delete()
     .post(operationNotPossible);
 
 webapps.use(handleError);
