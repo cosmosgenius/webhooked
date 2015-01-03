@@ -16,7 +16,7 @@ if("production" === env) {
 if("development" === env) {
     mongoose.set("debug", true);
     app.use(logger("dev"));
-    app.use(responseTime(5));
+    app.use(responseTime({digit:5}));
 }
 
 server.listen(config.port, function(err) {

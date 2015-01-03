@@ -5,10 +5,11 @@ module.exports = function(grunt) {
     grunt.initConfig({
         env : {
             dev : {
-                NODE_ENV : "development"
+                NODE_ENV : "development",
+                DEBUG: "webhooked:*"
             },
             test : {
-                NODE_ENV : "test"
+                NODE_ENV : "test",
             },
             prod : {
                 NODE_ENV : "production"

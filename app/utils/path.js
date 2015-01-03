@@ -1,6 +1,7 @@
 "use strict";
 
-var exec = require("child_process").exec;
+var proc = require("child_process"),
+    debug = require("debug")("webhooked:utils:path");
 
 /**
  * Map to handle messages
@@ -14,20 +15,21 @@ var messages = {
 
 /**
  * Executes the given command at the given path
- * @param  {String} command 
- * @param  {String} path
+ * @param {String} command 
+ * @param {String} path
+ * @param {Function} cb callback function
  * @see executeCommand
  */
 function executeCommand(command, path, cb){
-    exec(command, {
+    debug("command '%s' on path '%s'", command, path);
+
+    if (typeof command !== "string") {
+        return cb(new TypeError(messages.commandError));
+    }
+
+    proc.exec(command, {
         cwd: path
-    }, function(error, stdout) {
-        if (error) {
-            cb(error);
-        } else {
-            cb(null,stdout);
-        }
-    });
+    }, cb);
 }
 
 /**
@@ -37,6 +39,7 @@ function executeCommand(command, path, cb){
  * @return {Function}     a function which accepts a command as parameter and a callback function
  */
 function generatePath(path) {
+    debug("path '%s'", path);
     if (!path) {
         path = ".";
     }
@@ -46,9 +49,6 @@ function generatePath(path) {
     }
 
     return function(command, cb) {
-        if (typeof command !== "string") {
-            cb(new TypeError(messages.commandError));
-        }
         executeCommand(command, path, cb);
     };
 }
