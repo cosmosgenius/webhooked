@@ -2,26 +2,15 @@
 "use strict";
 
 var request = require("supertest"),
-    app = require("../app"),
+    sinon = require("sinon"),
     should = require("should"),
-    db = require("../app/models"),
-    ModelApp = db.App;
+    app = require("../app"),
+    App = require("../app/models/app.model");
 
 request = request(app);
-describe("/webapps", function() {
-    describe("app", function() {
-        it("should exist", function() {
-            should.exist(app);
-        });
-    });
-});
 
 describe("/webapps", function() {
     describe("get", function() {
-        before(function(done) {
-            ModelApp.remove(done);
-        });
-
         it("should return 200 and should be empty", function(done) {
             request
                 .get("/webapps")
@@ -34,105 +23,115 @@ describe("/webapps", function() {
         });
 
         it("should return 200 with 1 object", function(done) {
-            var app1 = new ModelApp({
-                name: "test",
-                path: "test",
-                tasks: ["a", "b"]
+            var stubapp = sinon.stub(App, "find", function(crea, projection, cb) {
+                cb(null, [{
+                    name: "test",
+                    path: "test",
+                    tasks: ["a","b"],
+                    created_at: new Date(),
+                    modified_at: new Date()
+                }]);
             });
 
-            app1.save(function(err, app_1) {
-                if (err) {
-                    done(err);
-                }
-                request
-                    .get("/webapps")
-                    .expect(200)
-                    .end(function(err, res) {
-                        res.body.should.be.an.instanceOf(Array);
-                        res.body.should.have.length(1);
-                        var app_res = res.body[0];
-                        app_res._id.should.be.equal(app_1._id + "");
-                        ModelApp.remove(done);
-                    });
-            });
-        });
-    });
-
-    describe("post", function() {
-        before(function(done) {
-            ModelApp.remove(done);
-        });
-
-        it("should return 201 and should add the to db", function(done) {
             request
                 .get("/webapps")
                 .expect(200)
                 .end(function(err, res) {
-                    if (err) {
-                        done(err);
-                        return;
-                    }
                     res.body.should.be.an.instanceOf(Array);
-                    res.body.should.have.length(0);
-                    request
-                        .post("/webapps")
-                        .send({
-                            name: "test",
-                            path: "test",
-                            tasks: ["a", "b"]
-                        })
-                        .expect(201)
-                        .end(function(err, res) {
-                            if (err) {
-                                done(err);
-                                return;
-                            }
-                            var postres = res.body;
-                            request
-                                .get("/webapps")
-                                .expect(200)
-                                .end(function(err, res) {
-                                    res.body.should.be.an.instanceOf(Array);
-                                    res.body.should.have.length(1);
-                                    postres._id.should.be.equal(res.body[0]._id);
-                                    done(err);
-                                });
-                        });
+                    res.body.should.have.length(1);
+                    var app_res = res.body[0];
+                    app_res.name.should.be.equal("test");
+                    app_res.path.should.be.equal("test");
+                    app_res.tasks.should.eql(["a","b"]);
+                    should.exist(app_res.created_at);
+                    should.exist(app_res.modified_at);
+                    stubapp.restore();
+                    done();
                 });
         });
+    });
 
-        it("should return 400 for invalid post", function(done) {
+    describe("post", function() {
+        it("should return 201 and call model save method with valid data", function(done) {
+            var instance = {
+                    name: "test1",
+                    path: "test1",
+                    tasks: ["abc", "bcd"]
+                };
+
+            var stubapp = sinon.stub(App.prototype, "save", function(cb) {
+                cb(null,instance);
+            });
+
             request
                 .post("/webapps")
-                .set("Content-Type", "application/json")
-                .send({
-                    tasks: ["a", "b"]
-                })
-                .expect(400)
+                .send(instance)
+                .expect(201)
+                .expect("location", instance.name)
                 .end(function(err, res) {
-                    should.exist(res.body.message);
+                    var postres = res.body;
+                    postres.name.should.equal(instance.name);
+                    postres.path.should.equal(instance.path);
+                    postres.tasks.should.eql(instance.tasks);
+                    stubapp.restore();
                     done(err);
                 });
         });
 
-        it("should return 415 for type which is not json", function(done) {
+        it("should handle 11000 error code when app already exist", function(done) {
+            var instance = {
+                    name: "test1",
+                    path: "test1",
+                    tasks: ["abc", "bcd"]
+                };
+
+            var stubapp = sinon.stub(App.prototype, "save", function(cb) {
+                cb({
+                    code: 11000
+                });
+            });
+
             request
                 .post("/webapps")
-                .set("Content-Type", "application/x-www-form-urlencoded")
-                .send({
-                    name: "test",
-                    path: "test",
-                    tasks: ["a", "b"]
-                })
-                .expect(415)
+                .send(instance)
+                .expect(400)
                 .end(function(err, res) {
-                    should.exist(res.body.message);
+                    var postres = res.body;
+                    postres.status.should.equal(400);
+                    postres.message.name.should.equal(instance.name);
+                    stubapp.restore();
+                    done(err);
+                });
+        });
+
+        it("should handle other errors", function(done) {
+            var instance = {
+                    name: "test1",
+                    path: "test1",
+                    tasks: ["abc", "bcd"]
+                };
+
+            var stubapp = sinon.stub(App.prototype, "save", function(cb) {
+                cb({
+                    errors: "an error has occured"
+                });
+            });
+
+            request
+                .post("/webapps")
+                .send(instance)
+                .expect(400)
+                .end(function(err, res) {
+                    var postres = res.body;
+                    postres.status.should.equal(400);
+                    postres.message.should.equal("an error has occured");
+                    stubapp.restore();
                     done(err);
                 });
         });
     });
 
-    describe("put", function() {
+    describe("put delete", function() {
         it("should return 405", function(done) {
             request
                 .put("/webapps")
@@ -140,9 +139,7 @@ describe("/webapps", function() {
                 .send()
                 .expect(405,done);
         });
-    });
 
-    describe("delete", function() {
         it("should return 405", function(done) {
             request
                 .delete("/webapps")
@@ -156,36 +153,185 @@ describe("/webapps", function() {
 describe("/webapps/:app", function() {
 
     describe("get", function() {
-        before(function(done) {
-            ModelApp.remove(done);
+        it("should return 404 when app doesn\"t exist", function(done) {
+            var stubapp = sinon.stub(App, "findOne", function(crea, cb) {
+                crea.name.should.equal("appdoesnotexist");
+                cb();
+            });
+
+            request
+                .get("/webapps/appdoesnotexist")
+                .expect(404)
+                .end(function(err, res) {
+                    res.body.message.should.equal("App doesn't exist");
+                    stubapp.restore();
+                    done(err);
+                });
         });
-        it("should return 404 when app doesn\"t exist");
-        it("should return the app");   
+
+        it("should return the app", function(done) {
+            var stubapp = sinon.stub(App, "findOne", function(crea, cb) {
+                crea.name.should.equal("appexist");
+                cb(null, {
+                    name: "test",
+                    path: "test",
+                    tasks: ["a","b"],
+                    created_at: new Date(),
+                    modified_at: new Date()
+                });
+            });
+
+            request
+                .get("/webapps/appexist")
+                .expect(200)
+                .end(function(err, res) {
+                    var postres = res.body;
+                    postres.name.should.equal("test");
+                    postres.path.should.equal("test");
+                    postres.tasks.should.eql(["a","b"]);
+                    stubapp.restore();
+                    done(err);
+                });
+        });   
     });
 
     describe("put", function() {
-        before(function(done) {
-            ModelApp.remove(done);
+        it("should return the updated app", function(done) {
+            var instance = {
+                    name: "test",
+                    path: "test",
+                    tasks: ["a","b"],
+                    save: function(cb){
+                        cb(null,instance);
+                    }
+                };
+
+            var stubapp = sinon.stub(App, "findOne", function(crea, cb) {
+                crea.name.should.equal("appexist");
+                cb(null, instance);
+            });
+
+            request
+                .put("/webapps/appexist")
+                .expect(200)
+                .send({
+                    path: "newpath"
+                })
+                .end(function(err, res) {
+                    var postres = res.body;
+                    postres.name.should.equal("test");
+                    postres.path.should.equal("newpath");
+                    postres.tasks.should.eql(["a","b"]);
+                    stubapp.restore();
+                    done(err);
+                });
         });
-        it("should return 404 when app doesn\"t exist");
-        it("should return the updated app by updating the app in DB");
-        it("should return 400 with error msg for invalid request");
-        it("should return 400 with error msg for invalid type");
+
+        it("should return 400 when trying to update name", function(done) {
+            var instance = {
+                    name: "test",
+                    path: "test",
+                    tasks: ["a","b"],
+                    save: function(cb){
+                        cb(null,instance);
+                    }
+                };
+
+            var stubapp = sinon.stub(App, "findOne", function(crea, cb) {
+                crea.name.should.equal("appexist");
+                cb(null, instance);
+            });
+
+            request
+                .put("/webapps/appexist")
+                .expect(400)
+                .send({
+                    name: "newpath"
+                })
+                .end(function(err, res) {
+                    var postres = res.body;
+                    postres.message.should.equal("Cannot modify name");
+                    stubapp.restore();
+                    done(err);
+                });
+        });
+
+        it("should return 400 when error occurs while saving", function(done) {
+            var instance = {
+                    name: "test",
+                    path: "test",
+                    tasks: ["a","b"],
+                    save: function(cb){
+                        cb({errors: "error occured"});
+                    }
+                };
+
+            var stubapp = sinon.stub(App, "findOne", function(crea, cb) {
+                crea.name.should.equal("appexist");
+                cb(null, instance);
+            });
+
+            request
+                .put("/webapps/appexist")
+                .expect(400)
+                .send({
+                    path: "newpath"
+                })
+                .end(function(err, res) {
+                    var postres = res.body;
+                    postres.message.should.equal("error occured");
+                    stubapp.restore();
+                    done(err);
+                });
+        });
     });
 
     describe("delete", function() {
-        before(function(done) {
-            ModelApp.remove(done);
-        });
-        it("should return 404 when app doesn\"t exist");
-        it("should return 204 and remove it from db");
-    });
+        it("should return 204 and delete app", function(done) {
+            var stubapp = sinon.stub(App, "findOne", function(crea, cb) {
+                crea.name.should.equal("appexist");
+                cb(null, {
+                    name: "test",
+                    path: "test",
+                    tasks: ["a","b"],
+                    remove: function(cb){
+                        cb();
+                    }
+                });
+            });
 
-    describe("post", function() {
-        before(function(done) {
-            ModelApp.remove(done);
+            request
+                .delete("/webapps/appexist")
+                .expect(204)
+                .end(function(err) {
+                    stubapp.restore();
+                    done(err);
+                });
         });
-        it("should return 404 when app doesn\"t exist");
-        it("should return 405 when app exist");
+
+        it("should return 500 with error", function(done) {
+            var stubapp = sinon.stub(App, "findOne", function(crea, cb) {
+                crea.name.should.equal("appexist");
+                cb(null, {
+                    name: "test",
+                    path: "test",
+                    tasks: ["a","b"],
+                    remove: function(cb){
+                        cb({
+                            errors: "an error has occured"
+                        });
+                    }
+                });
+            });
+
+            request
+                .delete("/webapps/appexist")
+                .expect(500)
+                .end(function(err, res) {
+                    res.body.message.errors.should.be.equal("an error has occured");
+                    stubapp.restore();
+                    done(err);
+                });
+        });
     });
 });
