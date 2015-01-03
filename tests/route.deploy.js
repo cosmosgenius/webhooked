@@ -9,7 +9,7 @@ var request = require("supertest"),
 
 request = request(app);
 
-describe("deploy", function() {
+describe.skip("deploy", function() {
     describe("app", function() {
         it("should exist", function() {
             should.exist(app);
