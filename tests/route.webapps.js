@@ -1,4 +1,4 @@
-/*global describe, it, before */
+/*global describe, it */
 "use strict";
 
 var request = require("supertest"),
@@ -11,17 +11,6 @@ request = request(app);
 
 describe("/webapps", function() {
     describe("get", function() {
-        it("should return 200 and should be empty", function(done) {
-            request
-                .get("/webapps")
-                .expect(200)
-                .end(function(err, res) {
-                    res.body.should.be.an.instanceOf(Array);
-                    res.body.should.have.length(0);
-                    done(err);
-                });
-        });
-
         it("should return 200 with 1 object", function(done) {
             var stubapp = sinon.stub(App, "find", function(crea, projection, cb) {
                 cb(null, [{
