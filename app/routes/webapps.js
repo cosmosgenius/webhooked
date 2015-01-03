@@ -53,6 +53,7 @@ function modifyApp(req, res, next) {
         for (var prop in req.body) {
             req.appInstance[prop] = req.body[prop];
         }
+
         req.appInstance.save(function(err, napp) {
             if (!err) {
                 debug("modifyApp request saved with %o", napp);
@@ -102,6 +103,7 @@ webapps.param("app", function(req, res, next, name) {
     App.findOne({
         name: name
     }, function(err, app) {
+        debug("found app %o", app);
         req.appInstance = app;
         if(!app) {
             err = {
