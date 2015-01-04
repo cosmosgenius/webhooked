@@ -2,49 +2,93 @@
 
 var express = require("express"),
     async = require("async"),
-    deploy = express.Router(),
+    debug = require("debug")("webhooked:routes:deploy"),
+    bodyParser = require("body-parser"),
+    deploy = express.Router();
+
+var helper = require("./helper"),
     path = require("../utils/path"),
     db = require("../models"),
-    App = db.App;
+    App = db.App,
+    Log = db.Log;
 
 module.exports = deploy;
+
+function doDeployment(req, res, next) {
+    var execute = path(req.appInstance.path);
+    var tasks = req.appInstance.tasks;
+
+    async.mapSeries(tasks, execute, function(err, results){
+        if(err) {
+            return next({
+                status: 400,
+                message: err.message
+            });
+        }
+        
+        var log = new Log({
+            app: req.appInstance.name
+        });
+
+        tasks.forEach(function(task, index) {
+            log.addOutput(task, results[index]);
+        });
+
+        log.save(function(err, nlog) {
+            if(!err) {
+                debug("doDeployment request saved with %o", nlog);
+                return res.status(201).json(nlog);
+            }
+
+            next({
+                status: 400,
+                message: err.errors
+            });
+        });
+    });
+}
 
 deploy.param("app", function(req, res, next, name) {
     App.findOne({
         name: name
     }, function(err, app) {
-        req.app = app;
-        next();
+        debug("found app %o", app);
+        req.appInstance = app;
+        if(!app) {
+            err = {
+                status: 404,
+                message: "App doesn't exist"
+            };
+        }
+        next(err);
     });
 });
 
 deploy.route("/")
     .get(function(req, res) {
-        App.find(function(err, app) {
-            res.json(app);
+        App.find({}, {_id: 0, __v: 0}, function(err, apps) {
+            res.json(apps);
         });
-    });
+    })
+    .delete(helper.operationNotPossible)
+    .put(helper.operationNotPossible)
+    .post(helper.operationNotPossible);
 
 deploy.route("/:app")
-    .post(function(req, res) {
-        if (!req.app) {
-            return res.json(404, {
-                error: "App doesn't exist"
-            });
-        }
-
-        var execute = path(req.app.path);
-        var tasks = req.app.tasks;
-
-        async.mapSeries(tasks, execute, function(err, results){
-            if(err) {
-                return res.json(400, {
-                    error: err.message
-                });
-            }
-
-            res.json({
-                result: results.join("\n\n")
-            });
+    .get(function(req, res) {
+        debug("Getting logs for %o app", req.appInstance.name);
+        Log.find({
+            app: req.appInstance.name
+        }, {
+            __v: 0
+        }, function(err, logs) {
+            debug("Found %o number of logs", logs.length);
+            res.json(logs);
         });
-    });
+    })
+    .post(bodyParser.json())
+    .post(doDeployment)
+    .put(helper.operationNotPossible)
+    .delete(helper.operationNotPossible);
+
+deploy.use(helper.handleError);

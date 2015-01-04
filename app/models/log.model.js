@@ -15,6 +15,12 @@ var logSchema = new mongoose.Schema({
  */
 logSchema.index({ app: 1, created_at: -1 });
 
+logSchema.options.toJSON = {
+    transform: function (doc, ret) {
+        delete ret.__v;
+    }
+};
+
 logSchema.methods.addOutput = function (task, output) {
     debug("adding task %s to log for app", task, this.app);
     return this.outputs.push({
