@@ -1,6 +1,6 @@
 {
   "name": "webhooked",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "A Deployment Manager",
   "main": "index.js",
   "private": true,
@@ -9,7 +9,7 @@
   },
   "config": {
     "travis-cov": {
-      "threshold": 85
+      "threshold": 100
     }
   },
   "repository": {
