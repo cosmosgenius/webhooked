@@ -5,7 +5,8 @@ var debug = require("debug")("webhooked:routes:webapps"),
     bodyParser = require("body-parser"),
     webapps = express.Router();
 
-var db = require("../models"),
+var helper = require("./helper"),
+    db = require("../models"),
     App = db.App;
 
 module.exports = webapps;
@@ -83,22 +84,6 @@ function deleteApp(req, res, next) {
     });
 }
 
-function handleError(err, req, res, next) {
-    res.status(err.status)
-        .json({
-            status: err.status,
-            message: err.message
-        });
-    next();
-}
-
-function operationNotPossible(req, res, next) {
-    next({
-        status: 405,
-        message: "operation not possible"
-    });
-}
-
 webapps.param("app", function(req, res, next, name) {
     App.findOne({
         name: name
@@ -123,8 +108,8 @@ webapps.route("/")
     })
     .post(bodyParser.json())
     .post(createApp)
-    .put(operationNotPossible)
-    .delete(operationNotPossible);
+    .put(helper.operationNotPossible)
+    .delete(helper.operationNotPossible);
 
 webapps.route("/:app")
     .get(function(req, res) {
@@ -133,6 +118,6 @@ webapps.route("/:app")
     .put(bodyParser.json())
     .put(modifyApp)
     .delete(deleteApp)
-    .post(operationNotPossible);
+    .post(helper.operationNotPossible);
 
-webapps.use(handleError);
+webapps.use(helper.handleError);
