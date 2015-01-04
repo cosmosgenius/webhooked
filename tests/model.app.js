@@ -111,4 +111,19 @@ describe("Model App", function() {
             app.getTasks().toObject().should.eql(["a","b","c"]);
         });
     });
+
+    describe("JSON structure", function() {
+        it("should return json without _id and __v", function() {
+            var app = new App({
+                name: "app1",
+                path: ".",
+                tasks: ["a","b"],
+                __v:0
+            });
+            should.exist(app._id);
+            should.exist(app.__v);
+            should.not.exist(app.toJSON()._id);
+            should.not.exist(app.toJSON().__v);
+        });
+    });
 });
