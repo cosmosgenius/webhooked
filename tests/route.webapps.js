@@ -1,4 +1,4 @@
-/*global describe, it */
+/*global describe, it, before, after */
 "use strict";
 
 var request = require("supertest"),
@@ -9,10 +9,20 @@ var request = require("supertest"),
 
 request = request(app);
 
+var sandbox;
+
 describe("/webapps", function() {
+    before(function(){
+        sandbox = sinon.sandbox.create();
+    });
+
+    after(function(){
+        sandbox.restore();
+    });
+
     describe("get", function() {
         it("should return 200 with 1 object", function(done) {
-            var stubapp = sinon.stub(App, "find", function(crea, projection, cb) {
+            var stubapp = sandbox.stub(App, "find", function(crea, projection, cb) {
                 cb(null, [{
                     name: "test",
                     path: "test",
@@ -48,7 +58,7 @@ describe("/webapps", function() {
                     tasks: ["abc", "bcd"]
                 };
 
-            var stubapp = sinon.stub(App.prototype, "save", function(cb) {
+            var stubapp = sandbox.stub(App.prototype, "save", function(cb) {
                 cb(null,instance);
             });
 
@@ -74,7 +84,7 @@ describe("/webapps", function() {
                     tasks: ["abc", "bcd"]
                 };
 
-            var stubapp = sinon.stub(App.prototype, "save", function(cb) {
+            var stubapp = sandbox.stub(App.prototype, "save", function(cb) {
                 cb({
                     code: 11000
                 });
@@ -100,7 +110,7 @@ describe("/webapps", function() {
                     tasks: ["abc", "bcd"]
                 };
 
-            var stubapp = sinon.stub(App.prototype, "save", function(cb) {
+            var stubapp = sandbox.stub(App.prototype, "save", function(cb) {
                 cb({
                     errors: "an error has occured"
                 });
@@ -140,10 +150,17 @@ describe("/webapps", function() {
 });
 
 describe("/webapps/:app", function() {
+    before(function(){
+        sandbox = sinon.sandbox.create();
+    });
 
+    after(function(){
+        sandbox.restore();
+    });
+    
     describe("get", function() {
         it("should return 404 when app doesn\"t exist", function(done) {
-            var stubapp = sinon.stub(App, "findOne", function(crea, cb) {
+            var stubapp = sandbox.stub(App, "findOne", function(crea, cb) {
                 crea.name.should.equal("appdoesnotexist");
                 cb();
             });
@@ -159,7 +176,7 @@ describe("/webapps/:app", function() {
         });
 
         it("should return the app", function(done) {
-            var stubapp = sinon.stub(App, "findOne", function(crea, cb) {
+            var stubapp = sandbox.stub(App, "findOne", function(crea, cb) {
                 crea.name.should.equal("appexist");
                 cb(null, {
                     name: "test",
@@ -195,7 +212,7 @@ describe("/webapps/:app", function() {
                     }
                 };
 
-            var stubapp = sinon.stub(App, "findOne", function(crea, cb) {
+            var stubapp = sandbox.stub(App, "findOne", function(crea, cb) {
                 crea.name.should.equal("appexist");
                 cb(null, instance);
             });
@@ -226,7 +243,7 @@ describe("/webapps/:app", function() {
                     }
                 };
 
-            var stubapp = sinon.stub(App, "findOne", function(crea, cb) {
+            var stubapp = sandbox.stub(App, "findOne", function(crea, cb) {
                 crea.name.should.equal("appexist");
                 cb(null, instance);
             });
@@ -255,7 +272,7 @@ describe("/webapps/:app", function() {
                     }
                 };
 
-            var stubapp = sinon.stub(App, "findOne", function(crea, cb) {
+            var stubapp = sandbox.stub(App, "findOne", function(crea, cb) {
                 crea.name.should.equal("appexist");
                 cb(null, instance);
             });
@@ -277,7 +294,7 @@ describe("/webapps/:app", function() {
 
     describe("delete", function() {
         it("should return 204 and delete app", function(done) {
-            var stubapp = sinon.stub(App, "findOne", function(crea, cb) {
+            var stubapp = sandbox.stub(App, "findOne", function(crea, cb) {
                 crea.name.should.equal("appexist");
                 cb(null, {
                     name: "test",
@@ -299,7 +316,7 @@ describe("/webapps/:app", function() {
         });
 
         it("should return 500 with error", function(done) {
-            var stubapp = sinon.stub(App, "findOne", function(crea, cb) {
+            var stubapp = sandbox.stub(App, "findOne", function(crea, cb) {
                 crea.name.should.equal("appexist");
                 cb(null, {
                     name: "test",
