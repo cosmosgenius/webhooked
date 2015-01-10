@@ -1,7 +1,7 @@
 Webhooked
 =========
 
-An automation tool with Restful Api interface.
+An deployment tool using REST API interface.
 
 [![Build status][travis-image]][travis-url]
 [![Dependency Status][david-image]][david-url]
@@ -9,7 +9,7 @@ An automation tool with Restful Api interface.
 
 ## License
 
-[MIT](LICENSE.md)
+[MIT](LICENSE)
 
 [travis-image]: https://img.shields.io/travis/cosmosgenius/webhooked.svg?style=flat-square
 [travis-url]: https://travis-ci.org/cosmosgenius/webhooked
