@@ -1,15 +1,53 @@
 Webhooked
 =========
 
-An deployment tool using REST API interface.
+A deployment tool using REST API interface.
 
 [![Build status][travis-image]][travis-url]
 [![Dependency Status][david-image]][david-url]
 [![Test coverage][coveralls-image]][coveralls-url]
 
-## License
+##Install
+1. Run [MongoDB](http://docs.mongodb.org/manual/installation/) server
 
-[MIT](LICENSE)
+	```
+	mongod
+	```
+
+2. Install dependencies with [npm](https://www.npmjs.org/)
+
+	```
+	npm install
+	```
+
+3. Run tests
+
+	```
+	npm test
+	```
+
+4. Run server and other tasks with [grunt](http://gruntjs.com/)
+
+	```
+	grunt
+	```
+
+Now the app can be accessed via
+
+```
+http://localhost:5858
+```
+
+##Usage
+API endpoints available are
+```
+/webapps
+```
+and
+```
+/deploy
+```
+
 
 [travis-image]: https://img.shields.io/travis/cosmosgenius/webhooked.svg?style=flat-square
 [travis-url]: https://travis-ci.org/cosmosgenius/webhooked
@@ -17,3 +55,7 @@ An deployment tool using REST API interface.
 [coveralls-url]: https://coveralls.io/r/cosmosgenius/webhooked?branch=master
 [david-image]: http://img.shields.io/david/cosmosgenius/webhooked.svg?style=flat-square
 [david-url]: https://david-dm.org/cosmosgenius/webhooked
+
+## License
+
+(C) released under [MIT license](LICENSE)
