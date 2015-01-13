@@ -35,7 +35,7 @@ A deployment tool using REST API interface.
 Now the app can be accessed via
 
 ```
-http://localhost:5858
+http://localhost:8000
 ```
 
 ##Usage
@@ -47,6 +47,7 @@ and
 ```
 /deploy
 ```
+Check out the [wiki page](https://github.com/cosmosgenius/webhooked/wiki) for more information.
 
 
 [travis-image]: https://img.shields.io/travis/cosmosgenius/webhooked.svg?style=flat-square
