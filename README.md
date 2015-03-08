@@ -41,11 +41,11 @@ http://localhost:8000
 ##Usage
 API endpoints available are
 ```
-/webapps
+/<app_name>
 ```
 and
 ```
-/deploy
+/<app_name>/deploy
 ```
 Check out the [wiki page](https://github.com/cosmosgenius/webhooked/wiki) for more information.
 
