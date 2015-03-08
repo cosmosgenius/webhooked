@@ -1,17 +1,19 @@
 /*global describe, it, before, after */
 "use strict";
 
-var request = require("supertest"),
+var process = require("child_process"),
+    request = require("supertest"),
     sinon = require("sinon"),
     should = require("should"),
     app = require("../app"),
-    App = require("../app/models/app.model");
+    App = require("../app/models/app.model"),
+    Log = require("../app/models/log.model");
 
 request = request(app);
 
 var sandbox;
 
-describe("/webapps", function() {
+describe("/", function() {
     before(function(){
         sandbox = sinon.sandbox.create();
     });
@@ -33,7 +35,7 @@ describe("/webapps", function() {
             });
 
             request
-                .get("/webapps")
+                .get("/")
                 .expect(200)
                 .end(function(err, res) {
                     res.body.should.be.an.instanceOf(Array);
@@ -63,7 +65,7 @@ describe("/webapps", function() {
             });
 
             request
-                .post("/webapps")
+                .post("/")
                 .send(instance)
                 .expect(201)
                 .expect("location", instance.name)
@@ -91,7 +93,7 @@ describe("/webapps", function() {
             });
 
             request
-                .post("/webapps")
+                .post("/")
                 .send(instance)
                 .expect(400)
                 .end(function(err, res) {
@@ -117,7 +119,7 @@ describe("/webapps", function() {
             });
 
             request
-                .post("/webapps")
+                .post("/")
                 .send(instance)
                 .expect(400)
                 .end(function(err, res) {
@@ -133,7 +135,7 @@ describe("/webapps", function() {
     describe("put delete", function() {
         it("should return 405", function(done) {
             request
-                .put("/webapps")
+                .put("/")
                 .set("Content-Type", "application/json")
                 .send()
                 .expect(405,done);
@@ -141,7 +143,7 @@ describe("/webapps", function() {
 
         it("should return 405", function(done) {
             request
-                .delete("/webapps")
+                .delete("/")
                 .set("Content-Type", "application/json")
                 .send()
                 .expect(405,done);
@@ -149,7 +151,7 @@ describe("/webapps", function() {
     });
 });
 
-describe("/webapps/:app", function() {
+describe("/:app", function() {
     before(function(){
         sandbox = sinon.sandbox.create();
     });
@@ -166,7 +168,7 @@ describe("/webapps/:app", function() {
             });
 
             request
-                .get("/webapps/appdoesnotexist")
+                .get("/appdoesnotexist")
                 .expect(404)
                 .end(function(err, res) {
                     res.body.message.should.equal("App doesn't exist");
@@ -188,7 +190,7 @@ describe("/webapps/:app", function() {
             });
 
             request
-                .get("/webapps/appexist")
+                .get("/appexist")
                 .expect(200)
                 .end(function(err, res) {
                     var postres = res.body;
@@ -218,7 +220,7 @@ describe("/webapps/:app", function() {
             });
 
             request
-                .put("/webapps/appexist")
+                .put("/appexist")
                 .expect(200)
                 .send({
                     path: "newpath"
@@ -249,7 +251,7 @@ describe("/webapps/:app", function() {
             });
 
             request
-                .put("/webapps/appexist")
+                .put("/appexist")
                 .expect(400)
                 .send({
                     name: "newpath"
@@ -278,7 +280,7 @@ describe("/webapps/:app", function() {
             });
 
             request
-                .put("/webapps/appexist")
+                .put("/appexist")
                 .expect(400)
                 .send({
                     path: "newpath"
@@ -307,7 +309,7 @@ describe("/webapps/:app", function() {
             });
 
             request
-                .delete("/webapps/appexist")
+                .delete("/appexist")
                 .expect(204)
                 .end(function(err) {
                     stubapp.restore();
@@ -331,7 +333,7 @@ describe("/webapps/:app", function() {
             });
 
             request
-                .delete("/webapps/appexist")
+                .delete("/appexist")
                 .expect(500)
                 .end(function(err, res) {
                     res.body.message.errors.should.be.equal("an error has occured");
@@ -340,4 +342,217 @@ describe("/webapps/:app", function() {
                 });
         });
     });
+});
+
+describe("/:app/deploy", function() {
+    before(function(){
+        sandbox = sinon.sandbox.create();
+    });
+
+    after(function(){
+        sandbox.restore();
+    });
+
+    describe("get", function() {
+        it("should return 404 when app doesn\"t exist", function(done) {
+            var stubapp = sandbox.stub(App, "findOne", function(crea, cb) {
+                crea.name.should.equal("appdoesnotexist");
+                cb();
+            });
+
+            request
+                .get("/appdoesnotexist/deploy")
+                .expect(404)
+                .end(function(err, res) {
+                    res.body.message.should.equal("App doesn't exist");
+                    stubapp.restore();
+                    done(err);
+                });
+        });
+
+        it("should return the app", function(done) {
+            var stubapp = sandbox.stub(App, "findOne", function(crea, cb) {
+                crea.name.should.equal("appexist");
+                cb(null, {
+                    name: "test",
+                    path: "test",
+                    tasks: ["a","b"],
+                    created_at: new Date(),
+                    modified_at: new Date()
+                });
+            });
+
+            var stublog = sandbox.stub(Log, "find", function(crea, projection, cb) {
+                cb(null, [{
+                    app : "appexist",
+                    outputs : [
+                        {
+                            task: "task1",
+                            output: "output1"
+                        },
+                        {
+                            task: "task2",
+                            output: "output2"
+                        }
+                    ],
+                    created_at: new Date(),
+                    modified_at: new Date()
+                }]);
+            });
+
+            request
+                .get("/appexist/deploy")
+                .expect(200)
+                .end(function(err, res) {
+                    var logs = res.body[0];
+                    logs.app.should.equal("appexist");
+                    logs.outputs[0].task.should.equal("task1");
+                    logs.outputs[0].output.should.equal("output1");
+                    logs.outputs[1].task.should.equal("task2");
+                    logs.outputs[1].output.should.equal("output2");
+                    stubapp.restore();
+                    stublog.restore();
+                    done(err);
+                });
+        });   
+    });
+
+    describe("post", function() {
+        it("should execute the given tasks and store in db", function(done) {
+            var stubapp = sandbox.stub(App, "findOne", function(crea, cb) {
+                crea.name.should.equal("appexist");
+                cb(null, {
+                    name: "appexist",
+                    path: "test",
+                    tasks: ["task1","task2"],
+                    created_at: new Date(),
+                    modified_at: new Date()
+                });
+            });
+
+            var stublog = sandbox.stub(Log.prototype, "save", function(cb) {
+                cb(null, [{
+                    app : "appexist",
+                    outputs : [
+                        {
+                            task: "task1",
+                            output: "output1"
+                        },
+                        {
+                            task: "task2",
+                            output: "output2"
+                        }
+                    ],
+                    created_at: new Date(),
+                    modified_at: new Date()
+                }]);
+            });
+
+            var stubexec = sandbox.stub(process, "exec", function(cmd, options, cb) {
+                if(cmd === "task1") {
+                    return cb(null, "output1");
+                }
+
+                if(cmd === "task2") {
+                    return cb(null, "output2");
+                }
+            });
+
+            request
+                .post("/appexist/deploy")
+                .send()
+                .expect(201)
+                .end(function(err, res) {
+                    var logs = res.body[0];
+                    logs.app.should.equal("appexist");
+                    logs.outputs[0].task.should.equal("task1");
+                    logs.outputs[0].output.should.equal("output1");
+                    logs.outputs[1].task.should.equal("task2");
+                    logs.outputs[1].output.should.equal("output2");
+                    stubapp.restore();
+                    stublog.restore();
+                    stubexec.restore();
+                    done(err);
+                });
+        });
+
+        it("should handle execution errors", function(done) {
+            var stubapp = sandbox.stub(App, "findOne", function(crea, cb) {
+                crea.name.should.equal("appexist");
+                cb(null, {
+                    name: "appexist",
+                    path: "test",
+                    tasks: ["task1","task2"],
+                    created_at: new Date(),
+                    modified_at: new Date()
+                });
+            });
+
+            var stubexec = sandbox.stub(process, "exec", function(cmd, options, cb) {
+                if(cmd === "task1") {
+                    return cb(null, "output1");
+                }
+
+                if(cmd === "task2") {
+                    return cb({message: "an error has occured"});
+                }
+            });
+
+            request
+                .post("/appexist/deploy")
+                .send()
+                .expect(400)
+                .end(function(err, res) {
+                    var postres = res.body;
+                    postres.status.should.equal(400);
+                    postres.message.should.equal("an error has occured");
+                    stubapp.restore();
+                    stubexec.restore();
+                    done(err);
+                });
+        });
+        
+        it("should handle other errors", function(done) {
+            var stubapp = sandbox.stub(App, "findOne", function(crea, cb) {
+                crea.name.should.equal("appexist");
+                cb(null, {
+                    name: "appexist",
+                    path: "test",
+                    tasks: ["task1","task2"],
+                    created_at: new Date(),
+                    modified_at: new Date()
+                });
+            });
+
+            var stublog = sandbox.stub(Log.prototype, "save", function(cb) {
+                cb({
+                    errors: "an error has occured"
+                });
+            });
+
+            var stubexec = sandbox.stub(process, "exec", function(cmd, options, cb) {
+                if(cmd === "task1") {
+                    return cb(null, "output1");
+                }
+
+                if(cmd === "task2") {
+                    return cb(null, "output2");
+                }
+            });
+
+            request
+                .post("/appexist/deploy")
+                .send()
+                .expect(400)
+                .end(function(err, res) {
+                    var postres = res.body;
+                    postres.status.should.equal(400);
+                    postres.message.should.equal("an error has occured");
+                    stubapp.restore();
+                    stublog.restore();
+                    stubexec.restore();
+                    done(err);
+                });
+        });      
+    }); 
 });

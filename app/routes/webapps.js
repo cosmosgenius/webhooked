@@ -1,18 +1,27 @@
 "use strict";
 
 var debug = require("debug")("webhooked:routes:webapps"),
+    async = require("async"),
     express = require("express"),
     bodyParser = require("body-parser"),
     webapps = express.Router();
 
 var helper = require("./helper"),
+    path = require("../utils/path"),
     db = require("../models"),
-    App = db.App;
+    App = db.App,
+    Log = db.Log;
 
 module.exports = webapps;
 
-function createApp(req, res, next) {
-    debug("createApp request with data %o", req.body);
+function get_apps(req, res) {
+    App.find({}, {_id: 0, __v: 0}, function(err, apps) {
+        res.json(apps);
+    });
+}
+
+function create_app(req, res, next) {
+    debug("create_app request with data %o", req.body);
     var app = new App(req.body);
     app.save(function(err, napp) {
         if (!err) {
@@ -39,7 +48,7 @@ function createApp(req, res, next) {
     });
 }
 
-function modifyApp(req, res, next) {
+function modify_app(req, res, next) {
     debug("modifyApp request with data %o", req.body);
     if(req.body) {
         if (req.body.name && req.appInstance.name !== req.body.name) {
@@ -70,7 +79,11 @@ function modifyApp(req, res, next) {
     }
 }
 
-function deleteApp(req, res, next) {
+function replace_app(req, res, next) {
+
+}
+
+function delete_app(req, res, next) {
     debug("deleteApp request for %o", req.appInstance);
     req.appInstance.remove(function(err) {
         if (err) {
@@ -81,6 +94,52 @@ function deleteApp(req, res, next) {
             });
         }
         res.status(204).end();
+    });
+}
+
+function create_deployment(req, res, next) {
+    var execute = path(req.appInstance.path);
+    var tasks = req.appInstance.tasks;
+
+    async.mapSeries(tasks, execute, function(err, results){
+        if(err) {
+            return next({
+                status: 400,
+                message: err.message
+            });
+        }
+        
+        var log = new Log({
+            app: req.appInstance.name
+        });
+
+        tasks.forEach(function(task, index) {
+            log.addOutput(task, results[index]);
+        });
+
+        log.save(function(err, nlog) {
+            if(!err) {
+                debug("doDeployment request saved with %o", nlog);
+                return res.status(201).json(nlog);
+            }
+
+            next({
+                status: 400,
+                message: err.errors
+            });
+        });
+    });
+}
+
+function get_logs(req, res) {
+    debug("Getting logs for %o app", req.appInstance.name);
+    Log.find({
+        app: req.appInstance.name
+    }, {
+        __v: 0
+    }, function(err, logs) {
+        debug("Found %o number of logs", logs.length);
+        res.json(logs);
     });
 }
 
@@ -101,13 +160,10 @@ webapps.param("app", function(req, res, next, name) {
 });
 
 webapps.route("/")
-    .get(function(req, res) {
-        App.find({}, {_id: 0, __v: 0}, function(err, apps) {
-            res.json(apps);
-        });
-    })
+    .get(get_apps)
     .post(bodyParser.json())
-    .post(createApp)
+    .post(create_app)
+    .patch(helper.operationNotPossible)
     .put(helper.operationNotPossible)
     .delete(helper.operationNotPossible);
 
@@ -116,8 +172,17 @@ webapps.route("/:app")
         res.json(req.appInstance);
     })
     .put(bodyParser.json())
-    .put(modifyApp)
-    .delete(deleteApp)
+    .put(modify_app)
+    .patch(modify_app)
+    .delete(delete_app)
     .post(helper.operationNotPossible);
+
+webapps.route("/:app/deploy")
+    .get(get_logs)
+    .post(bodyParser.json())
+    .post(create_deployment)
+    .put(helper.operationNotPossible)
+    .patch(helper.operationNotPossible)
+    .delete(helper.operationNotPossible);
 
 webapps.use(helper.handleError);
