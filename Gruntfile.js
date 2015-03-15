@@ -3,16 +3,16 @@
 module.exports = function(grunt) {
     // Project configuration.
     grunt.initConfig({
-        env : {
-            dev : {
-                NODE_ENV : "development",
+        env: {
+            dev: {
+                NODE_ENV: "development",
                 DEBUG: "webhooked:*"
             },
-            test : {
-                NODE_ENV : "test",
+            test: {
+                NODE_ENV: "test"
             },
-            prod : {
-                NODE_ENV : "production"
+            prod: {
+                NODE_ENV: "production"
             }
         },
         express: {
@@ -52,7 +52,7 @@ module.exports = function(grunt) {
                 src: ["tests/**/*.js"]
             },
             "lcov": {
-                options:  {
+                options: {
                     reporter: "mocha-lcov-reporter",
                     quiet: true,
                     captureFile: "lcov.info"
@@ -62,7 +62,7 @@ module.exports = function(grunt) {
         },
         watch: {
             express: {
-                files: ["**/*.js","!**/node_modules/**"],
+                files: ["**/*.js", "!**/node_modules/**"],
                 tasks: ["express:dev"],
                 options: {
                     nospawn: true //Without this option specified express won"t be reloaded
@@ -78,9 +78,9 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks("grunt-env");
 
     // Default task.
-    grunt.registerTask("default", ["env:dev","express:dev", "watch"]);
-    grunt.registerTask("integration",["env:test"]);
-    grunt.registerTask("unit",["env:test", "mochaTest"]);
-    grunt.registerTask("test", ["unit","integration"]);
+    grunt.registerTask("default", ["env:dev", "express:dev", "watch"]);
+    grunt.registerTask("integration", ["env:test"]);
+    grunt.registerTask("unit", ["env:test", "mochaTest"]);
+    grunt.registerTask("test", ["unit", "integration"]);
 
 };
