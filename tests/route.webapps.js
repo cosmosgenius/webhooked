@@ -87,9 +87,9 @@ describe("/", function() {
                 };
 
             var stubapp = sandbox.stub(App.prototype, "save", function(cb) {
-                cb({
-                    code: 11000
-                });
+                var err = new Error();
+                err.code = 11000;
+                cb(err);
             });
 
             request
@@ -113,9 +113,9 @@ describe("/", function() {
                 };
 
             var stubapp = sandbox.stub(App.prototype, "save", function(cb) {
-                cb({
-                    errors: "an error has occured"
-                });
+                var err = new Error();
+                err.errors ="an error has occured";
+                cb(err);
             });
 
             request
@@ -159,7 +159,7 @@ describe("/:app", function() {
     after(function(){
         sandbox.restore();
     });
-    
+
     describe("get", function() {
         it("should return 404 when app doesn\"t exist", function(done) {
             var stubapp = sandbox.stub(App, "findOne", function(crea, cb) {
@@ -200,7 +200,7 @@ describe("/:app", function() {
                     stubapp.restore();
                     done(err);
                 });
-        });   
+        });
     });
 
     describe("put", function() {
@@ -414,7 +414,7 @@ describe("/:app/deploy", function() {
                     stublog.restore();
                     done(err);
                 });
-        });   
+        });
     });
 
     describe("post", function() {
@@ -511,7 +511,7 @@ describe("/:app/deploy", function() {
                     done(err);
                 });
         });
-        
+
         it("should handle other errors", function(done) {
             var stubapp = sandbox.stub(App, "findOne", function(crea, cb) {
                 crea.name.should.equal("appexist");
@@ -525,9 +525,9 @@ describe("/:app/deploy", function() {
             });
 
             var stublog = sandbox.stub(Log.prototype, "save", function(cb) {
-                cb({
-                    errors: "an error has occured"
-                });
+                var err = new Error();
+                err.errors = "an error has occured";
+                cb(err);
             });
 
             var stubexec = sandbox.stub(process, "exec", function(cmd, options, cb) {
@@ -553,6 +553,6 @@ describe("/:app/deploy", function() {
                     stubexec.restore();
                     done(err);
                 });
-        });      
-    }); 
+        });
+    });
 });
