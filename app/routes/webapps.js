@@ -14,15 +14,23 @@ var helper = require("./helper"),
 
 module.exports = webapps;
 
+/**
+ * returns a list of available apps
+ */
 function get_apps(req, res) {
-    App.find({}, {_id: 0, __v: 0}, function(err, apps) {
-        res.json(apps);
+    return App.find({}, {_id: 0, __v: 0}, function(err, apps) {
+        return res.json(apps);
     });
 }
 
+/**
+ * Creates a new app
+ */
 function create_app(req, res, next) {
     debug("create_app request with data %o", req.body);
+    //create a new app model instance with the req body
     var app = new App(req.body);
+
     app.save(function(err, napp) {
         if (!err) {
             debug("createApp request saved with %o", napp);
@@ -31,6 +39,9 @@ function create_app(req, res, next) {
         }
 
         debug("createApp error %o", err);
+        // err code 11000 is return when there is a integrity error
+        // in this case it happens due to creation of an app which has
+        // a name already existing in db
         if(err.code === 11000) {
             next({
                 status: 400,
