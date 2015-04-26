@@ -61,33 +61,35 @@ function create_app(req, res, next) {
 
 function modify_app(req, res, next) {
     debug("modifyApp request with data %o", req.body);
-    if(req.body) {
-        if (req.body.name && req.appInstance.name !== req.body.name) {
-            return next({
-                status: 400,
-                message: "Cannot modify name"
-            });
-        }
-        delete req.body.created_at;
-        delete req.body.modified_at;
 
-        for (var prop in req.body) {
-            req.appInstance[prop] = req.body[prop];
-        }
-
-        req.appInstance.save(function(err, napp) {
-            if (!err) {
-                debug("modifyApp request saved with %o", napp);
-                return res.json(req.appInstance);
-            }
-
-            debug("modifyApp error %o", err);
-            next({
-                status: 400,
-                message: err.errors
-            });
+    // app name cannot be modified
+    if (req.body.name && req.appInstance.name !== req.body.name) {
+        return next({
+            status: 400,
+            message: "Cannot modify name"
         });
     }
+
+    // these needs to be deleted so that its not set again
+    delete req.body.created_at;
+    delete req.body.modified_at;
+
+    for (var prop in req.body) {
+        req.appInstance[prop] = req.body[prop];
+    }
+
+    req.appInstance.save(function(err, napp) {
+        if (!err) {
+            debug("modifyApp request saved with %o", napp);
+            return res.json(req.appInstance);
+        }
+
+        debug("modifyApp error %o", err);
+        next({
+            status: 400,
+            message: err.errors
+        });
+    });
 }
 
 function delete_app(req, res, next) {
