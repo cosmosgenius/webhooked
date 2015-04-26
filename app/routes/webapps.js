@@ -18,6 +18,8 @@ module.exports = webapps;
  * returns a list of available apps
  */
 function get_apps(req, res) {
+    // __v:0 and _id:0 removes id and version which are internal to
+    // mongoose
     return App.find({}, {_id: 0, __v: 0}, function(err, apps) {
         return res.json(apps);
     });
@@ -59,6 +61,12 @@ function create_app(req, res, next) {
     });
 }
 
+/**
+ * Modify the app
+ * The properties which can be modified are:-
+ *     - path
+ *     - task
+ */
 function modify_app(req, res, next) {
     debug("modifyApp request with data %o", req.body);
 
@@ -92,6 +100,9 @@ function modify_app(req, res, next) {
     });
 }
 
+/**
+ * Delete app
+ */
 function delete_app(req, res, next) {
     debug("deleteApp request for %o", req.appInstance);
     req.appInstance.remove(function(err) {
@@ -106,10 +117,17 @@ function delete_app(req, res, next) {
     });
 }
 
+/**
+ * Do a new deployment
+ */
 function create_deployment(req, res, next) {
+    // getting the execute function for the path of the app
     var execute = path(req.appInstance.path);
+    // get the tasks
     var tasks = req.appInstance.tasks;
 
+    // executing the tasks according to the order
+    // present in the tasks array
     async.mapSeries(tasks, execute, function(err, results){
         if(err) {
             return next({
@@ -142,6 +160,7 @@ function create_deployment(req, res, next) {
 
 function get_logs(req, res) {
     debug("Getting logs for %o app", req.appInstance.name);
+    // remove version __v:0 (mongoose internal)
     Log.find({
         app: req.appInstance.name
     }, {
