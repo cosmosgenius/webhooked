@@ -5,15 +5,12 @@ var debug = require("debug")("webhooked:model:app"),
 /**
  * generator which create a minlength check function
  * @param  {Number} len   Minimum length to check
- * @return {Function}     A function which returns false the length is 
+ * @return {Function}     A function which returns false the length is
  *                          less than minimum length.
  */
 function minlength(len) {
     return function(value) {
-        if (value) {
-            return value.length >= len;
-        }
-        return false;
+        return value && value.length >= len;
     };
 }
 

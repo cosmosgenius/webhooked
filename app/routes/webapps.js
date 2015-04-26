@@ -36,7 +36,7 @@ function create_app(req, res, next) {
                 status: 400,
                 message: {
                     name: app.name,
-                    text: "The app already exist"   
+                    text: "The app already exist"
                 }
             });
         } else {
@@ -79,10 +79,6 @@ function modify_app(req, res, next) {
     }
 }
 
-function replace_app(req, res, next) {
-
-}
-
 function delete_app(req, res, next) {
     debug("deleteApp request for %o", req.appInstance);
     req.appInstance.remove(function(err) {
@@ -108,7 +104,7 @@ function create_deployment(req, res, next) {
                 message: err.message
             });
         }
-        
+
         var log = new Log({
             app: req.appInstance.name
         });
