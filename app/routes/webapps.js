@@ -105,15 +105,28 @@ function modify_app(req, res, next) {
  */
 function delete_app(req, res, next) {
     debug("deleteApp request for %o", req.appInstance);
-    req.appInstance.remove(function(err) {
-        if (err) {
-            debug("deleteApp error %o", err);
+
+    Log.remove({
+        app: req.appInstance.name
+    }, function(log_err){
+        if (log_err) {
+            debug("deleteApp error on log remove %o", log_err);
             return next({
                 status: 500,
-                message: err
+                message: log_err
             });
         }
-        res.status(204).end();
+
+        req.appInstance.remove(function(err) {
+            if (err) {
+                debug("deleteApp error on app remove %o", err);
+                return next({
+                    status: 500,
+                    message: err
+                });
+            }
+            res.status(204).end();
+        });
     });
 }
 

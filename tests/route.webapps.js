@@ -295,7 +295,7 @@ describe("/:app", function() {
     });
 
     describe("delete", function() {
-        it("should return 204 and delete app", function(done) {
+        it("should return 204, delete app and its logs", function(done) {
             var stubapp = sandbox.stub(App, "findOne", function(crea, cb) {
                 crea.name.should.equal("appexist");
                 cb(null, {
@@ -308,10 +308,16 @@ describe("/:app", function() {
                 });
             });
 
+            var stublog = sandbox.stub(Log, "remove", function(crea, cb){
+                crea.app.should.equal("test");
+                cb();
+            });
+
             request
                 .delete("/appexist")
                 .expect(204)
                 .end(function(err) {
+                    stublog.restore();
                     stubapp.restore();
                     done(err);
                 });
@@ -337,6 +343,37 @@ describe("/:app", function() {
                 .expect(500)
                 .end(function(err, res) {
                     res.body.message.errors.should.be.equal("an error has occured");
+                    stubapp.restore();
+                    done(err);
+                });
+        });
+
+        it("should return 500 with error for log delete errors", function(done) {
+            var stubapp = sandbox.stub(App, "findOne", function(crea, cb) {
+                crea.name.should.equal("appexist");
+                cb(null, {
+                    name: "test",
+                    path: "test",
+                    tasks: ["a","b"],
+                    remove: function(cb){
+                        cb();
+                    }
+                });
+            });
+
+            var stublog = sandbox.stub(Log, "remove", function(crea, cb){
+                crea.app.should.equal("test");
+                cb({
+                    errors: "an error has occured"
+                });
+            });
+
+            request
+                .delete("/appexist")
+                .expect(500)
+                .end(function(err, res) {
+                    res.body.message.errors.should.be.equal("an error has occured");
+                    stublog.restore();
                     stubapp.restore();
                     done(err);
                 });
