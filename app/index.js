@@ -1,13 +1,13 @@
-"use strict";
+'use strict';
 
-var express         = require("express"),
-    cors            = require("cors"),
+let express         = require('express'),
+    cors            = require('cors'),
     app             = express();
 
-var webapps         = require("./routes/webapps");
-    
+let webapps         = require('./routes/webapps');
+
 
 app.use(cors());
-app.use("/",webapps);
+app.use('/',webapps);
 
 module.exports = app;
