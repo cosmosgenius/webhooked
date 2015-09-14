@@ -1,29 +1,29 @@
-'use strict';
+"use strict";
 
-let proc = require('child_process'),
-    debug = require('debug')('webhooked:utils:path');
+var proc = require("child_process"),
+    debug = require("debug")("webhooked:utils:path");
 
 /**
  * Map to handle messages
  * @constant
  * @type {Object}
  */
-let messages = {
-    pathError : 'path should be of type string',
-    commandError : 'command should be of type string'
+var messages = {
+    pathError : "path should be of type string",
+    commandError : "command should be of type string"
 };
 
 /**
  * Executes the given command at the given path
- * @param {String} command
+ * @param {String} command 
  * @param {String} path
  * @param {Function} cb callback function
  * @see executeCommand
  */
 function executeCommand(command, path, cb){
-    debug('command "%s" on path "%s"', command, path);
+    debug("command '%s' on path '%s'", command, path);
 
-    if (typeof command !== 'string') {
+    if (typeof command !== "string") {
         return cb(new TypeError(messages.commandError));
     }
 
@@ -39,12 +39,12 @@ function executeCommand(command, path, cb){
  * @return {Function}     a function which accepts a command as parameter and a callback function
  */
 function generatePath(path) {
-    debug('path "%s"', path);
+    debug("path '%s'", path);
     if (!path) {
-        path = '.';
+        path = ".";
     }
 
-    if (typeof path !== 'string') {
+    if (typeof path !== "string") {
         throw new TypeError(messages.pathError);
     }
 
