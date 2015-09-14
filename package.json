@@ -24,6 +24,7 @@
   "devDependencies": {
     "blanket": "*",
     "grunt": "*",
+    "grunt-cli": "*",
     "grunt-contrib-watch": "*",
     "grunt-env": "*",
     "grunt-express-server": "*",
