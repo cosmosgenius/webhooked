@@ -22,7 +22,7 @@
     "url": "https://github.com/cosmosgenius/webhooked/issues"
   },
   "devDependencies": {
-    "blanket": "*",
+    "blanket": "1.1.6",
     "grunt": "*",
     "grunt-cli": "*",
     "grunt-contrib-watch": "*",
