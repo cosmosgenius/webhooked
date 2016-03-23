@@ -31,7 +31,7 @@
     "grunt-mocha-test": "*",
     "mocha": "*",
     "mocha-lcov-reporter": "*",
-    "should": "*",
+    "should": "8.3.0",
     "sinon": "*",
     "supertest": "*",
     "travis-cov": "*"
