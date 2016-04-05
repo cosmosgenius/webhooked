@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "blanket": "1.2.3",
-    "grunt": "*",
+    "grunt": "1.0.1",
     "grunt-cli": "1.0.0",
     "grunt-contrib-watch": "*",
     "grunt-env": "*",
