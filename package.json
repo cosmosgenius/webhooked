@@ -39,7 +39,7 @@
   "dependencies": {
     "async": "0.9.x",
     "body-parser": "1.x",
-    "config": "*",
+    "config": "1.20.1",
     "cors": "2.x",
     "debug": "2.x",
     "express": "4.12.x",
