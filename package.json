@@ -19,5 +19,14 @@
   "bugs": {
     "url": "https://github.com/cosmosgenius/webhooked/issues"
   },
-  "homepage": "https://github.com/cosmosgenius/webhooked#readme"
+  "homepage": "https://github.com/cosmosgenius/webhooked#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1"
+  },
+  "dependencies": {
+    "camo": "^0.12.1",
+    "express": "^4.13.4",
+    "nedb": "^1.8.0",
+    "react": "^15.0.1"
+  }
 }
