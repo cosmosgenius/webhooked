@@ -1,0 +1,23 @@
+{
+  "name": "webhooked",
+  "version": "1.0.0",
+  "description": "Webhooked",
+  "main": "index.js",
+  "scripts": {
+    "test": "gulp test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cosmosgenius/webhooked.git"
+  },
+  "keywords": [
+    "webhooked",
+    "deployment"
+  ],
+  "author": "Sharat M R",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cosmosgenius/webhooked/issues"
+  },
+  "homepage": "https://github.com/cosmosgenius/webhooked#readme"
+}
