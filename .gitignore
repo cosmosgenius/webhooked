@@ -27,5 +27,4 @@ build/Release
 node_modules
 
 #to prevent production server configs to be added
-config/production.*
-
+.env
