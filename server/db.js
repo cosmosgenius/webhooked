@@ -12,6 +12,7 @@ class Model {
 
     save() {
         return new Promise((resolve, reject) => {
+            if(this.validate) this.validate();
             let key = this.getKey();
             let val = {};
 
