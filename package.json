@@ -27,7 +27,7 @@
     "grunt-cli": "1.0.0",
     "grunt-contrib-watch": "*",
     "grunt-env": "*",
-    "grunt-express-server": "*",
+    "grunt-express-server": "0.5.3",
     "grunt-mocha-test": "*",
     "mocha": "*",
     "mocha-lcov-reporter": "*",
