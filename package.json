@@ -32,7 +32,7 @@
     "mocha": "*",
     "mocha-lcov-reporter": "*",
     "should": "8.3.0",
-    "sinon": "*",
+    "sinon": "1.17.4",
     "supertest": "*",
     "travis-cov": "*"
   },
