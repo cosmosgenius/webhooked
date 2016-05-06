@@ -38,7 +38,7 @@
   },
   "dependencies": {
     "async": "0.9.x",
-    "body-parser": "1.x",
+    "body-parser": "1.15.1",
     "config": "*",
     "cors": "2.x",
     "debug": "2.x",
