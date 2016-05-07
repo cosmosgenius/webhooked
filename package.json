@@ -4,7 +4,8 @@
   "description": "Webhooked",
   "main": "index.js",
   "scripts": {
-    "test": "gulp test"
+    "test": "gulp test",
+    "start": "node index.js | bunyan"
   },
   "repository": {
     "type": "git",
@@ -26,6 +27,7 @@
     "gulp": "^3.9.1"
   },
   "dependencies": {
+    "bunyan": "^1.8.1",
     "co": "^4.6.0",
     "dotenv": "^2.0.0",
     "koa": "^2.0.0",
