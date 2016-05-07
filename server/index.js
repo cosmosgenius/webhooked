@@ -2,6 +2,7 @@
 
 const Koa = require('koa');
 const KoaRouter = require('koa-router');
+const responseTime = require('koa-response-time');
 const co = require('co');
 
 let app =  new Koa();
@@ -14,6 +15,7 @@ route.get('/', co.wrap(function* (ctx, next) {
 }));
 
 app
+    .use(responseTime())
     .use(route.routes())
     .use(route.allowedMethods());
 
