@@ -1,4 +1,5 @@
 'use strict';
+const co = require('co');
 const level = require('level');
 
 class Store {
@@ -27,7 +28,7 @@ class Store {
     }
 }
 
-let db = new Store;
+let db = new Store();
 
 class Model {
     constructor (id) {
@@ -50,20 +51,20 @@ class Model {
     getKey() {
         return `${this.constructor.name.toLowerCase()}:${this.id}`;
     }
-
-    static findById (id) {
-        let key = `${this.name.toLowerCase()}:${id}`;
-
-        return db.get(key)
-                .then((obj)=>{
-                    let vobj = new this(obj.id);
-                    for(let vkey in obj) {
-                        vobj[vkey] = obj[vkey];
-                    }
-                    return vobj;
-                });
-    }
 }
+
+Model.findById = co.wrap(function* (id) {
+    let key = `${this.name.toLowerCase()}:${id}`;
+    let obj = yield db.get(key);
+
+    let vobj = new this(obj.id);
+
+    for(let vkey in obj) {
+        vobj[vkey] = obj[vkey];
+    }
+
+    return vobj;
+});
 
 db.Model = Model;
 
