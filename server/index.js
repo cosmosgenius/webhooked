@@ -1,11 +1,11 @@
 'use strict';
 
-const Koa = require('koa');
-const KoaRouter = require('koa-router');
-const responseTime = require('koa-response-time');
-const bodyParser = require('koa-bodyparser');
-const etag = require('koa-etag');
 const co = require('co');
+const Koa = require('koa');
+const etag = require('koa-etag');
+const KoaRouter = require('koa-router');
+const bodyParser = require('koa-bodyparser');
+const responseTime = require('koa-response-time');
 
 let app =  new Koa();
 
@@ -17,6 +17,7 @@ route.get('/', co.wrap(function* (ctx, next) {
 }));
 
 app
+    .use(console.reqLogger())
     .use(responseTime())
     .use(etag())
     .use(bodyParser())
