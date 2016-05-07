@@ -6,7 +6,7 @@ const http = require('http');
 const chalk = require('chalk');
 const app = require('./server');
 
-let port = process.env.PORT || 6000;
+let port = process.env.PORT || 9000;
 
 const server = http.createServer(app.callback());
 
