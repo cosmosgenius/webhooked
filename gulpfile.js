@@ -9,7 +9,8 @@ colors.enabled = true
 gulp.task('server', () => {
     nodemon({
         script: 'index.js',
-        ext: 'js env',
+        watch: ['server/', '.env'],
+        ext: 'js env json',
         env: { 'NODE_ENV': 'development' }
     })
 })
