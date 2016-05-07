@@ -34,6 +34,7 @@
         "eqeqeq": [
             "error", "smart"
         ],
-        "no-eq-null": "error"
+        "no-eq-null": "error",
+        "no-console": "off"
     }
 }
