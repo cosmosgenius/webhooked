@@ -35,6 +35,10 @@
             "error", "smart"
         ],
         "no-eq-null": "error",
-        "no-console": "off"
+        "no-console": "off",
+        "strict": [
+            "error",
+            "safe"
+        ]
     }
 }
