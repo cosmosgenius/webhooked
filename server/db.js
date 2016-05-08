@@ -35,10 +35,7 @@ class Model {
         this.id = id;
     }
 
-    validate () {}
-
     save() {
-        this.validate();
         const key = this.getKey();
         let values = {};
 
