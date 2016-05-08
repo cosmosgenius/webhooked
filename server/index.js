@@ -1,6 +1,5 @@
 'use strict';
 
-const co = require('co');
 const Koa = require('koa');
 const etag = require('koa-etag');
 const KoaRouter = require('koa-router');
@@ -9,12 +8,10 @@ const responseTime = require('koa-response-time');
 
 let app =  new Koa();
 
+const hookapi = require('./hook');
 let route = new KoaRouter();
 
-route.get('/', co.wrap(function* (ctx, next) {
-    ctx.body = 'Hello World!';
-    yield next();
-}));
+route.use('/hooks', hookapi.routes(), hookapi.allowedMethods());
 
 app
     .use(console.reqLogger())
