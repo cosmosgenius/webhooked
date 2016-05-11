@@ -9,16 +9,20 @@ const responseTime = require('koa-response-time');
 let app =  new Koa();
 
 const hookapi = require('./hook');
+const errorHandler = require('./error');
+
 let route = new KoaRouter();
 
 route.use('/hooks', hookapi.routes(), hookapi.allowedMethods());
 
 app
     .use(console.reqLogger())
+    .use(errorHandler())
     .use(responseTime())
     .use(etag())
     .use(bodyParser())
     .use(route.routes())
     .use(route.allowedMethods());
+
 
 module.exports = app;
