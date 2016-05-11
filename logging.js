@@ -45,6 +45,7 @@ methods.forEach((method)=>{
 
 let devLogger = co.wrap(function* (ctx, next){
     const start = process.hrtime();
+    ctx.log = reqresLogger.child({req_id: uuid.v4()});
     yield next();
     const status = ctx.res.statusCode;
 
