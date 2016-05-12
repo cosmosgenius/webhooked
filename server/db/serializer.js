@@ -4,13 +4,9 @@ const co = require('co');
 const ValidationError = require('./validation').ValidationError;
 
 class Serializer {
-    constructor(data, model) {
-        this.model = model;
-        if(data instanceof this.model) {
-            this._instance = data;
-        } else {
-            this._data = data;
-        }
+    constructor({data, partial}) {
+        this._partial = !!partial;
+        this._data = data;
         this.fields = [];
     }
 
@@ -21,11 +17,23 @@ class Serializer {
         return this.toJSON();
     }
 
-    toJSON() {
-        let src = this._instance ? this._instance
-                    : this._validated_data ? this._validated_data : this._data;
+    getFields () {
+        if(this._partial) {
+            let fields =  this.fields.filter((field) => this._data[field]);
 
-        return this.fields.reduce((obj, field)=>{
+            if(fields.includes('id')){
+                throw new ValidationError('cannot update id');
+            }
+
+            return fields;
+        }
+        return this.fields;
+    }
+
+    toJSON() {
+        let src = this._validated_data ? this._validated_data : this._data;
+
+        return this.getFields().reduce((obj, field)=>{
             obj[field] = src[field];
             return obj;
         }, {});
@@ -41,7 +49,7 @@ Serializer.prototype.is_valid = co.wrap(function* () {
     let obj = {};
     let errors = [];
 
-    for (let field of this.fields) {
+    for (let field of this.getFields()) {
         let validator = this[`validate_${field}`] || noop;
         try {
             obj[field] = yield validator(src[field]);
