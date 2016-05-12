@@ -3,17 +3,10 @@
 const db = require('./store');
 const Model = require('./model');
 const Serializer = require('./serializer');
+const ValidationError = require('./validation').ValidationError;
 
 db.Model = Model;
 db.Serializer = Serializer;
-
-class ValidationError extends Error {
-    constructor (msg, status=400) {
-        super(msg);
-        this.status = status;
-    }
-}
-
 db.ValidationError = ValidationError;
 
 module.exports = db;

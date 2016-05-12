@@ -1,6 +1,7 @@
 'use strict';
 
 const co = require('co');
+const ValidationError = require('./validation').ValidationError;
 
 class Serializer {
     constructor(data, model) {
@@ -29,21 +30,35 @@ class Serializer {
             return obj;
         }, {});
     }
-
-    test () {
-        console.log(this.model);
-    }
 }
+
+const noop = co.wrap(function*(value) { return value; });
 
 Serializer.prototype.is_valid = co.wrap(function* () {
     if(this._instance) return true;
     let src = this._data;
-    const noop = co.wrap(function*(value) { return value; });
 
     let obj = {};
+    let errors = [];
+
     for (let field of this.fields) {
         let validator = this[`validate_${field}`] || noop;
-        obj[field] = yield validator(src[field]);
+        try {
+            obj[field] = yield validator(src[field]);
+        } catch (err) {
+            if(err instanceof ValidationError) {
+                errors.push({
+                    field,
+                    message: err.message
+                });
+            } else {
+                throw err;
+            }
+        }
+    }
+
+    if (errors.length) {
+        throw new ValidationError(errors);
     }
 
     this._validated_data = obj;
