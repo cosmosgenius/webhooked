@@ -19,6 +19,13 @@ class Model {
         return db.del(key);
     }
 
+    update (obj) {
+        for (let vkey in obj) {
+            this[vkey] = obj[vkey];
+        }
+        return this.save();
+    }
+
     getKey() {
         return `${this.constructor.name.toLowerCase()}:${this.id}`;
     }
