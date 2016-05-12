@@ -6,8 +6,12 @@ const db = require('../db');
 const Hook = require('./model.js');
 
 class HookSerializer extends db.Serializer {
-    constructor (data) {
-        super(data, Hook);
+    constructor ({data, partial}) {
+        super({
+            data,
+            partial
+        });
+        this.model = Hook;
         this.fields = [
             'id',
             'name',
@@ -26,10 +30,11 @@ HookSerializer.prototype.validate_id = co.wrap(function*(id) {
 });
 
 HookSerializer.prototype.validate_path = co.wrap(function* (path) {
-    path = path.trim();
+
     if(!path) {
         throw new db.ValidationError('path is required');
     }
+    path = path.trim();
 
     if(typeof path !== 'string') {
         throw new db.ValidationError('path should be string');

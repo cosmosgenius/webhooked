@@ -16,7 +16,9 @@ hookapi
     .delete('/:hook', co.wrap(deleteInstance));
 
 function* createInstance(ctx) {
-    let ser = new HookSerializer(ctx.request.body);
+    let ser = new HookSerializer({
+        data: ctx.request.body
+    });
     yield ser.is_valid();
     let hook = Hook.fromObj(ser.data);
     yield hook.save();
@@ -35,7 +37,13 @@ function* getInstance(ctx) {
 }
 
 function* updateInstance(ctx) {
-    ctx.body = ctx.request.body;
+    let ser = new HookSerializer({
+        data: ctx.request.body,
+        partial: true
+    });
+    yield ser.is_valid();
+    ctx.hook.update(ser.data);
+    ctx.body = ctx.hook;
 }
 
 function* deleteInstance(ctx) {
