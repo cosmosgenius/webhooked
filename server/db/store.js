@@ -28,6 +28,15 @@ class Store {
             });
         });
     }
+
+    del (key) {
+        return new Promise((resolve, reject) => {
+            this.db.del(key, (err) => {
+                if(err) return reject(err);
+                resolve();
+            });
+        });
+    }
 }
 
 module.exports = new Store();
