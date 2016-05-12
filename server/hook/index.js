@@ -13,12 +13,15 @@ hookapi
     .post('/', co.wrap(createInstance))
     .get('/:hook', co.wrap(getInstance))
     .put('/:hook', co.wrap(updateInstance))
-    .delete('/:hook');
+    .delete('/:hook', co.wrap(deleteInstance));
 
 function* createInstance(ctx) {
     let ser = new HookSerializer(ctx.request.body);
     yield ser.is_valid();
+    let hook = Hook.fromObj(ser.data);
+    yield hook.save();
     ctx.body = ser.data;
+    ctx.status = 201;
 }
 
 function* paramHook(id, ctx, next) {
@@ -33,6 +36,11 @@ function* getInstance(ctx) {
 
 function* updateInstance(ctx) {
     ctx.body = ctx.request.body;
+}
+
+function* deleteInstance(ctx) {
+    yield ctx.hook.delete();
+    ctx.status = 204;
 }
 
 
