@@ -6,9 +6,18 @@ function* errorHandler(ctx, next) {
         yield next();
     } catch (err) {
         ctx.status = err.statusCode || err.status || 500;
+        if(!(err.message instanceof Array)) {
+            err.message = [{
+                message: err.message
+            }];
+        }
         ctx.body = {
-            message: err.message
+            errors: err.message
         };
+
+        if(ctx.status >= 500) {
+            ctx.log.error({err: err, res: ctx.res, req: ctx.req});
+        }
     }
 
 }
