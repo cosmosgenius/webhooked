@@ -14,6 +14,11 @@ class Model {
         return db.put(key, values);
     }
 
+    delete () {
+        const key = this.getKey();
+        return db.del(key);
+    }
+
     getKey() {
         return `${this.constructor.name.toLowerCase()}:${this.id}`;
     }
