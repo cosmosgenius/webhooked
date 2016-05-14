@@ -1,6 +1,7 @@
 'use strict';
 
 const co = require('co');
+const through2 = require('through2');
 const db = require('./store');
 
 class Model {
@@ -27,7 +28,7 @@ class Model {
     }
 
     getKey() {
-        return `${this.constructor.name.toLowerCase()}:${this.id}`;
+        return this.constructor.getKey(this.id);
     }
 
     toJSON() {
@@ -39,14 +40,27 @@ class Model {
 
         return retobj;
     }
+
+    static getBase () {
+        return `${this.name.toLowerCase()}:`;
+    }
+
+    static getKey (id) {
+        return `${this.getBase()}${id}`;
+    }
 }
 
 Model.findById = co.wrap(function* (id) {
-    let key = `${this.name.toLowerCase()}:${id}`;
+    let key = this.getKey(id);
     let obj = yield db.get(key);
 
     return this.fromObj(obj);
 });
+
+Model.find = function() {
+    let stream = db.createReadStream();
+    return stream.pipe(modelmapper);
+};
 
 Model.fromObj = function(obj) {
     let instance = new this(obj.id);
@@ -67,6 +81,11 @@ Model.getObjorNone = co.wrap(function* (id) {
             throw err;
         }
     }
+});
+
+const modelmapper = through2.obj(function(chuck, enc, cb){
+    this.push(chuck.value);
+    cb();
 });
 
 module.exports = Model;

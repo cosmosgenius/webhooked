@@ -37,6 +37,10 @@ class Store {
             });
         });
     }
+
+    createReadStream() {
+        return this.db.createReadStream();
+    }
 }
 
 module.exports = new Store();
