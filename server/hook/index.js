@@ -17,7 +17,7 @@ hookapi
 
 function* getList(ctx) {
     ctx.body = Hook.find();
-    ctx.type = 'application/json';
+    ctx.type = 'application/stream';
 }
 
 function* createInstance(ctx) {

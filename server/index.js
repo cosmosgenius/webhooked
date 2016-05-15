@@ -1,6 +1,7 @@
 'use strict';
 
 const Koa = require('koa');
+const cors = require('kcors');
 const etag = require('koa-etag');
 const KoaRouter = require('koa-router');
 const bodyParser = require('koa-bodyparser');
@@ -20,6 +21,7 @@ app
     .use(errorHandler())
     .use(responseTime())
     .use(etag())
+    .use(cors())
     .use(bodyParser())
     .use(route.routes())
     .use(route.allowedMethods());
