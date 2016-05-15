@@ -2,7 +2,6 @@
 
 const co = require('co');
 const KoaRouter = require('koa-router');
-const JSONStream = require('JSONStream');
 const Hook = require('./model');
 const HookSerializer = require('./serializer');
 
@@ -10,14 +9,16 @@ let hookapi = new KoaRouter();
 
 hookapi
     .param('hook', co.wrap(paramHook))
-    .get('/', co.wrap(function* (ctx){
-        ctx.body = Hook.find().pipe(JSONStream.stringify());
-        ctx.status = 200;
-    }))
+    .get('/', co.wrap(getList))
     .post('/', co.wrap(createInstance))
     .get('/:hook', co.wrap(getInstance))
     .put('/:hook', co.wrap(updateInstance))
     .delete('/:hook', co.wrap(deleteInstance));
+
+function* getList(ctx) {
+    ctx.body = Hook.find();
+    ctx.type = 'application/json';
+}
 
 function* createInstance(ctx) {
     let ser = new HookSerializer({

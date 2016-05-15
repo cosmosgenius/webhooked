@@ -58,8 +58,9 @@ Model.findById = co.wrap(function* (id) {
 });
 
 Model.find = function() {
-    let stream = db.createReadStream();
-    return stream.pipe(modelmapper);
+    let stream = db.createReadStream()
+                .pipe(through2.obj(modelmapper));
+    return stream;
 };
 
 Model.fromObj = function(obj) {
@@ -83,9 +84,9 @@ Model.getObjorNone = co.wrap(function* (id) {
     }
 });
 
-const modelmapper = through2.obj(function(chuck, enc, cb){
-    this.push(chuck.value);
+const modelmapper = function(chuck, enc, cb){
+    this.push(JSON.stringify(chuck.value));
     cb();
-});
+};
 
 module.exports = Model;
