@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "gulp test",
-    "start": "gulp | bunyan -o short"
+    "start": "node index.js",
+    "server": "gulp watch | bunyan -o short"
   },
   "repository": {
     "type": "git",
@@ -21,12 +22,18 @@
     "url": "https://github.com/cosmosgenius/webhooked/issues"
   },
   "homepage": "https://github.com/cosmosgenius/webhooked#readme",
+  "engines": {
+    "node": ">=6.0.0"
+  },
   "devDependencies": {
+    "browser-sync": "^2.12.10",
     "colors": "^1.1.2",
-    "eslint": "^2.9.0",
+    "connect-history-api-fallback": "^1.2.0",
+    "eslint": "^2.11.0",
     "eslint-plugin-react": "^5.0.1",
     "gulp": "^3.9.1",
-    "gulp-nodemon": "^2.0.6"
+    "gulp-nodemon": "^2.0.6",
+    "http-proxy-middleware": "^0.15.1"
   },
   "dependencies": {
     "bunyan": "^1.8.1",
@@ -40,7 +47,7 @@
     "koa-response-time": "^2.0.0",
     "koa-router": "^7.0.1",
     "level": "^1.4.0",
-    "react": "^15.0.2",
+    "react": "^15.1.0",
     "through2": "^2.0.1"
   }
 }
