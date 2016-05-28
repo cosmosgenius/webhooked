@@ -17,7 +17,6 @@ let route = new KoaRouter();
 route.use('/hooks', hookapi.routes(), hookapi.allowedMethods());
 
 app
-    .use(console.reqLogger())
     .use(errorHandler())
     .use(responseTime())
     .use(etag())

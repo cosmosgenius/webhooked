@@ -8,6 +8,8 @@ const app = require('./server');
 
 let port = process.env.PORT || 9000;
 
+app.middleware.unshift(console.reqLogger());
+
 const server = http.createServer(app.callback());
 
 server.listen(port, () => {
