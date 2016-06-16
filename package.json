@@ -42,7 +42,7 @@
     "config": "*",
     "cors": "2.x",
     "debug": "2.x",
-    "express": "4.12.x",
+    "express": "4.14.0",
     "mongoose": "4.4.9",
     "morgan": "1.x",
     "response-time": "2.x"
