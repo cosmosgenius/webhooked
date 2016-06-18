@@ -43,7 +43,7 @@
     "cors": "2.x",
     "debug": "2.x",
     "express": "4.12.x",
-    "mongoose": "4.4.9",
+    "mongoose": "4.5.1",
     "morgan": "1.x",
     "response-time": "2.x"
   }
