@@ -3,4 +3,4 @@ node_js:
     - v6
 sudo: false
 install: npm install
-after_script: "npm install coveralls && cat ./lcov.info | coveralls"
+after_script: "npm install -g coveralls && cat ./coverage/lcov.info | coveralls"
