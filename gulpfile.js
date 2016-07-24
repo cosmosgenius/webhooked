@@ -1,5 +1,3 @@
-'use strict';
-
 const gulp = require('gulp');
 const chalk = require('chalk');
 const colors = require('colors');
@@ -21,7 +19,8 @@ gulp.task('instrument', () => {
 gulp.task('mocha', ['instrument'] ,() => {
     return gulp.src(['test/**/*.js'])
     .pipe(mocha({
-        bail: true
+        bail: true,
+        require: ['should']
     }))
     .pipe(istanbul.writeReports());
     // .pipe(istanbul.enforceThresholds({ thresholds: { global: 90 } }));
