@@ -1,4 +1,5 @@
 const level = require('level');
+const Promise = require('bluebird');
 
 class Store {
     constructor() {
@@ -8,29 +9,20 @@ class Store {
     }
 
     put (key, value) {
-        return new Promise((resolve, reject) => {
-            this.db.put(key, value, (err) => {
-                if (err) return reject(err);
-                resolve(value);
-            });
+        return Promise.fromCallback((cb) => {
+            this.db.put(key, value, cb);
         });
     }
 
     get (key) {
-        return new Promise((resolve, reject) => {
-            this.db.get(key, (err, value) => {
-                if(err) return reject(err);
-                resolve(value);
-            });
+        return Promise.fromCallback((cb) => {
+            this.db.get(key, cb);
         });
     }
 
     del (key) {
-        return new Promise((resolve, reject) => {
-            this.db.del(key, (err) => {
-                if(err) return reject(err);
-                resolve();
-            });
+        return Promise.fromCallback((cb) => {
+            this.db.del(key, cb);
         });
     }
 
