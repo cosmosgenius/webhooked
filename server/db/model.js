@@ -1,5 +1,3 @@
-'use strict';
-
 const co = require('co');
 const through2 = require('through2');
 const db = require('./store');

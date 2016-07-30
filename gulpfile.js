@@ -1,4 +1,6 @@
 const gulp = require('gulp');
+const del = require('del');
+const runSequence = require('run-sequence');
 const chalk = require('chalk');
 const colors = require('colors');
 const mocha = require('gulp-mocha');
@@ -8,7 +10,8 @@ const istanbul = require('gulp-istanbul');
 chalk.enabled = true;
 colors.enabled = true;
 
-const PORT=9000;
+const PORT = 9000;
+const testdb = './testdb';
 
 gulp.task('instrument', () => {
     return gulp.src(['server/**/*.js'])
@@ -26,6 +29,14 @@ gulp.task('mocha', ['instrument'] ,() => {
     // .pipe(istanbul.enforceThresholds({ thresholds: { global: 90 } }));
 });
 
+gulp.task('testenv', () => {
+    return process.env.DB_PATH = testdb;
+});
+
+gulp.task('deltestdb', () => {
+    del.sync(testdb);
+});
+
 gulp.task('watch', () => {
     return nodemon({
         script: 'index.js',
@@ -37,4 +48,11 @@ gulp.task('watch', () => {
 });
 
 gulp.task('default', ['watch']);
-gulp.task('test', ['mocha']);
+gulp.task('test', (done) => {
+    runSequence(
+        'testenv',
+        'mocha',
+        'deltestdb',
+        done
+    );
+});
