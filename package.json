@@ -39,6 +39,7 @@
     "should": "^10.0.0"
   },
   "dependencies": {
+    "bluebird": "^3.4.1",
     "bunyan": "^1.8.1",
     "chalk": "^1.1.3",
     "co": "^4.6.0",
