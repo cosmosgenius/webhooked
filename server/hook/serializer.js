@@ -26,6 +26,14 @@ HookSerializer.prototype.validate_id = co.wrap(function*(id) {
     if(obj) {
         throw new db.ValidationError(`"${id}" already exists`);
     }
+
+    if(!obj) {
+        throw new db.ValidationError('id is required');
+    }
+
+    if(typeof id !== 'string') {
+        throw new db.ValidationError('id should be string');
+    }
     return id;
 });
 
@@ -40,7 +48,7 @@ HookSerializer.prototype.validate_path = co.wrap(function* (path) {
         throw new db.ValidationError('path should be string');
     }
 
-    if(path.length < 3) {
+    if(path.length < 1) {
         throw new db.ValidationError('path should have more than two characters');
     }
     return path;
