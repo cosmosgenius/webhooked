@@ -27,7 +27,7 @@ HookSerializer.prototype.validate_id = co.wrap(function*(id) {
         throw new db.ValidationError(`"${id}" already exists`);
     }
 
-    if(!obj) {
+    if(!id) {
         throw new db.ValidationError('id is required');
     }
 
