@@ -38,7 +38,7 @@
     "istanbul": "^0.4.4",
     "mocha": "^3.0.0",
     "run-sequence": "^1.2.2",
-    "should": "^10.0.0"
+    "should": "^11.2.0"
   },
   "dependencies": {
     "bluebird": "^3.4.7",
