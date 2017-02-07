@@ -1,6 +1,8 @@
 Webhooked
 =========
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/cosmosgenius/webhooked.svg)](https://greenkeeper.io/)
+
 A deployment tool using REST API interface.
 
 [![Build status][travis-image]][travis-url]
