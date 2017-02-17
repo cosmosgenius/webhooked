@@ -4,4 +4,5 @@ const Model = require('../../../server/db/model');
 
 describe('Model', () => {
     class MockModel extends Model{}
+    it('test model');
 });

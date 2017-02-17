@@ -1,4 +1,3 @@
-'use strict';
 const co = require('co');
 const uuid = require('uuid');
 const chalk = require('chalk');

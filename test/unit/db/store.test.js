@@ -1,13 +1,11 @@
-const should = require('should');
 const store = require('../../../server/db/store');
-
 const db = store.db;
 
 describe('Store', () => {
     it('put', (done) => {
         store.put('testput', 123).then(()=>{
             db.get('testput', (err, value) => {
-                value.should.eql(123);
+                expect(value).toEqual(123);
                 done(err);
             });
         });
@@ -17,7 +15,7 @@ describe('Store', () => {
         db.put('testget', 1234, (err) => {
             if(err) done(err);
             store.get('testget').then((value)=>{
-                value.should.eql(1234);
+                expect(value).toEqual(1234);
                 done();
             }).catch(done);
         });
@@ -30,8 +28,8 @@ describe('Store', () => {
             })
             .then(()=> {
                 db.get('testdel', (err, value) => {
-                    err.name.should.eql('NotFoundError');
-                    should.not.exist(value);
+                    expect(err.name).toEqual('NotFoundError');
+                    expect(value).toBeUndefined();
                     done();
                 });
             }).catch(done);

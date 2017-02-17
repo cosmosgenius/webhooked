@@ -1,5 +1,3 @@
-'use strict';
-
 const db = require('./store');
 const Model = require('./model');
 const Serializer = require('./serializer');

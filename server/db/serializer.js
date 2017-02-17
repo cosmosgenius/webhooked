@@ -1,5 +1,3 @@
-'use strict';
-
 const co = require('co');
 const ValidationError = require('./validation').ValidationError;
 

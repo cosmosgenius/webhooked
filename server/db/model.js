@@ -46,14 +46,13 @@ class Model {
     static getKey (id) {
         return `${this.getBase()}${id}`;
     }
+
+    static async findById(id) {
+        const key = this.getKey(id);
+        const obj = await db.get(key);
+        return this.fromObj(obj);
+    }
 }
-
-Model.findById = co.wrap(function* (id) {
-    let key = this.getKey(id);
-    let obj = yield db.get(key);
-
-    return this.fromObj(obj);
-});
 
 Model.find = function() {
     let stream = db.createReadStream()

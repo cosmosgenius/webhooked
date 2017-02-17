@@ -1,5 +1,3 @@
-'use strict';
-
 const co = require('co');
 const KoaRouter = require('koa-router');
 const Hook = require('./model');

@@ -1,3 +1,9 @@
+webhooked
+- Run Deamon based on config file
+- Rest api support
+- Store config in leveldb
+- Auth support
+
 Webhooked
 =========
 

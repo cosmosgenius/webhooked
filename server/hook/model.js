@@ -1,5 +1,3 @@
-'use strict';
-
 const db = require('../db');
 
 class Hook extends db.Model{}

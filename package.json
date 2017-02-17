@@ -1,12 +1,10 @@
 {
   "name": "webhooked",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Webhooked",
   "main": "index.js",
   "scripts": {
-    "test": "gulp test",
-    "test-ci": "istanbul cover node_modules/mocha/bin/_mocha --report lcovonly -- --reporter spec --check-leaks test/**/*",
-    "test-cov": "istanbul cover node_modules/mocha/bin/_mocha --report text --report text-summary --report html -- --reporter spec --check-leaks test/**/*",
+    "test": "node --harmony-async-await ./node_modules/.bin/jest -i --forceExit",
     "start": "node index.js",
     "server": "gulp watch | bunyan -o short"
   },
@@ -16,7 +14,8 @@
   },
   "keywords": [
     "webhooked",
-    "deployment"
+    "deployment",
+    "webhook"
   ],
   "author": "Sharat M R",
   "license": "MIT",
@@ -27,32 +26,32 @@
   "engines": {
     "node": ">=7.0.0"
   },
+  "jest": {
+    "verbose": true,
+    "testEnvironment": "node",
+    "collectCoverage": true
+  },
   "devDependencies": {
     "colors": "^1.1.2",
-    "del": "^2.2.2",
     "eslint": "^3.13.0",
     "gulp": "^3.9.1",
-    "gulp-istanbul": "^1.0.0",
-    "gulp-mocha": "^3.0.0",
     "gulp-nodemon": "^2.1.0",
-    "istanbul": "^0.4.4",
-    "mocha": "^3.0.0",
-    "run-sequence": "^1.2.2",
-    "should": "^10.0.0"
+    "jest": "^18.1.0",
+    "should": "^11.2.0"
   },
   "dependencies": {
     "bluebird": "^3.4.7",
     "bunyan": "^1.8.5",
     "chalk": "^1.1.3",
     "co": "^4.6.0",
-    "dotenv": "^2.0.0",
-    "kcors": "^2.2.0",
+    "dotenv": "^4.0.0",
+    "kcors": "^2.2.1",
     "koa": "^2.0.0",
     "koa-bodyparser": "^3.2.0",
     "koa-etag": "^3.0.0",
     "koa-response-time": "^2.0.0",
     "koa-router": "^7.1.0",
-    "level": "^1.5.0",
+    "level": "^1.6.0",
     "through2": "^2.0.3"
   }
 }
