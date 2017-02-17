@@ -1,5 +1,4 @@
-const store = require('../../../server/db/store');
-const db = store.db;
+const store = require('../../../lib/db/store');
 
 describe('Store', () => {
     it('get', async () => {

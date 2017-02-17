@@ -3,7 +3,7 @@ require('./logging');
 
 const http = require('http');
 const chalk = require('chalk');
-const app = require('./server');
+const app = require('./lib');
 
 let port = process.env.PORT || 9000;
 

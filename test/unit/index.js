@@ -1,6 +1,4 @@
-'use strict';
-
-const app = require('../../server');
+const app = require('../../lib');
 
 describe('test', ()=> {
     it('test1', function(){});
