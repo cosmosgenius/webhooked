@@ -4,7 +4,9 @@
   "description": "Webhooked",
   "main": "index.js",
   "scripts": {
-    "test": "node --harmony-async-await ./node_modules/.bin/jest -i --forceExit",
+    "test": "DB_PATH=./test-db node --harmony-async-await ./node_modules/.bin/jest -i --forceExit",
+    "pretest": "rm -rf ./test-db",
+    "posttest": "rm -rf ./test-db",
     "start": "node index.js",
     "server": "gulp watch | bunyan -o short"
   },
