@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "description": "Webhooked",
   "main": "index.js",
+  "bin": {
+      "webhooked": "./bin/webhooked"
+  },
   "scripts": {
     "test": "DB_PATH=./test-db node --harmony-async-await ./node_modules/.bin/jest -i --forceExit",
     "pretest": "rm -rf ./test-db",

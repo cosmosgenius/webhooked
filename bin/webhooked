@@ -1,0 +1,23 @@
+#!/usr/bin/env node --harmony-async-await
+const http = require('http');
+const commander = require('commander');
+const chalk = require('chalk');
+
+const pkg = require('../package.json');
+const app = require('../lib');
+
+commander
+    .version(pkg.version)
+    .option('-p, --port <int>', 'port to run on [8080]', parseInt(process.env.PORT, 10) | 8080)
+    .option('-a, --address <ip>', 'ip to listen to [0.0.0.0]', '0.0.0.0')
+    .parse(process.argv);
+
+const server = http.createServer(app.callback());
+
+server.listen({
+    host: commander.address,
+    port: commander.port,
+}, () => {
+    const address = server.address();
+    console.log(chalk.reset(`Listen to ${chalk.yellow(address.address)} on port ${chalk.yellow(address.port)}`));
+});
