@@ -10,7 +10,8 @@
     "test": "DB_PATH=./test-db node --harmony-async-await ./node_modules/.bin/jest -i --forceExit",
     "pretest": "rm -rf ./test-db",
     "posttest": "rm -rf ./test-db",
-    "start": "node index.js",
+    "start": "./bin/webhooked",
+    "debug": "node --inspect --harmony-async-await ./bin/webhooked",
     "server": "gulp watch | bunyan -o short"
   },
   "repository": {
@@ -54,6 +55,7 @@
     "koa-response-time": "^2.0.0",
     "koa-router": "^7.1.0",
     "level": "^1.6.0",
+    "level-sublevel": "^6.6.1",
     "through2": "^2.0.3"
   }
 }
