@@ -1,17 +1,20 @@
-#!/usr/bin/env node --harmony-async-await
+#!/usr/bin/env node
 const http = require('http');
 const commander = require('commander');
 const chalk = require('chalk');
 
 const pkg = require('../package.json');
-const app = require('../lib');
 
 commander
     .version(pkg.version)
     .option('-p, --port <int>', 'port to run on [8080]', parseInt(process.env.PORT, 10) | 8080)
     .option('-a, --address <ip>', 'ip to listen to [0.0.0.0]', '0.0.0.0')
+    .option('-d, --dbpath <path>', 'path to webhooked db')
     .parse(process.argv);
 
+process.env.DB_PATH = commander.dbpath;
+
+const app = require('../lib');
 const server = http.createServer(app.callback());
 
 server.listen({
