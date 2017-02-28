@@ -1,6 +1,6 @@
 {
   "name": "webhooked",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Webhooked",
   "main": "index.js",
   "bin": {
