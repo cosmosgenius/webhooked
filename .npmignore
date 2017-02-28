@@ -9,7 +9,7 @@ coverage
 .vscode
 tsconfig.json
 index.ts
-db
+webhookeddb
 gulpfile.js
 logging.js
 test
