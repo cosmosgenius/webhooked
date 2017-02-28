@@ -1,60 +1,9 @@
-webhooked
-- Run Deamon based on config file
-- Rest api support
-- Store config in leveldb
-- Auth support
-
 Webhooked
 =========
 
 A deployment tool using REST API interface.
 
 [![Build status][travis-image]][travis-url]
-[![Dependency Status][david-image]][david-url]
-[![Test coverage][coveralls-image]][coveralls-url]
-
-##Install
-1. Run [MongoDB](http://docs.mongodb.org/manual/installation/) server
-
-	```
-	mongod
-	```
-
-2. Install dependencies with [npm](https://www.npmjs.org/)
-
-	```
-	npm install
-	```
-
-3. Run tests
-
-	```
-	npm test
-	```
-
-4. Run server and other tasks with [grunt](http://gruntjs.com/)
-
-	```
-	grunt
-	```
-
-Now the app can be accessed via
-
-```
-http://localhost:8000
-```
-
-##Usage
-API endpoints available are
-```
-/<app_name>
-```
-and
-```
-/<app_name>/deploy
-```
-Check out the [wiki page](https://github.com/cosmosgenius/webhooked/wiki) for more information.
-
 
 [travis-image]: https://img.shields.io/travis/cosmosgenius/webhooked.svg?style=flat-square
 [travis-url]: https://travis-ci.org/cosmosgenius/webhooked
@@ -67,7 +16,7 @@ Check out the [wiki page](https://github.com/cosmosgenius/webhooked/wiki) for mo
 
 The MIT License (MIT)
 
-Copyright (c) 2014 Sharat M R <cosmosgenius@gmail.com>
+Copyright (c) Sharat M R
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
