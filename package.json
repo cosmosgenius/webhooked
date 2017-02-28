@@ -1,18 +1,17 @@
 {
   "name": "webhooked",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Webhooked",
   "main": "index.js",
   "bin": {
     "webhooked": "./bin/webhooked"
   },
   "scripts": {
-    "test": "DB_PATH=./test-db node --harmony-async-await ./node_modules/.bin/jest -i --forceExit",
+    "test": "DB_PATH=./test-db jest -i --forceExit",
     "pretest": "rm -rf ./test-db",
     "posttest": "rm -rf ./test-db",
     "start": "./bin/webhooked",
-    "debug": "node --inspect --harmony-async-await ./bin/webhooked",
-    "server": "gulp watch | bunyan -o short"
+    "debug": "node --inspect ./bin/webhooked"
   },
   "repository": {
     "type": "git",
@@ -39,10 +38,10 @@
   },
   "devDependencies": {
     "colors": "^1.1.2",
-    "eslint": "^3.16.0",
+    "eslint": "^3.16.1",
     "gulp": "^3.9.1",
     "gulp-nodemon": "^2.1.0",
-    "jest": "^19.0.0"
+    "jest": "^19.0.2"
   },
   "dependencies": {
     "bluebird": "^3.4.7",
@@ -50,8 +49,8 @@
     "chalk": "^1.1.3",
     "debug": "^2.6.1",
     "kcors": "^2.2.1",
-    "koa": "^2.0.0",
-    "koa-bodyparser": "^3.2.0",
+    "koa": "^2.0.1",
+    "koa-bodyparser": "^4.0.0",
     "koa-etag": "^3.0.0",
     "koa-response-time": "^2.0.0",
     "koa-router": "^7.1.0",
