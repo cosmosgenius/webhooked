@@ -30,7 +30,7 @@
   },
   "homepage": "https://github.com/cosmosgenius/webhooked#readme",
   "engines": {
-    "node": ">=7.0.0"
+    "node": ">=7.6.0"
   },
   "jest": {
     "verbose": true,
