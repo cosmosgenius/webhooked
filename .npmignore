@@ -12,4 +12,4 @@ index.ts
 webhookeddb
 gulpfile.js
 logging.js
-test
+__tests__
