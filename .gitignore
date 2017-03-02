@@ -28,4 +28,5 @@ node_modules
 
 #to prevent production server configs to be added
 .env
-/db
+.vscode
+
